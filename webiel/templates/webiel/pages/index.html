@@ -1,21 +1,26 @@
-{% load static %}
+{% extends "global/base.html" %}
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-     
-<head>
-{% include 'webiel/partials/head.html' %}
+{% block title %} | Home {% endblock title %}
 
 
-<title> Sensacional </title>
+{% block content %}
+       <!-- SLIDER -->
+       {% include 'webiel/partials/slider.html'%}
+       <!-- ABOUT -->
+       {% include 'webiel/partials/about.html'%}
+       <!-- CASAMENTO -->
+       {% include 'webiel/partials/casamento.html'%}
+       <!-- CARTAS -->
+       {% include 'webiel/partials/cartas.html'%}
+       <!-- PREGAÇÕES -->
+       {% include 'webiel/partials/prega.html'%}
+       <!-- NOTICIAS -->
+       {% include 'webiel/partials/noticias.html'%}
 
-</head>
- 
-<body>
+{% endblock content %}
+
+
+
+
     
-    {% include 'webiel/partials/header.html' %}
-    {% include 'webiel/partials/slider.html' %}
-    {% include 'webiel/partials/about.html' %}
-
-
-{% include 'webiel/partials/body.html' %}
+    

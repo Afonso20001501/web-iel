@@ -1,0 +1,98 @@
+{% load static %}
+
+<footer class="footer bg-cover pb-lg-3 footer-area" id="footer">
+
+     <div class="container">
+          <div class="row">
+               <div class="col-12 col-sm-6 col-lg-3 pt-lg-0">
+                    <div class="single-footer-widget footer-iel mb-70">
+                        <div class="nav-brand text-white p-0 me-0 mb-lg-4">
+                            <h5 class="widget-title">Igreja Evangélica do Lubango</h5>
+                            <p>A Visão da Igreja, está centrada na existência de Homens e 
+                                Mulheres salvas e discipuladas para o compromisso com a missão de Deus, até Jesus Voltar.
+                            </p>
+                            <form action="" class="needs-validation mt-3" method="post"   novalidate="">
+                                {% csrf_token %}
+                                <label data-aos="fade-up" for="subscr-email" class="form-label1 mb-2">Subescreve na Newsletter</label>
+                                <div class="input-group">
+                                  <input type="email" id="subscr-email" name="new_email" class="form-control rounded-start ps-5" placeholder="seu email" required>
+                                  <i class="bx bx-envelope fs-lg text-muted position-absolute top-50 start-0 translate-middle-y ms-3 zindex-5"></i>
+                                  <div data-aos="fade-up" class="invalid-tooltip position-absolute top-100 start-0">Por favor insere o seu indereço de Email.</div>
+                                  <button data-aos="fade-up" type="submit" class="btn btn-brand">Subescrever</button>
+                                </div>
+                              </form>
+                        </div>
+                    </div>
+               </div>
+
+               <div class="col-12 col-sm-6 col-lg-3 pt-lg-0">
+                    <h6 class="mb-2">
+                    <a data-aos="fade-up" href="#useful-links" class="d-block text-white dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">Links</a>
+                    </h6>
+                    <div id="useful-links" class="collapse d-lg-block footer-iel mb-70" data-bs-parent="#footer-links">
+                       <div class="single-footer-widget footer-iel mb-70">
+                        <h5 class="widget-title">Links</h5>
+                        <ul data-aos="fade-up" class="nav flex-column mb-lg-3">
+                            <li><a style="color:white" href="#"><i class="bx bxs-group" aria-hidden="true"></i> Mocidade</a></li>
+                            <li><a style="color:white" href="#"><i class="bx bxs-book" aria-hidden="true"></i> Devem</a></li>
+                            <li><a style="color:white" href="#"><i class="bx bx-female" aria-hidden="true"></i> Senhoras</a></li>
+                            <li><a style="color:white" href="#"><i class="bx bxs-user" aria-hidden="true"></i> Homens</a></li>
+                            <li><a style="color:white" href="#"><i class="bx bxs-music" aria-hidden="true"></i> Música</a></li>
+                        </ul>
+                            <ul data-aos="fade-up" class="nav flex-column mb-2 mb-lg-0">
+                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 text-white pb-2">Termos &amp; Condições</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 text-white pb-2">Politicas Privacidade</a></li>
+                        </ul>
+                       </div>
+                </div>
+               </div>
+
+               <div class="col-12 col-sm-6 col-lg-3 pt-lg-0">
+                  <div class="single-footer-widget footer-iel mb-70">
+                    <h6 class="mb-2">
+                        <a data-aos="fade-up" href="#social-links" class="d-block text-white dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">Últimas Notícias</a>
+                        </h6>
+                        <div id="social-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+                            <div data-aos="fade-up" class="single-footer-widget nav flex-column mb-2 mb-lg-0">
+                                <h5 class="widget-title">Últimas Notícias</h5>
+                                <div class="single-latest-news">
+                                    <a style="color:white" href="">Mesa Redonda</a>
+                                    <p style="color:white"><i style="color:white" class="bx bxs-calendar" aria-hidden="true"></i>8 de Maio de 2024, Lage união</p>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+               </div>
+
+               <div class="col-12 col-sm-6 col-lg-3 text-white pt-lg-0">
+                <div class="single-footer-widget footer-iel mb-70">
+                    <h5 class="widget-title">Contacte-nos</h5>
+                    <div class="contact-information mb-4">
+                        <p style="color:white"><i style="color: #fff" class="bx bxs-map mb-3" aria-hidden="true"></i> Huila, Lubango, Lage</p>
+                        <a style="color:white" href="callto:001-1234-88888"><i style="color: #fff" class="bx bx-mobile-alt" aria-hidden="true"></i> + (244) 2612 233 32</a>
+                        <a style="color:white" href="mailto:info.deercreative@gmail.com"><i style="color: #fff" class="bx bxs-envelope" aria-hidden="true"></i> apoio@igrejaevangelicadolubango.org</a>
+                        <p style="color:white" ><i style="color: #fff" class="fa fa-clock-o" aria-hidden="true"></i>Seg - Sext: 08:00 - 15:30</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="http://"><i class="bx bxl-facebook"></i></a>
+                        <a href="http://"><i class="bx bxl-whatsapp"></i></a>
+                        <a href="http://"><i class="bx bxl-instagram"></i></a>
+                        <a href="http://"><i class="bx bxl-youtube"></i></a>
+                   </div>
+                </div>
+               </div>
+          </div>
+     </div>
+     
+     <div class="footer-bottom">
+        <div class="container">
+          <p class="mb-0 text-light opacity-50"> Copyright &copy;
+               <script>document.write(new Date().getFullYear());</script>.
+               Todos os Direitos Reservados | Created <i class="bx bxs-computer" aria-hidden="true"></i>
+               By <a style="color:white" href="#" target="_blank">Afonso Miqueias</a>
+          </p>
+        </div>
+     </div>
+
+</footer>
+

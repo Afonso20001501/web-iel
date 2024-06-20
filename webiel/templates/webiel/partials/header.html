@@ -1,70 +1,144 @@
 {% load static %}
 
 <!-- NAVBAR -->
-<nav class="top-nav">
-     <div class="container">
-         <div class="row justify-content-between">
-          <div class="col-auto">
-             <p>
-               <i class="bx bxs-envelope"></i>
-               <span>lubango@iel.com</span>
-             </p>
-             <p>
-               <i class="bx bxs-phone-call"></i>
-               <span>+(244) 934 038 572</span>
-             </p>
-          </div>
-          <div class="col-auto">
-               <div class="social-links">
-                    <a href="http://"><i class="bx bxl-facebook"></i></a>
-                    <a href="http://"><i class="bx bxl-whatsapp"></i></a>
-                    <a href="http://"><i class="bx bxl-instagram"></i></a>
-                    <a href="http://"><i class="bx bxl-youtube"></i></a>
-               </div>
-          </div>
-         </div> 
-     </div>
-</nav>
-
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-     <div class="container">
-       <a class="navbar-brand" href="#">I.E.L</a>
-       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-       </button>
-       <div class="collapse navbar-collapse" id="navbarNav">
-         <ul class="navbar-nav ms-auto">
-
-           <li class="nav-item">
-             <a class="nav-link" href="#">Home</a>
-           </li>
-
-           <li class="nav-item">
-             <a class="nav-link" href="#">Sobre Nós</a>
-           </li>
-
-           <li class="nav-item">
-             <a class="nav-link" href="#">Noticias</a>
-           </li>
-
-           <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                 Departamentos
-               </a>
-               <ul class="dropdown-menu">
-                 <li><a class="dropdown-item" href="#">Mocidade</a></li>
-                 <li><a class="dropdown-item" href="#">DEVEM</a></li>
-                 <li><a class="dropdown-item" href="#">S.SENHORAS</a></li>
-                 <li><a class="dropdown-item" href="#">S.HOMENS</a></li>
-                 <li><a class="dropdown-item" href="#">S.MUSICA</a></li>
-               </ul>
-             </li>
-
-           <li class="nav-item">
-               <a class="nav-link" href="#">Contacto</a>
-           </li>
-         </ul>
-         <a href="#" class="btn btn-brand">Banco de Alimentação</a>
+<div class="top-nav" id="home">
+  <div class="container">
+      <div class="row justify-content-between">
+       <div class="col-auto envolpe-email">
+          <p>
+            <i class="bx bxs-envelope"></i>
+            <span>apoio@iel.org</span>
+          </p>
+          <p>
+            <i class='bx bx-mobile-alt'></i>
+            <span>(+244) 934 038 572</span>
+          </p>
        </div>
-     </div>
+       <div class="col-auto">
+            <div class="social-links">
+                 <p>
+                  <span class="secre">Secretaria da Igreja - 08h - 15h</span>
+                 </p>
+                 <p><span class="secre">|</span></p>
+                 <a href="http://"><i class="bx bxl-facebook"></i></a>
+                 <a href="http://"><i class="bx bxl-whatsapp"></i></a>
+                 <a href="http://"><i class="bx bxl-instagram"></i></a>
+                 <a href="http://"><i class="bx bxl-youtube"></i></a>
+            </div>
+       </div>
+      </div> 
+  </div>
+ </div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+  <div class="container">
+    <a href="{% url "webiel:home" %}" class="navbar-brand logo"><img src=" {% static "webiel/img/logotipo.png" %} "/></a> 
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url "webiel:home" %}">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "webiel:sobre_historial" %}">Sobre Nós</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "webiel:noticia_iel" %}">Notícias</a>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Departamentos
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url "webiel:mocidade" %}">Mocidade</a></li>
+              <li><a class="dropdown-item" href="{% url "webiel:devem" %}">Devem</a></li>
+              <li><a class="dropdown-item" href="{% url "webiel:senhoras" %}">Sociedade de Senhoras</a></li>
+              <li><a class="dropdown-item" href="{% url "webiel:homens" %}">Sociedade de Homens</a></li>
+              <li><a class="dropdown-item" href="{% url "webiel:musica" %}">Música</a></li>
+            </ul>
+          </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webiel:contato" %}">Contacto</a>
+        </li>
+      </ul>
+      <a href="#" class="btn btn-brand ms-lg-3 w-60" id="btn-brand" data-bs-toggle="modal" data-bs-target="#exampleModal">Banco de Alimentação</a>
+    </div>
+  </div>
 </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-4 mb-0">
+                <div class="blog-posts-area bg-cover">
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <form action="" class="row p-lg-4 gy-2 mb-0">
+                    <div class="col-12">
+                        <h2>Banco de Alimentação</h2>
+                        <p class="cuidar">Igreja Evangélica do Lubango!</p>
+                        <div class="row justify-content-between">
+                          <div class="col-auto">
+                            <div class="social-links-modal">
+                              <a href="http://"><i class="bx bxl-facebook"></i></a>
+                              <a href="http://"><i class="bx bxl-whatsapp"></i></a>
+                              <a href="http://"><i class="bx bxl-instagram"></i></a>
+                              <a href="http://"><i class="bx bxl-youtube"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                      <p style="text-align: justify; font-size: small;"><span style="font-size: 12pt; font-family: "Raleway", sans-serif;  font-weight: 400;">
+                        O Banco de Alimentação da Igreja Evangélica do Lubango, é um projecto da Juventude da Igreja
+                        que tem como objectivo principal a recolha constante de bens alimentícios, e fazê-los chegar
+                        à pessoas, e lares carentes. Se o irmão tiver algum alimento, compartilhe connosco, para que possamos juntos ajudar pessoas e lares carentes.
+                        Preencha o formulário abaixo, e nós entraremos em contacto para recolher o seu donativo.
+                      </span></p>
+                    </div>
+                    <div class="col-12">
+                       <div class="border-top border-primary w-40 mx-auto juntos-content-center mb-4"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo">
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="E-mail">
+                   </div>
+                   <div class="col-lg-6">
+                        <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Telefone">
+                   </div>
+                   <div class="col-lg-6">
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Bairro">
+                   </div>
+                   <div class="col-12 mb-3">
+                       <textarea name="" id="" row="10" class="form-control" placeholder="Qual é o seu donativo?"></textarea>
+                   </div>
+                   <div class="col-12">
+                       <button type="button" class="btn btn-brand">Realizar Doação</button>
+                   </div>
+                </form>
+              </div>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

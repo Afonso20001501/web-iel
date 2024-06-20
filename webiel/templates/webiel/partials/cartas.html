@@ -1,0 +1,110 @@
+{% load static %}
+
+<section id="cartas">
+     <div class="container">
+         <div class="row g-4">
+               <div class="col-ms-12 text-center">
+                    <h1 data-aos="fade-up" class="text-dark pt-4 text-uppercase">Cartas</h1>
+                    <div class="border-top border-primary w-25 mx-auto my-4"></div>
+                    <p class="about_text" data-aos="fade-up"  class="lead"  style="color: #6a6a6a !important;">A carta de recomendação e transferência é um documento passado pela direcção da Igreja a um 
+                    <br/> determinado membro.</p>
+               </div>
+         </div>
+         <div class="row align-items-center justify-content-center">
+           <div class="col-lg-4 col-sm-6 m-auto">
+               <div class="carta-box">
+                    <img src=" {% static "webiel/img/icons/icon_2.png" %} " alt="" srcset="">
+                    <h5>Carta de Recomendação</h5>
+                    <div class="border-top border-primary w-25 mx-auto my-4"></div>
+                    <p class="about_text" data-aos="fade-up"  class="lead ">
+                         Uma carta de recomendação é um documento emitido pela direcção da 
+                         Igreja para um membro que deseja visitar outra Igreja por qualquer motivo.</p>
+               </div>
+           </div>
+           <div class="col-lg-4 col-sm-6 m-auto">
+               <div class="carta-box">
+                    <img src=" {% static "webiel/img/icons/icon_2.png" %} " alt="" srcset="">
+                    <h5>Carta de Transferência</h5>
+                    <div class="border-top border-primary w-25 mx-auto my-4 "></div>
+                    <p class="about_text" data-aos="fade-up"  class="lead ">
+                         Uma carta de transferência é um documento emitido pela direcção da Igreja autorizando a 
+                         mudança de um membro para outra congregação.</p>
+               </div>
+           </div>
+         </div>
+         <div class="col-ms-12 text-center mt-6 my-5">
+          <a href="" class="btn btn-brand mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal1_carta">Solicitar Carta</a>
+         <div>
+  </div>
+</section>
+
+ <!-- Modal - 1 - Slider -->
+ <div class="modal fade mb-0" id="exampleModal1_carta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-xl modal-dialog-centered">
+       <div class="modal-content">
+         <div class="modal-body p-0">
+             <div class="container-fluid mb-0">
+               <div class="row">
+                 <div class="col-lg-4">
+                   <div class="blog-posts-area-carta bg-cover">
+                   </div>
+                 </div>
+                 <div class="col-lg-8">
+                   <form action="" class="row p-lg-4 gy-2 mb-0">
+                       <div class="col-12 mb-3">
+                           <h2>CARTAS DE RECOMENDAÇÃO & TRANSFERÊNCIA</h2>
+                           <p class="cuidar">Igreja Evangélica do Lubango!</p>
+                           <div class="social-links-modal">
+                             <a href="http://"><i class="bx bxl-facebook"></i></a>
+                             <a href="http://"><i class="bx bxl-whatsapp"></i></a>
+                             <a href="http://"><i class="bx bxl-instagram"></i></a>
+                             <a href="http://"><i class="bx bxl-youtube"></i></a>
+                        </div>
+                       </div>
+                       <div class="col-12">
+                         <p style="text-align: justify; font-size: small;"><span style="font-size: 12pt; font-family: Georgia, 'Times New Roman', Times, serif;  font-weight: 400;">
+                              A carta de recomendação é um documento passado pela direcção da Igreja a um determinado membro, 
+                              quando o mesmo manifesta o desejo de visitar por qualquer motivo alguma outra Igreja.
+                         </span></p>
+                       </div>
+                       <div class="col-12">
+                          <div class="border-top border-primary w-40 mx-auto juntos-content-center mb-3"></div>
+                       </div>
+                       <div class="col-lg-6">
+                           <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo do Noivo">
+                       </div>
+                       <div class="col-lg-6">
+                           <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Destino">
+                      </div>
+                      <div class="col-lg-6">
+                         <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="objectivo">
+                      </div>
+                      <div class="col-lg-6">
+                         <div class="form-group">
+                              <select id="tipo_carta" name="tipo_carta" class="browser-default custom-select form-control">
+                                  <option selected>Selecione o tipo de carta</option>
+                                  <option value="Carta de Recomendação">Carta de Recomendação</option>
+                                  <option value="Carta de Transferência">Carta de Transferência</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                         <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="email">
+                      </div>
+                      <div class="col-lg-6">
+                           <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Telefone">
+                      </div>
+                      <div class="col-12 mb-3">
+                         <textarea name="" id="" row="10" class="form-control" placeholder="Outras informações"></textarea>
+                      </div>
+                      <div class="col-12">
+                          <button type="button" class="btn btn-brand">Inscrever</button>
+                      </div>
+                   </form>
+                 </div>
+               </div>
+            </div>
+         </div>
+       </div>
+     </div>
+ </div>

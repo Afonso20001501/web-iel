@@ -1,0 +1,183 @@
+{% load static %}
+
+<section id="mocidade" class="about_page bg-cover ">
+     <div class="container">
+          <div class="col-ms-12 text-center mt-6 my-5">
+               <h1 data-aos="fade-up" class="text-white pt-4"> DEPARTAMENTO DE MÚSICA /</h1>
+               <div class="border-top border-primary w-25 mx-auto my-4"></div>
+               <p class="about_text text-white" data-aos="fade-up"  class="lead ">Conheça o departamento mais jovem da igreja, as nossas actividades, eventos, e membros da direcção.</p>
+          </div>
+     </div>
+</section>
+
+<section id="preg bg-light">
+     <div class="container mt-4">
+      <div class="row g-4 mb-3">
+         <div class="col-ms-12 text-center">
+              <h1 data-aos="fade-up" class="text-dark pt-4">Agenda</h1>
+              <div class="border-top border-primary w-25 mx-auto my-4"></div>
+              <p class="about_text" data-aos="fade-up"  class="lead " style="color: #6a6a6a !important;">Esteja actualizado, conheça a nossa agenda, e participe das nossas actividades.</p>
+        </div>
+      </div>
+         <div id="project-slider" class="owl-theme owl-carousel">
+           <div class="project">
+               <img src=" {% static "webiel/img/pre.jpg" %} " alt="">
+                 <div class="overlay"></div>
+                  <div class="content">
+                  <h1>Tema | Pregação</h1>
+                  <h6>Sub-tema | Pregação</h6>
+               </div>
+           </div>
+           <div class="project">
+            <img src=" {% static "webiel/img/4.jpg" %} " alt="">
+               <div class="overlay"></div>
+                  <div class="content">
+                  <h1>Tema | Pregação</h1>
+                  <h6>Sub-tema | Pregação</h6>
+               </div>
+           </div>
+           <div class="project">
+            <img src=" {% static "webiel/img/3.jpeg" %} " alt="">
+              <div class="overlay"></div>
+               <div class="content">
+                  <h1>Tema | Pregação</h1>
+                  <h6>Sub-tema | Pregação</h6>
+               </div>
+           </div>
+
+         </div>
+  </div>
+</section>
+
+<section class="mb-4 bg-light">
+   <div class="container">
+         <div class="row g-4 mb-3">
+            <div class="col-ms-12 text-center">
+                 <h1 data-aos="fade-up" class="text-dark pt-4">Galeria de Música</h1>
+                 <div class="border-top border-primary w-25 mx-auto my-4"></div>
+                 <p class="about_text" data-aos="fade-up"  class="lead " style="color: #6a6a6a !important;">companhe um pouco do muito que tem acontecido no Departamento da Juventude.</p>
+           </div>
+         </div>
+
+         <ul class="nav nav-tabs" id="albumTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="album1-tab" data-bs-toggle="tab" href="#album1" role="tab" aria-controls="album1" aria-selected="true">Álbum 1</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="album2-tab" data-bs-toggle="tab" href="#album2" role="tab" aria-controls="album2" aria-selected="false">Álbum 2</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="album3-tab" data-bs-toggle="tab" href="#album3" role="tab" aria-controls="album3" aria-selected="false">Álbum 3</a>
+            </li>
+        </ul>
+
+        <!-- Conteúdo das telas -->
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="album1" role="tabpanel" aria-labelledby="album1-tab">
+                <div class="row" id="album1-content">
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/1.jpg' %}" data-lightbox="gallery" data-title="Imagem 1">
+                            <img src="{% static 'webiel/img/moci/1.jpg' %}" class="img-fluid" alt="Imagem 1">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/2.jpg' %}" data-lightbox="gallery" data-title="Imagem 2">
+                            <img src="{% static 'webiel/img/moci/2.jpg' %}" class="img-fluid" alt="Imagem 2">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/3.jpg' %}" data-lightbox="gallery" data-title="Imagem 3">
+                            <img src="{% static 'webiel/img/moci/3.jpg' %}" class="img-fluid" alt="Imagem 3">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/3.jpg' %}" data-lightbox="gallery" data-title="Imagem 3">
+                            <img src="{% static 'webiel/img/moci/3.jpg' %}" class="img-fluid" alt="Imagem 3">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Adicione mais imagens conforme necessário, incrementando o data-page -->
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="pagination1"></ul>
+                </nav>
+            </div>
+            <div class="tab-pane fade" id="album2" role="tabpanel" aria-labelledby="album2-tab">
+                <div class="row" id="album2-content">
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/4.jpg' %}" data-lightbox="gallery" data-title="Imagem 4">
+                            <img src="{% static 'webiel/img/moci/4.jpg' %}" class="img-fluid" alt="Imagem 4">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/5.jpg' %}" data-lightbox="gallery" data-title="Imagem 5">
+                            <img src="{% static 'webiel/img/moci/5.jpg' %}" class="img-fluid" alt="Imagem 5">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/6.jpg' %}" data-lightbox="gallery" data-title="Imagem 6">
+                            <img src="{% static 'webiel/img/moci/6.jpg' %}" class="img-fluid" alt="Imagem 6">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Adicione mais imagens conforme necessário, incrementando o data-page -->
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="pagination2"></ul>
+                </nav>
+            </div>
+            <div class="tab-pane fade" id="album3" role="tabpanel" aria-labelledby="album3-tab">
+                <div class="row" id="album3-content">
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/7.jpg' %}" data-lightbox="gallery" data-title="Imagem 7">
+                            <img src="{% static 'webiel/img/moci/7.jpg' %}" class="img-fluid" alt="Imagem 7">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/8.jpg' %}" data-lightbox="gallery" data-title="Imagem 8">
+                            <img src="{% static 'webiel/img/moci/8.jpg' %}" class="img-fluid" alt="Imagem 8">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 gallery-item" data-page="1">
+                        <a href="{% static 'webiel/img/moci/9.jpg' %}" data-lightbox="gallery" data-title="Imagem 9">
+                            <img src="{% static 'webiel/img/moci/9.jpg' %}" class="img-fluid" alt="Imagem 9">
+                            <div class="overlay">
+                                <div class="overlay-content"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Adicione mais imagens conforme necessário, incrementando o data-page -->
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="pagination3"></ul>
+                </nav>
+            </div>
+        </div>
+  </div>
+
+</section>
