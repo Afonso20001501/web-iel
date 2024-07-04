@@ -1,10 +1,10 @@
 {% load static %}
 
 <section id="cartas">
-     <div class="container">
+     <div data-aos="fade-down" class="container">
          <div class="row g-4">
                <div class="col-ms-12 text-center">
-                    <h1 data-aos="fade-up" class="text-dark pt-4 text-uppercase">Cartas</h1>
+                    <h1 class="text-dark pt-4 text-uppercase">Cartas</h1>
                     <div class="border-top border-primary w-25 mx-auto my-4"></div>
                     <p class="about_text" data-aos="fade-up"  class="lead"  style="color: #6a6a6a !important;">A carta de recomendação e transferência é um documento passado pela direcção da Igreja a um 
                     <br/> determinado membro.</p>
@@ -12,34 +12,34 @@
          </div>
          <div class="row align-items-center justify-content-center">
            <div class="col-lg-4 col-sm-6 m-auto">
-               <div class="carta-box">
+               <div data-aos="fade-up-right" class="carta-box">
                     <img src=" {% static "webiel/img/icons/icon_2.png" %} " alt="" srcset="">
                     <h5>Carta de Recomendação</h5>
                     <div class="border-top border-primary w-25 mx-auto my-4"></div>
-                    <p class="about_text" data-aos="fade-up"  class="lead ">
+                    <p class="about_text"  class="lead ">
                          Uma carta de recomendação é um documento emitido pela direcção da 
                          Igreja para um membro que deseja visitar outra Igreja por qualquer motivo.</p>
                </div>
            </div>
            <div class="col-lg-4 col-sm-6 m-auto">
-               <div class="carta-box">
+               <div data-aos="fade-up-left" class="carta-box">
                     <img src=" {% static "webiel/img/icons/icon_2.png" %} " alt="" srcset="">
                     <h5>Carta de Transferência</h5>
                     <div class="border-top border-primary w-25 mx-auto my-4 "></div>
-                    <p class="about_text" data-aos="fade-up"  class="lead ">
+                    <p class="about_text" class="lead ">
                          Uma carta de transferência é um documento emitido pela direcção da Igreja autorizando a 
                          mudança de um membro para outra congregação.</p>
                </div>
            </div>
          </div>
          <div class="col-ms-12 text-center mt-6 my-5">
-          <a href="" class="btn btn-brand mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal1_carta">Solicitar Carta</a>
+          <a href="" class="btn btn-brand mb-4" data-bs-toggle="modal" data-bs-target="#cartaModal1_carta">Solicitar Carta</a>
          <div>
   </div>
 </section>
 
  <!-- Modal - 1 - Slider -->
- <div class="modal fade mb-0" id="exampleModal1_carta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade mb-0" id="cartaModal1_carta" tabindex="-1" aria-labelledby="cartaModal1_cartaLabel" aria-hidden="true">
      <div class="modal-dialog modal-xl modal-dialog-centered">
        <div class="modal-content">
          <div class="modal-body p-0">
@@ -50,7 +50,8 @@
                    </div>
                  </div>
                  <div class="col-lg-8">
-                   <form action="" class="row p-lg-4 gy-2 mb-0">
+                   <form action="" method="post" class="row p-lg-4 gy-2 mb-0">
+                    {% csrf_token %}
                        <div class="col-12 mb-3">
                            <h2>CARTAS DE RECOMENDAÇÃO & TRANSFERÊNCIA</h2>
                            <p class="cuidar">Igreja Evangélica do Lubango!</p>
@@ -71,13 +72,13 @@
                           <div class="border-top border-primary w-40 mx-auto juntos-content-center mb-3"></div>
                        </div>
                        <div class="col-lg-6">
-                           <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo do Noivo">
+                           <input type="text" name="nome" class="form-control" id="exampleFormControlInput1" placeholder="Nome" required>
                        </div>
                        <div class="col-lg-6">
-                           <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Destino">
+                           <input type="text" name="destino" class="form-control" id="exampleFormControlInput1" placeholder="Destino" required>
                       </div>
                       <div class="col-lg-6">
-                         <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="objectivo">
+                         <input type="text" name="objectivo" class="form-control" id="exampleFormControlInput1" placeholder="objectivo" required>
                       </div>
                       <div class="col-lg-6">
                          <div class="form-group">
@@ -89,16 +90,16 @@
                           </div>
                       </div>
                       <div class="col-lg-6">
-                         <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="email">
+                         <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="email" requird>
                       </div>
                       <div class="col-lg-6">
-                           <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Telefone">
+                           <input type="text" name="telefone" class="form-control" id="exampleFormControlInput1" placeholder="Telefone" required>
                       </div>
                       <div class="col-12 mb-3">
-                         <textarea name="" id="" row="10" class="form-control" placeholder="Outras informações"></textarea>
+                         <textarea name="outras_inf" id="" row="10" class="form-control" placeholder="Outras informações" required></textarea>
                       </div>
                       <div class="col-12">
-                          <button type="button" class="btn btn-brand">Inscrever</button>
+                          <button type="submit" name="enviar" class="btn btn-brand">Enviar</button>
                       </div>
                    </form>
                  </div>

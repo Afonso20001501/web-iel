@@ -1,0 +1,64 @@
+{% extends "global/base.html" %}
+
+{% block title %} | {{ noticia.title }} {% endblock title %}
+
+{% block content %}
+
+<Section>
+     <div class="container">
+         <div class="row justify-content-between mt-5">
+             <div class="col-12 col-lg-9">
+                 <div class="blog-post-area">
+                     <div class="single-post-details-area">
+                         <div class="post-content">
+                             <h2 class="post-title">{{ noticia.title }}</h2>
+                         </div>
+                         <div class="post-meta mb-3">
+                             <small class="text-muted">
+                                 <i class='bx bxs-calendar'></i> {{ noticia.creted_at|date:"d/m/Y" }} às {{ noticia.creted_at|date:"H:i" }}
+                             </small>
+                             | <a class="text-muted"><i class="bx bxs-user" aria-hidden="true"></i>
+                                 {{ noticia.author.first_name }} {{ noticia.author.last_name }}
+                             </a>
+                         </div>
+                         <div class="post-thumbnail mb-4">
+                             <img src="{{ noticia.cover.url }}" alt="Imagem" style="max-width: 100%; height: auto;">
+                         </div>
+                         <div class="post-content mb-5">
+                             <p style="font-weight: bold; font-size:25px;">{{ noticia.dataEvento }} <script>document.write(new Date().getFullYear());</script> </p>
+                             <blockquote class="blockquote">
+                                 <div class="blockquote-text">
+                                     <h6 class="mb-3">"{{ noticia.citacao }}" </h6>
+                                     <h6 style="color: black;">{{ noticia.autorCitacao }} - <span>{{ noticia.autorCargo }}</span></h6>
+                                 </div>
+                             </blockquote>
+                             <p>{{ noticia.description }}</p>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="col-12 col-sm-9 col-md-6 col-lg-3">
+                 <div class="post-sidebar-area">
+                     <div class="single-widget-area">
+                         <!-- Title -->
+                         <div class="widget-title">
+                             <h6>Notícias Recentes</h6>
+                         </div>
+
+                         {% for noticias_recente in noticias_recentes|slice:":3" %}
+                          <div class="single-latest-post">
+                             <a href="{% url 'webiel:noticia-view' noticias_recente.slug %}" class="post-title">
+                                 <h6>{{ noticias_recente.title }}</h6>
+                             </a>
+                             <p class="post-date text-muted" style="font-style:italic;"> <i style="color:#000; font-style:italic;" class="bx bxs-calendar" aria-hidden="true"></i> {{ noticias_recente.dataEvento }} <script>document.write(new Date().getFullYear());</script> </p>
+                          </div>
+                         {% endfor %}
+                         
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </Section>
+ 
+{% endblock content %}

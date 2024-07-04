@@ -5,7 +5,8 @@ from . import views
 app_name = 'webiel'
 
 urlpatterns = [
-    path('', views.home, name="home"), # Home 
+    path('', views.home, name="home"),
+    path('noticia/<slug:slug>', views.noticia_view, name="noticia-view") ,# Noticia-View 
     path('sobre/', views.sobre, name="sobre_historial"),# sobre_historial
     path('sobre_missao/', views.sobre_missao, name="sobre_missao"),# sobre_missão
     path('sobre_estatuto/', views.sobre_estatuto, name="sobre_estatuto"),# sobre_estatuto

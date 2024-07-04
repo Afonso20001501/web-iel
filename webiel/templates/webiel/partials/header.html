@@ -62,19 +62,21 @@
               <li><a class="dropdown-item" href="{% url "webiel:homens" %}">Sociedade de Homens</a></li>
               <li><a class="dropdown-item" href="{% url "webiel:musica" %}">Música</a></li>
             </ul>
-          </li>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link" href="{% url "webiel:contato" %}">Contacto</a>
         </li>
       </ul>
-      <a href="#" class="btn btn-brand ms-lg-3 w-60" id="btn-brand" data-bs-toggle="modal" data-bs-target="#exampleModal">Banco de Alimentação</a>
+      <a href="#" class="btn btn-brand ms-lg-3 w-60" id="btn-brand" data-bs-toggle="modal" data-bs-target="#bancoModal">Banco de Alimentação</a>
     </div>
   </div>
 </nav>
 
+
+
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="bancoModal" tabindex="-1" aria-labelledby="bancoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body p-0">
@@ -85,7 +87,8 @@
                 </div>
               </div>
               <div class="col-lg-8">
-                <form action="" class="row p-lg-4 gy-2 mb-0">
+                <form action="" class="row p-lg-4 gy-2 mb-0" method="post">
+                  {% csrf_token %}
                     <div class="col-12">
                         <h2>Banco de Alimentação</h2>
                         <p class="cuidar">Igreja Evangélica do Lubango!</p>
@@ -101,33 +104,33 @@
                         </div>
                     </div>
                     <div class="col-12">
-                      <p style="text-align: justify; font-size: small;"><span style="font-size: 12pt; font-family: "Raleway", sans-serif;  font-weight: 400;">
-                        O Banco de Alimentação da Igreja Evangélica do Lubango, é um projecto da Juventude da Igreja
-                        que tem como objectivo principal a recolha constante de bens alimentícios, e fazê-los chegar
-                        à pessoas, e lares carentes. Se o irmão tiver algum alimento, compartilhe connosco, para que possamos juntos ajudar pessoas e lares carentes.
-                        Preencha o formulário abaixo, e nós entraremos em contacto para recolher o seu donativo.
+                      <p style="text-align: justify; font-size: small;"><span style="font-size: 12pt; font-family: 'Raleway', sans-serif;  font-weight: 400;">
+                        O Banco de Alimentação da Igreja Evangélica do Lubango é um projeto da Juventude da Igreja
+                        que tem como objetivo principal a recolha constante de bens alimentícios e fazer com que eles cheguem
+                        a pessoas e lares carentes. Se você tiver alimentos para doar, compartilhe conosco para que possamos ajudar juntos pessoas e lares carentes.
+                        Preencha o formulário abaixo e entraremos em contato para recolher sua doação.
                       </span></p>
                     </div>
                     <div class="col-12">
                        <div class="border-top border-primary w-40 mx-auto juntos-content-center mb-4"></div>
                     </div>
                     <div class="col-lg-6">
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo">
+                        <input type="text" name="nome" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo" required>
                     </div>
                     <div class="col-lg-6">
-                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="E-mail">
+                        <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="E-mail" required>
                    </div>
                    <div class="col-lg-6">
-                        <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Telefone">
+                        <input type="number" name="telefone" class="form-control" id="exampleFormControlInput1" placeholder="Telefone" required>
                    </div>
                    <div class="col-lg-6">
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Bairro">
+                        <input type="text" name="bairro" class="form-control" id="exampleFormControlInput1" placeholder="Bairro" required>
                    </div>
                    <div class="col-12 mb-3">
-                       <textarea name="" id="" row="10" class="form-control" placeholder="Qual é o seu donativo?"></textarea>
+                       <textarea name="donativo" id=""  class="form-control" placeholder="Qual é o seu donativo?" required></textarea>
                    </div>
                    <div class="col-12">
-                       <button type="button" class="btn btn-brand">Realizar Doação</button>
+                       <button type="submit" name="enviar" class="btn btn-brand">Realizar Doação</button>
                    </div>
                 </form>
               </div>
@@ -137,8 +140,4 @@
     </div>
   </div>
 </div>
-
-
-
-
 

@@ -20,13 +20,144 @@
 <body data-bs-spy="sroll" data-bs-target=".navbar">
     <!-- NAVBAR-HEADER -->
     {% include 'webiel/partials/butão_flutuar.html'%}
-    <div class="preloader d-flex align-items-center justify-content-center">
-        <div class="line-preloader"></div>
-    </div>
+
     {% include 'webiel/partials/header.html'%}
-    {% block content %}{% endblock content %}
+
+    {% block content %}
+    
+    {% endblock content %}
     <!-- FOOTER -->
     {% include 'webiel/partials/footer.html'%}
-    
 <!-- BODY -->
 {% include 'webiel/partials/body.html' %}
+
+{% if messages %}
+    <script>
+        $(document).ready(function() {
+            {% for message in messages %}
+                {% if 'banco' in message.tags %}
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "7000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr.success("{{ message }}");
+                    $('#bancoModal').modal('show');
+                {% elif 'casa' in message.tags %}
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-left",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "7000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "slideDown",
+                        "hideMethod": "slideUp"
+                    };
+                    toastr.success("{{ message }}");
+                    $('#casaModal1_casa').modal('show');
+                {% elif 'carta' in message.tags %}
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "7000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "slideDown",
+                        "hideMethod": "slideUp"
+                    };
+                    toastr.success("{{ message }}");
+                    $('#cartaModal1_carta').modal('show');
+                {% elif 'contact' in message.tags %}
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-bottom-left",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "7000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr.success("{{ message }}");
+                    $('#contactModal').modal('show');
+                {% elif 'news' in message.tags %}
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-full-width",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "7000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr.success("{{ message }}");
+                    $('#newsModal').modal('show');
+                {% else %}
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-center",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "7000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr.success("{{ message }}");
+                {% endif %}
+            {% endfor %}
+        });
+    </script>
+{% endif %}
+
+

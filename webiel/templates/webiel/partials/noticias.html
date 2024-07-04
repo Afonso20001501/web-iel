@@ -1,54 +1,95 @@
 {% load static %}
 
-<section id="noticia">
-     <div class="container">
-          <div class="row g-4">
-               <div class="col-ms-12 text-center">
-                    <h1 data-aos="fade-up" class="text-dark pt-4 text-uppercase">Notícias</h1>
-                    <div class="border-top border-primary w-25 mx-auto my-4"></div>
-                    <p class="about_text" data-aos="fade-up"  class="lead "  style="color: #6a6a6a !important;">Fique por dentro e conheça todas as actividades que têm sido realizadas pelos 
-                     <br/>    variados departamentos da Igreja Evangélica do Lubango.</p>
-               </div>
-         </div>
+<section id="noticia" class="fade-in">
+     <div class="container mt-5 mb-4 ">
+          <div class="row justify-content-center g-4 mb-3">
+               {% for noticia in page_obj %}
+               <div data-aos="zoom-in-up" class="col-12 col-md-6 col-lg-4">
+                    <div class="post-blog">
+                         <div class="card">
+                              <a href="{% url 'webiel:noticia-view' noticia.slug %}" class="tag">{{ noticia.category }}  </a>
+                              <img src="{{ noticia.cover.url }}" class="card-img-top" alt="temporario">
+                              <div class="card-body">
+                                 <h5><a href="{% url 'webiel:noticia-view' noticia.slug %}">{{ noticia.title }} </a></h5>
+                                 <small class="mt-4" style="text-decoration: none; color: #A5A5A5; font-style: italic;"> 
+                                 <i class='bx bxs-calendar'></i> {{ noticia.creted_at|date:"d/m/Y" }}  às {{ noticia.creted_at|date:"H:i" }} </small>
+                                 | <a style="color: #A5A5A5; font-style: italic;">
+                                 <i style="color: #A5A5A5; font-style: italic;" class="bx bxs-user" aria-hidden="true">
+                                 {{ noticia.author.first_name }}   {{ noticia.author.last_name }}
+                                 </i></a>
+                                 <p class="card-text">{{ noticia.description|slice:":94"}}... </p>
+                                 <a href="{% url 'webiel:noticia-view' noticia.slug %}" class="btn" style="color:white !important; background:#26599D !important">Ler Mais 
+                                 <i class='bx bx-chevrons-right'></i></a>
+                              </div>
+                         </div>
+                    </div>
+                </div>
+               {% empty %}
+                   <div class="center m-y">
+                     <h2> Não tem Noticias </h2>
+                   </div>
+               {% endfor %} 
+          </div>
+          
+          <!-- Paginação -->
+          <nav aria-label="Page navigation">
+              <ul class="pagination">
+                  {% if page_obj.has_previous %}
+                      <li class="page-item">
+                          <a class="page-link" href="?page=1" aria-label="First">
+                              <span aria-hidden="true">&laquo;&laquo;</span>
+                          </a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                          </a>
+                      </li>
+                  {% else %}
+                      <li class="page-item disabled">
+                          <a class="page-link" aria-label="First">
+                              <span aria-hidden="true">&laquo;&laquo;</span>
+                          </a>
+                      </li>
+                      <li class="page-item disabled">
+                          <a class="page-link" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                          </a>
+                      </li>
+                  {% endif %}
 
-         <div class="row justify-content-center g-4">
-           <div class="col-12 col-md-6 col-lg-4">
-               <div class="post-blog">
-                    <a href="" class="tag">Mesa Redonda</a>
-                    <img src=" {% static "webiel/img/post/post_1.png" %} " alt="">
-                    <small>12, Dec, 2000</small>
-                    <h4><a href="">Mesa Redonda</a></h4>
-                    <p class="post-excerpt">Olá amados irmãos como estõa Lorem ipsum dolor sit amet consectetur 
-                         adipisicing elit. Magnam distinctio quisquam...</p>
-                    <a href="#" class="vermais">Ler Mais <i class='bx bx-chevrons-right'></i></a>
-               </div>
-           </div>
+                  {% for num in page_obj.paginator.page_range %}
+                      {% if page_obj.number == num %}
+                          <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                      {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+                          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                      {% endif %}
+                  {% endfor %}
 
-           <div class="col-12 col-md-6 col-lg-4 mb-5">
-               <div class="post-blog">
-                    <a href="" class="tag">Mesa Redonda</a>
-                    <img src=" {% static "webiel/img/post/post_2.png" %} " alt="">
-                    <small>12, Dec, 2000</small>
-                    <h4><a href="">Mesa Redonda</a></h4>
-                    <p class="post-excerpt">Olá amados irmãos como estõa Lorem ipsum dolor sit amet consectetur 
-                         adipisicing elit. Magnam distinctio quisquam...</p>
-                    <a href="#" class="vermais">Ler Mais <i class='bx bx-chevrons-right'></i></a>
-               </div>
-           </div>
-
-           <div class="col-12 col-md-6 col-lg-4 mb-5">
-               <div class="post-blog">
-                    <a href="" class="tag">Mesa Redonda</a>
-                    <img src=" {% static "webiel/img/post/post_1.png" %} " alt="">
-                    <small>12, Dec, 2000</small>
-                    <h4><a href="">Mesa Redonda</a></h4>
-                    <p class="post-excerpt">Olá amados irmãos como estõa Lorem ipsum dolor sit amet consectetur 
-                         adipisicing elit. Magnam distinctio quisquam...</p>
-                    <a href="#" id="vermais" class="vermais">Ler Mais <i class='bx bx-chevrons-right'></i></a>
-               </div>
-           </div>
-
-         </div>
-         
+                  {% if page_obj.has_next %}
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                          </a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                              <span aria-hidden="true">&raquo;&raquo;</span>
+                          </a>
+                      </li>
+                  {% else %}
+                      <li class="page-item disabled">
+                          <a class="page-link" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                          </a>
+                      </li>
+                      <li class="page-item disabled">
+                          <a class="page-link" aria-label="Last">
+                              <span aria-hidden="true">&raquo;&raquo;</span>
+                          </a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </nav>
      </div>
 </section>

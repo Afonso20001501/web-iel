@@ -2,19 +2,19 @@
 
 <section id="milestone" class="bg-cover">
      <div class="container">
-          <div class="col-ms-12 text-center mt-6 my-5">
-               <h1 data-aos="fade-up" class="text-white pt-4 text-uppercase">Casamentos</h1>
+          <div data-aos="fade-up" class="col-ms-12 text-center mt-6 my-5">
+               <h1 class="text-white pt-4 text-uppercase">Casamentos</h1>
                <div class="border-top border-primary w-25 mx-auto my-4"></div>
                <p class="about_text text-white" data-aos="fade-up"  class="lead ">O casamento é uma aliança sagrada entre um homem <br/> e uma mulher perante Deus.
                     Pretende realizar o seu casamento?</p>
-               <a href="" class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#exampleModal1_casa">Inscreva-te</a>
+               <a href="" class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#casaModal1_casa">Inscreva-te</a>
            </div>
      </div>
 </section>
 
 
  <!-- Modal - 1 - Slider -->
- <div class="modal fade mb-0 bg-modal" id="exampleModal1_casa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade mb-0 bg-modal" id="casaModal1_casa" tabindex="-1" aria-labelledby="casaModal1_casaLabel" aria-hidden="true">
      <div class="modal-dialog modal-xl modal-dialog-centered">
        <div class="modal-content bg-modal">
          <div class="modal-body p-0">
@@ -25,7 +25,8 @@
                    </div>
                  </div>
                  <div class="col-lg-8">
-                   <form action="" class="row p-lg-4 gy-2">
+                   <form action="" method="post" class="row p-lg-4 gy-2">
+                    {% csrf_token %}
                        <div class="col-12 mb-3">
                            <h2>Casamentos</h2>
                            <p class="cuidar"> Igreja Evangélica do Lubango!</p>
@@ -46,19 +47,19 @@
                           <div class="border-top border-primary w-40 mx-auto juntos-content-center mb-4"></div>
                        </div>
                        <div class="col-lg-6">
-                           <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo do Noivo">
+                           <input name="nome_noivo" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo do Noivo" required>
                        </div>
                        <div class="col-lg-6">
-                           <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo da Noiva">
+                           <input name="nome_noiva"  type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nome Completo da Noiva" required>
                       </div>
                       <div class="col-lg-6">
-                           <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="dd/mm/aaaa">
+                           <input name="data_casam" type="date" class="form-control" id="exampleFormControlInput1" placeholder="dd/mm/aaaa" required>
                       </div>
                       <div class="col-lg-6 mb-3">
-                           <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Telefone">
+                           <input name="telefone" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Telefone" required>
                       </div>
                       <div class="col-12">
-                          <button type="button" class="btn btn-brand">Inscrever</button>
+                          <button type="submit" name="enviar" class="btn btn-brand">Inscrever</button>
                       </div>
                    </form>
                  </div>
@@ -68,3 +69,5 @@
        </div>
      </div>
  </div>
+
+
