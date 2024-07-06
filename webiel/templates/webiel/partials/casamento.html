@@ -5,9 +5,10 @@
           <div data-aos="fade-up" class="col-ms-12 text-center mt-6 my-5">
                <h1 class="text-white pt-4 text-uppercase">Casamentos</h1>
                <div class="border-top border-primary w-25 mx-auto my-4"></div>
-               <p class="about_text text-white" data-aos="fade-up"  class="lead ">O casamento é uma aliança sagrada entre um homem <br/> e uma mulher perante Deus.
+               <p class="about_text text-white" data-aos="fade-up"  class="lead" style="font-weight: 400;
+               font-family: "Barlow", sans-serif !important;">O casamento é uma aliança sagrada entre um homem <br/> e uma mulher perante Deus.
                     Pretende realizar o seu casamento?</p>
-               <a href="" class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#casaModal1_casa">Inscreva-te</a>
+               <a href="" class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#casaModal1_casa">Agendar</a>
            </div>
      </div>
 </section>
@@ -20,15 +21,17 @@
          <div class="modal-body p-0">
              <div class="container-fluid mb-0">
                <div class="row">
-                 <div class="col-lg-4">
-                   <div class="blog-posts-area-casamento bg-cover">
-                   </div>
-                 </div>
+                <div class="col-lg-4 col-sm-12 bg-cover"
+                  style="background-image: url({% static "webiel/img/casa1.jpg" %}); min-height:300px;">
+                  <div>
+                      
+                  </div>
+              </div>
                  <div class="col-lg-8">
                    <form action="" method="post" class="row p-lg-4 gy-2">
                     {% csrf_token %}
                        <div class="col-12 mb-3">
-                           <h2>Casamentos</h2>
+                           <h2 style="font-family: "Barlow", sans-serif !important;">Casamentos</h2>
                            <p class="cuidar"> Igreja Evangélica do Lubango!</p>
                            <div class="social-links-modal justify-content-between">
                              <a href="http://"><i class="bx bxl-facebook"></i></a>
@@ -38,7 +41,8 @@
                         </div>
                        </div>
                        <div class="col-12 mb-3">
-                         <p style="text-align: justify; font-size: small;"><span style="font-size: 12pt; font-family: Georgia, 'Times New Roman', Times, serif;  font-weight: 400;">
+                         <p style="text-align: justify; font-size: small;"><span style="font-weight: 400; font-size:15px;
+                        font-family: "Barlow", sans-serif !important;">
                               O casamento é uma aliança sagrada entre um homem e uma mulher perante Deus. 
                               Pretende realizar o seu casamento até ao dia 31 de Dezembro de 2024?
                          </span></p>
@@ -59,7 +63,7 @@
                            <input name="telefone" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Telefone" required>
                       </div>
                       <div class="col-12">
-                          <button type="submit" name="enviar" class="btn btn-brand">Inscrever</button>
+                          <button type="submit" name="enviar" class="btn btn-brand">Agendar</button>
                       </div>
                    </form>
                  </div>

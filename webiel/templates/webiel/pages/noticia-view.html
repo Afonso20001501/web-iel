@@ -11,7 +11,7 @@
                  <div class="blog-post-area">
                      <div class="single-post-details-area">
                          <div class="post-content">
-                             <h2 class="post-title">{{ noticia.title }}</h2>
+                             <h2  class="post-title">{{ noticia.title }}</h2>
                          </div>
                          <div class="post-meta mb-3">
                              <small class="text-muted">
@@ -25,14 +25,18 @@
                              <img src="{{ noticia.cover.url }}" alt="Imagem" style="max-width: 100%; height: auto;">
                          </div>
                          <div class="post-content mb-5">
-                             <p style="font-weight: bold; font-size:25px;">{{ noticia.dataEvento }} <script>document.write(new Date().getFullYear());</script> </p>
+                             <p style="font-weight: 700; font-size:20px;
+                             font-family: "Barlow", sans-serif !important;">{{ noticia.dataEvento }} <script>document.write(new Date().getFullYear());</script> </p>
                              <blockquote class="blockquote">
                                  <div class="blockquote-text">
-                                     <h6 class="mb-3">"{{ noticia.citacao }}" </h6>
-                                     <h6 style="color: black;">{{ noticia.autorCitacao }} - <span>{{ noticia.autorCargo }}</span></h6>
+                                     <h6 style="font-weight: 400;
+                                     font-family: "Barlow", sans-serif !important;" class="mb-3">"{{ noticia.citacao }}" </h6>
+                                     <h6 style="font-weight: 400;
+                                     font-family: "Barlow", sans-serif !important;" style="color: black;">{{ noticia.autorCitacao }} - <span>{{ noticia.autorCargo }}</span></h6>
                                  </div>
                              </blockquote>
-                             <p>{{ noticia.description }}</p>
+                             <p style="font-weight: 400;
+                             font-family: "Barlow", sans-serif !important;">{{ noticia.description }}</p>
                          </div>
                      </div>
                  </div>

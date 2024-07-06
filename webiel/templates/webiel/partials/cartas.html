@@ -6,7 +6,8 @@
                <div class="col-ms-12 text-center">
                     <h1 class="text-dark pt-4 text-uppercase">Cartas</h1>
                     <div class="border-top border-primary w-25 mx-auto my-4"></div>
-                    <p class="about_text" data-aos="fade-up"  class="lead"  style="color: #6a6a6a !important;">A carta de recomendação e transferência é um documento passado pela direcção da Igreja a um 
+                    <p class="about_text" data-aos="fade-up"  class="lead"  style="font-weight: 400;
+                             font-family: "Barlow", sans-serif !important;">A carta de recomendação e transferência é um documento passado pela direcção da Igreja a um 
                     <br/> determinado membro.</p>
                </div>
          </div>
@@ -16,7 +17,8 @@
                     <img src=" {% static "webiel/img/icons/icon_2.png" %} " alt="" srcset="">
                     <h5>Carta de Recomendação</h5>
                     <div class="border-top border-primary w-25 mx-auto my-4"></div>
-                    <p class="about_text"  class="lead ">
+                    <p class="about_text"  class="lead" style="font-weight: 400;
+                    font-family: "Barlow", sans-serif !important;">
                          Uma carta de recomendação é um documento emitido pela direcção da 
                          Igreja para um membro que deseja visitar outra Igreja por qualquer motivo.</p>
                </div>
@@ -26,7 +28,8 @@
                     <img src=" {% static "webiel/img/icons/icon_2.png" %} " alt="" srcset="">
                     <h5>Carta de Transferência</h5>
                     <div class="border-top border-primary w-25 mx-auto my-4 "></div>
-                    <p class="about_text" class="lead ">
+                    <p class="about_text" class="lead" style="font-weight: 400;
+                         font-family: "Barlow", sans-serif !important;">
                          Uma carta de transferência é um documento emitido pela direcção da Igreja autorizando a 
                          mudança de um membro para outra congregação.</p>
                </div>
@@ -45,15 +48,18 @@
          <div class="modal-body p-0">
              <div class="container-fluid mb-0">
                <div class="row">
-                 <div class="col-lg-4">
-                   <div class="blog-posts-area-carta bg-cover">
-                   </div>
-                 </div>
+                  <div class="col-lg-4 col-sm-12 bg-cover"
+                  style="background-image: url({% static "webiel/img/slider/slider_5.jpg" %}); min-height:300px;">
+                  <div>
+                      
+                  </div>
+              </div>
                  <div class="col-lg-8">
                    <form action="" method="post" class="row p-lg-4 gy-2 mb-0">
                     {% csrf_token %}
                        <div class="col-12 mb-3">
-                           <h2>CARTAS DE RECOMENDAÇÃO & TRANSFERÊNCIA</h2>
+                           <h2 style="
+                              font-family: "Barlow", sans-serif !important;">CARTAS DE RECOMENDAÇÃO & TRANSFERÊNCIA</h2>
                            <p class="cuidar">Igreja Evangélica do Lubango!</p>
                            <div class="social-links-modal">
                              <a href="http://"><i class="bx bxl-facebook"></i></a>
@@ -63,7 +69,8 @@
                         </div>
                        </div>
                        <div class="col-12">
-                         <p style="text-align: justify; font-size: small;"><span style="font-size: 12pt; font-family: Georgia, 'Times New Roman', Times, serif;  font-weight: 400;">
+                         <p style="text-align: justify; font-size: small;"><span style="font-weight: 400; font-size:15px;
+                        font-family: "Barlow", sans-serif !important;">
                               A carta de recomendação é um documento passado pela direcção da Igreja a um determinado membro, 
                               quando o mesmo manifesta o desejo de visitar por qualquer motivo alguma outra Igreja.
                          </span></p>

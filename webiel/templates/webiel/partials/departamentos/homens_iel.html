@@ -5,23 +5,27 @@
           <div class="col-ms-12 text-center mt-6 my-5">
                <h1 data-aos="fade-up" class="text-white pt-4"> SOCIEDADE DE HOMENS /</h1>
                <div class="border-top border-primary w-25 mx-auto my-4"></div>
-               <p class="about_text text-white" data-aos="fade-up"  class="lead ">Conheça o departamento mais jovem da igreja, as nossas actividades, eventos, e membros da direcção.</p>
+               <p class="about_text text-white" data-aos="fade-up"  class="lead" style="font-weight: 400; font-size:12pt;
+               font-family: "Barlow", sans-serif !important;">Conheça o departamento mais jovem da igreja, as nossas actividades, eventos, e membros da direcção.</p>
           </div>
      </div>
 </section>
 
 
 <section id="preg bg-light">
-     <div class="container mt-4">
+     <div class="container-fluid mt-4">
       <div class="row g-4 mb-3">
          <div class="col-ms-12 text-center">
               <h1 data-aos="fade-up" class="text-dark pt-4">Agenda</h1>
               <div class="border-top border-primary w-25 mx-auto my-4"></div>
-              <p class="about_text" data-aos="fade-up"  class="lead " style="color: #6a6a6a !important;">Esteja actualizado, conheça a nossa agenda, e participe das nossas actividades.</p>
+              <p class="about_text" data-aos="fade-up"  class="lead" style="font-weight: 400; font-size:12pt;
+              font-family: "Barlow", sans-serif !important;">Esteja actualizado, conheça a nossa agenda, e participe das nossas actividades.</p>
         </div>
       </div>
          <div id="project-slider" class="owl-theme owl-carousel">
-           <div class="project">
+           <div class="project" data-aos="flip-left"
+           data-aos-easing="ease-out-cubic"
+           data-aos-duration="2000">
                <img src=" {% static "webiel/img/pre.jpg" %} " alt="">
                  <div class="overlay"></div>
                   <div class="content">
@@ -29,7 +33,7 @@
                   <h6>Sub-tema | Pregação</h6>
                </div>
            </div>
-           <div class="project">
+           <div class="project" data-aos="zoom-out-left">
             <img src=" {% static "webiel/img/4.jpg" %} " alt="">
                <div class="overlay"></div>
                   <div class="content">
@@ -37,7 +41,7 @@
                   <h6>Sub-tema | Pregação</h6>
                </div>
            </div>
-           <div class="project">
+           <div class="project" data-aos="zoom-out-right">
             <img src=" {% static "webiel/img/3.jpeg" %} " alt="">
               <div class="overlay"></div>
                <div class="content">
@@ -56,11 +60,12 @@
             <div class="col-ms-12 text-center">
                  <h1 data-aos="fade-up" class="text-dark pt-4">Galeria dos Homens</h1>
                  <div class="border-top border-primary w-25 mx-auto my-4"></div>
-                 <p class="about_text" data-aos="fade-up"  class="lead " style="color: #6a6a6a !important;">companhe um pouco do muito que tem acontecido no Departamento da Juventude.</p>
+                 <p class="about_text" data-aos="fade-up"  class="lead" style="font-weight: 400; font-size:12pt;
+                 font-family: "Barlow", sans-serif !important;">companhe um pouco do muito que tem acontecido no Departamento da Juventude.</p>
            </div>
          </div>
 
-         <ul class="nav nav-tabs" id="albumTabs" role="tablist">
+         <ul data-aos="fade-up" class="nav nav-tabs" id="albumTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="album1-tab" data-bs-toggle="tab" href="#album1" role="tab" aria-controls="album1" aria-selected="true">Álbum 1</a>
             </li>
@@ -73,7 +78,7 @@
         </ul>
 
         <!-- Conteúdo das telas -->
-        <div class="tab-content">
+        <div data-aos="fade-up" class="tab-content">
             <div class="tab-pane fade show active" id="album1" role="tabpanel" aria-labelledby="album1-tab">
                 <div class="row" id="album1-content">
                     <div class="col-md-4 gallery-item" data-page="1">
@@ -114,7 +119,7 @@
                     <ul class="pagination" id="pagination1"></ul>
                 </nav>
             </div>
-            <div class="tab-pane fade" id="album2" role="tabpanel" aria-labelledby="album2-tab">
+            <div data-aos="fade-up" class="tab-pane fade" id="album2" role="tabpanel" aria-labelledby="album2-tab">
                 <div class="row" id="album2-content">
                     <div class="col-md-4 gallery-item" data-page="1">
                         <a href="{% static 'webiel/img/moci/4.jpg' %}" data-lightbox="gallery" data-title="Imagem 4">
@@ -146,7 +151,7 @@
                     <ul class="pagination" id="pagination2"></ul>
                 </nav>
             </div>
-            <div class="tab-pane fade" id="album3" role="tabpanel" aria-labelledby="album3-tab">
+            <div data-aos="fade-up" class="tab-pane fade" id="album3" role="tabpanel" aria-labelledby="album3-tab">
                 <div class="row" id="album3-content">
                     <div class="col-md-4 gallery-item" data-page="1">
                         <a href="{% static 'webiel/img/moci/7.jpg' %}" data-lightbox="gallery" data-title="Imagem 7">
