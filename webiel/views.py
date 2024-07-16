@@ -1,458 +1,422 @@
-from django.shortcuts import get_list_or_404, get_object_or_404, redirect, render
-from .models import Noticia
-from .forms import BancoForm, CasaForm, CartForm, NewsForm, MensForm
-from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from django.views.generic import TemplateView, DetailView
 from django.core.paginator import Paginator
-  
-# Create your views here.
-def home(request):
-    noticias = Noticia.objects.filter(is_published=True).order_by('-id')
-    paginator = Paginator(noticias, 3)
+from django.contrib import messages
+from .models import Noticia
+from .forms import BancoForm, CasaForm, CartForm, MensForm, NewsForm
 
-   
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
+class Home(TemplateView):
+    template_name = 'webiel/pages/index.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        noticias = Noticia.objects.filter(is_published=True).order_by('-id')
+        paginator = Paginator(noticias, 3)
+        noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        
+        context.update({
+            'noticias': noticias,
+            'noticias_recentes': noticias_recentes,
+            'banco_form': BancoForm(),
+            'casa_form': CasaForm(),
+            'carta_form': CartForm(),
+            'news_form': NewsForm(),
+            'page_obj': page_obj,
+        })
+        
+        return context
+    
+    def post(self, request, *args, **kwargs):
         banco_form = BancoForm(request.POST)
         casa_form = CasaForm(request.POST)
         carta_form = CartForm(request.POST)
         news_form = NewsForm(request.POST)
 
         if banco_form.is_valid():
-            messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
             banco_form.save()
-        
         elif casa_form.is_valid():
             messages.success(request, 'A sua inscrição foi feita com sucesso!', extra_tags='casa')
             casa_form.save()
-
         elif carta_form.is_valid():
             messages.success(request, 'A sua solicitação enviada com sucesso!', extra_tags='carta')
             carta_form.save()
-        
         elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            messages.success(request, 'Subescrição feita com sucesso!', extra_tags='news')
             news_form.save()
-        
         else:
             messages.error(request, 'Houve um erro ao salvar o formulário. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        casa_form = CasaForm()
-        carta_form = CartForm()
-        news_form = NewsForm()
-
         
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'webiel/pages/index.html', context={
-        'noticias': noticias,
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'casa_form': casa_form,
-        'carta_form': carta_form,
-        'news_form': news_form,
-        'page_obj':page_obj,
-    })
+        return self.get(request, *args, **kwargs)
 
-def noticia_view(request, slug):
-    noticia =  get_object_or_404(Noticia, slug=slug, is_published=True)
+class NoticiaView(DetailView):
+    model = Noticia
+    template_name = 'webiel/pages/noticia-view.html'
+    context_object_name = 'noticia'
 
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
+    def get_object(self, queryset=None):
+        return get_object_or_404(Noticia, slug=self.kwargs.get('slug'), is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        banco_form = BancoForm(request.POST)
+        news_form = NewsForm(request.POST)
+
+        if banco_form.is_valid():
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
+        elif news_form.is_valid():
+            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            news_form.save()
+        else:
+            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
+
+        return self.get(request, *args, **kwargs)
     
-    if request.method == 'POST':
-        banco_form = BancoForm(request.POST)
-        news_form = NewsForm(request.POST)
-       
-        
-        if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
-        elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
-            news_form.save()
-
-        else:
-            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-
-
-    return render(request, 'webiel/pages/noticia-view.html', context={
-        'noticia': noticia,
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-      
-    })
-
-def sobre(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
-        banco_form = BancoForm(request.POST)
-        news_form = NewsForm(request.POST)
-       
-        
-        if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
-        elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
-            news_form.save()
-
-        else:
-            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-
-    return render(request, 'webiel/pages/sobre_historial.html', context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
-
-def sobre_missao(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
-        banco_form = BancoForm(request.POST)
-        news_form = NewsForm(request.POST)
-       
-        
-        if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
-        elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
-            news_form.save()
-
-        else:
-            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-
-    return render(request,  'webiel/pages/sobre_missao.html', context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
-
-def sobre_estatuto(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
-        banco_form = BancoForm(request.POST)
-        news_form = NewsForm(request.POST)
-       
-        if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
-        elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
-            news_form.save()
-
-        else:
-            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-
-    return render(request,  'webiel/pages/sobre_estatuto.html', context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
-
-def sobre_pacto(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
-        banco_form = BancoForm(request.POST)
-        news_form = NewsForm(request.POST)
-       
-        
-        if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
-        elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
-            news_form.save()
-
-        else:
-            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-    return render(request,  'webiel/pages/sobre_pacto.html', context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
-
-def sobre_fe(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
-        banco_form = BancoForm(request.POST)
-        news_form = NewsForm(request.POST)
-       
-        
-        if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
-        elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
-            news_form.save()
-
-        else:
-            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-    return render(request,  'webiel/pages/sobre_fe.html', context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
-
-def sobre_pratica(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
-        banco_form = BancoForm(request.POST)
-        news_form = NewsForm(request.POST)
-       
-        if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
-        elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
-            news_form.save()
-
-        else:
-            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-
-    return render(request,  'webiel/pages/sobre_pratica.html',  context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
-
-def noticia_iel(request):
-    noticias = Noticia.objects.filter(is_published=True).order_by('-id').order_by('-id')
-    paginator = Paginator(noticias, 3)
-
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
-        banco_form = BancoForm(request.POST)
-        news_form = NewsForm(request.POST)
-       
-        
-        if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
-        elif news_form.is_valid():
-            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
-            news_form.save()
-
-        else:
-            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    return render(request,  'webiel/pages/noticia_iel.html',context={
-        'noticias': noticias,
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-        'page_obj':page_obj,
-    })
-
-def contato(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
+class SobreView(TemplateView):
+    template_name = 'webiel/pages/sobre_historial.html'
     
-    if request.method == 'POST':
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        banco_form = BancoForm(request.POST)
+        news_form = NewsForm(request.POST)
+        
+        if banco_form.is_valid():
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
+        elif news_form.is_valid():
+            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            news_form.save()
+        else:
+            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
+
+        return self.get(request, *args, **kwargs)
+    
+class SobreMissaoView(TemplateView):
+    template_name = 'webiel/pages/sobre_missao.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        banco_form = BancoForm(request.POST)
+        news_form = NewsForm(request.POST)
+        
+        if banco_form.is_valid():
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
+        elif news_form.is_valid():
+            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            news_form.save()
+        else:
+            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
+
+        return self.get(request, *args, **kwargs)
+    
+class SobreEstatutoView(TemplateView):
+    template_name = 'webiel/pages/sobre_estatuto.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        banco_form = BancoForm(request.POST)
+        news_form = NewsForm(request.POST)
+        
+        if banco_form.is_valid():
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
+        elif news_form.is_valid():
+            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            news_form.save()
+        else:
+            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
+
+        return self.get(request, *args, **kwargs)
+    
+class SobrePactoView(TemplateView):
+    template_name = 'webiel/pages/sobre_pacto.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        banco_form = BancoForm(request.POST)
+        news_form = NewsForm(request.POST)
+        
+        if banco_form.is_valid():
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
+        elif news_form.is_valid():
+            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            news_form.save()
+        else:
+            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
+
+        return self.get(request, *args, **kwargs)
+    
+class SobreFeView(TemplateView):
+    template_name = 'webiel/pages/sobre_fe.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        banco_form = BancoForm(request.POST)
+        news_form = NewsForm(request.POST)
+        
+        if banco_form.is_valid():
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
+        elif news_form.is_valid():
+            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            news_form.save()
+        else:
+            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
+
+        return self.get(request, *args, **kwargs)
+    
+class SobrePraticaView(TemplateView):
+    template_name = 'webiel/pages/sobre_pratica.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        banco_form = BancoForm(request.POST)
+        news_form = NewsForm(request.POST)
+        
+        if banco_form.is_valid():
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
+        elif news_form.is_valid():
+            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            news_form.save()
+        else:
+            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
+
+        return self.get(request, *args, **kwargs)
+    
+class NoticiaIelView(TemplateView):
+    template_name = 'webiel/pages/noticia_iel.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        noticias = Noticia.objects.filter(is_published=True).order_by('-id')
+        paginator = Paginator(noticias, 6)
+
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        
+        context['noticias'] = noticias
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        context['page_obj'] = page_obj
+        
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        banco_form = BancoForm(request.POST)
+        news_form = NewsForm(request.POST)
+        
+        if banco_form.is_valid():
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
+        elif news_form.is_valid():
+            messages.success(request, 'Enviado com sucesso!', extra_tags='news')
+            news_form.save()
+        else:
+            messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
+
+        return self.get(request, *args, **kwargs)
+    
+class ContatoView(TemplateView):
+    template_name = 'webiel/pages/contato.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['mens_form'] = MensForm()
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
         mens_form = MensForm(request.POST)
         banco_form = BancoForm(request.POST)
         news_form = NewsForm(request.POST)
-       
+        
         if mens_form.is_valid():
             messages.success(request, 'A sua mensagem foi enviada com sucesso!', extra_tags='contact')
             mens_form.save()
-        
         elif banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
         elif news_form.is_valid():
             messages.success(request, 'Enviado com sucesso!', extra_tags='news')
             news_form.save()
-
         else:
             messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        mens_form = MensForm()
-        banco_form = BancoForm()
-        news_form = NewsForm()
 
-    return render(request,  'webiel/pages/contato.html', context={
-        'noticias_recentes': noticias_recentes,
-        'mens_form': mens_form,
-        'banco_form': banco_form,
-        'news_form': news_form,
+        return self.get(request, *args, **kwargs)
     
-    })
-
-def mocidade(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
+class MocidadeView(TemplateView):
+    template_name = 'webiel/pages/mocidade.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
         banco_form = BancoForm(request.POST)
         news_form = NewsForm(request.POST)
-       
         
         if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
         elif news_form.is_valid():
             messages.success(request, 'Enviado com sucesso!', extra_tags='news')
             news_form.save()
-
         else:
             messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-    return render(request,  'webiel/pages/mocidade.html', context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
 
-def senhoras(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
+        return self.get(request, *args, **kwargs)
+    
+class SenhorasView(TemplateView):
+    template_name = 'webiel/pages/senhoras.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
         banco_form = BancoForm(request.POST)
         news_form = NewsForm(request.POST)
-       
         
         if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
         elif news_form.is_valid():
             messages.success(request, 'Enviado com sucesso!', extra_tags='news')
             news_form.save()
-
         else:
             messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-    return render(request,  'webiel/pages/senhoras.html', context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
 
-def devem(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
+        return self.get(request, *args, **kwargs)
+    
+class DevemView(TemplateView):
+    template_name = 'webiel/pages/devem.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
         banco_form = BancoForm(request.POST)
         news_form = NewsForm(request.POST)
-       
         
         if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
         elif news_form.is_valid():
             messages.success(request, 'Enviado com sucesso!', extra_tags='news')
             news_form.save()
-
         else:
             messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-    return render(request,  'webiel/pages/devem.html', context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
 
-def homens(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
+        return self.get(request, *args, **kwargs)
+    
+class HomensView(TemplateView):
+    template_name = 'webiel/pages/homens.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
         banco_form = BancoForm(request.POST)
         news_form = NewsForm(request.POST)
-       
         
         if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
         elif news_form.is_valid():
             messages.success(request, 'Enviado com sucesso!', extra_tags='news')
             news_form.save()
-
         else:
             messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-    return render(request,  'webiel/pages/homens.html',context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
 
-def musica(request):
-    noticias_recentes = Noticia.objects.filter(is_published=True).order_by('-id')
-
-    if request.method == 'POST':
+        return self.get(request, *args, **kwargs)
+    
+class MusicaView(TemplateView):
+    template_name = 'webiel/pages/musica.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['banco_form'] = BancoForm()
+        context['news_form'] = NewsForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
         banco_form = BancoForm(request.POST)
         news_form = NewsForm(request.POST)
-       
         
         if banco_form.is_valid():
-           messages.success(request, 'O seu donativo foi enviado com sucesso!',  extra_tags='banco')
-           banco_form.save()
-        
+            messages.success(request, 'O seu donativo foi enviado com sucesso!', extra_tags='banco')
+            banco_form.save()
         elif news_form.is_valid():
             messages.success(request, 'Enviado com sucesso!', extra_tags='news')
             news_form.save()
-
         else:
             messages.error(request, 'Houve um erro ao enviar a mensagem. Por favor, verifique os dados e tente novamente.')
-    else:
-        banco_form = BancoForm()
-        news_form = NewsForm()
-    return render(request,  'webiel/pages/musica.html',context={
-        'noticias_recentes': noticias_recentes,
-        'banco_form': banco_form,
-        'news_form': news_form,
-    })
+
+        return self.get(request, *args, **kwargs)

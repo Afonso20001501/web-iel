@@ -26,16 +26,16 @@
                          </div>
                          <div class="post-content mb-5">
                              <p style="font-weight: 700; font-size:20px;
-                             font-family: "Barlow", sans-serif !important;">{{ noticia.dataEvento }} <script>document.write(new Date().getFullYear());</script> </p>
+                             font-family: "Barlow", sans-serif !important;">{{ noticia.dataEvento }} de <script>document.write(new Date().getFullYear());</script> </p>
                              <blockquote class="blockquote">
-                                 <div class="blockquote-text">
+                                 <div class="blockquote-text contact-information">
                                      <h6 style="font-weight: 400;
                                      font-family: "Barlow", sans-serif !important;" class="mb-3">"{{ noticia.citacao }}" </h6>
                                      <h6 style="font-weight: 400;
                                      font-family: "Barlow", sans-serif !important;" style="color: black;">{{ noticia.autorCitacao }} - <span>{{ noticia.autorCargo }}</span></h6>
                                  </div>
                              </blockquote>
-                             <p style="font-weight: 400;
+                             <p class="contact-information" style="font-weight: 400;
                              font-family: "Barlow", sans-serif !important;">{{ noticia.description }}</p>
                          </div>
                      </div>
@@ -45,16 +45,16 @@
                  <div class="post-sidebar-area">
                      <div class="single-widget-area">
                          <!-- Title -->
-                         <div class="widget-title">
+                         <div class="widget-title contact-information mb-2">
                              <h6>Notícias Recentes</h6>
                          </div>
 
                          {% for noticias_recente in noticias_recentes|slice:":3" %}
-                          <div class="single-latest-post">
+                          <div class="single-latest-post contact-information">
                              <a href="{% url 'webiel:noticia-view' noticias_recente.slug %}" class="post-title">
                                  <h6>{{ noticias_recente.title }}</h6>
                              </a>
-                             <p class="post-date text-muted" style="font-style:italic;"> <i style="color:#000; font-style:italic;" class="bx bxs-calendar" aria-hidden="true"></i> {{ noticias_recente.dataEvento }} <script>document.write(new Date().getFullYear());</script> </p>
+                             <p class="post-date text-muted" style="font-style:italic;"> <i style="color:#000; font-style:italic;" class="bx bxs-calendar" aria-hidden="true"></i> {{ noticias_recente.dataEvento }} de <script>document.write(new Date().getFullYear());</script> </p>
                           </div>
                          {% endfor %}
                          
