@@ -7,7 +7,7 @@
                <div class="col-12 col-sm-6 col-lg-3 pt-lg-0">
                     <div class="single-footer-widget footer-iel mb-70">
                         <div id="news" class="nav-brand text-white p-0 me-0 mb-lg-4">
-                            <h5 class="widget-title">Igreja Evangélica do Lubango</h5>
+                            <h5 class="widget-title" style="font-size: 25px !important; font-weight: 800 !important;">I.E.L</h5>
                             <p>A Visão da Igreja, está centrada na existência de Homens e 
                                 Mulheres salvas e discipuladas para o compromisso com a missão de Deus, até Jesus Voltar.
                             </p>
@@ -57,7 +57,7 @@
                                 <h5  class="widget-title">Últimas Notícias</h5>
                                 {% for noticias_recente in noticias_recentes|slice:":3" %}
                                     <div class="single-latest-news">
-                                        <a style="color:white" href="">{{ noticias_recente.title }}</a>
+                                        <a style="color:white" href="{% url 'webiel:noticia-view' noticias_recente.slug %}">{{ noticias_recente.title }}</a>
                                         <p style="color:white"><i style="color:white" class="bx bxs-calendar" aria-hidden="true"></i> {{ noticias_recente.dataEvento }} de <script>document.write(new Date().getFullYear());</script> </p>
                                     </div>
                                 {% endfor %}
@@ -89,10 +89,10 @@
      
      <div class="footer-bottom">
         <div class="container">
-          <p class="mb-0 text-light" style="font-weight: 500;"> Copyright &copy;
+          <p class="mb-0 text-light" style="font-weight: 500; font-size:15px;"> Copyright &copy;
                <script>document.write(new Date().getFullYear());</script> |
-               Todos os Direitos Reservados | Created <i class="bx bxs-computer" aria-hidden="true"></i>
-               By <a class="opacity-70" id="afonso" style="color:white; font-family: "Barlow", sans-serif !important; " href="#" target="_blank">Afonso Miqueias</a>
+               Todos os Direitos Reservados | Powered 
+               by <a class="opacity-70" id="afonso" style="color:rgb(185, 71, 71); font-family: "Barlow", sans-serif !important; " href="#" target="_blank"> <i class='bx bxs-heart'></i> Afonso Miqueias</a>
           </p>
         </div>
      </div>

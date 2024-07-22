@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
+from base.base import BaseModel
+
+
+
 # Create your models here.
 # Tabelea de Categoria
 class Category(models.Model):
@@ -110,3 +114,47 @@ class Newsletter(models.Model):
         verbose_name_plural = 'Newsletter'
     def __str__(self):
         return self.email
+    
+
+class Mocidade(BaseModel):
+   presidente = models.CharField(max_length=100, null=False)
+   
+   class Meta:
+        verbose_name_plural = 'Mocidade'
+   def __str__(self):
+        return self.atividade
+
+
+class Devem(BaseModel):
+   presidente = models.CharField(max_length=100, null=False)
+   
+   class Meta:
+        verbose_name_plural = 'Devem'
+   def __str__(self):
+        return self.atividade
+
+
+class Musica(BaseModel):
+   presidente = models.CharField(max_length=100, null=False)
+   
+   class Meta:
+        verbose_name_plural = 'Musica'
+   def __str__(self):
+       return self.atividade
+   
+class Senhoras(BaseModel):
+   presidente = models.CharField(max_length=100, null=False)
+   
+   class Meta:
+        verbose_name_plural = 'Senhoras'
+   def __str__(self):
+        return self.atividade
+   
+
+class Homens(BaseModel):
+   presidente = models.CharField(max_length=100, null=False)
+   
+   class Meta:
+        verbose_name_plural = 'Homens'
+   def __str__(self):
+        return self.atividade

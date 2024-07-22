@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, DetailView
 from django.core.paginator import Paginator
 from django.contrib import messages
-from .models import Noticia
+from .models import Devem, Homens, Mocidade, Musica, Noticia, Senhoras
 from .forms import BancoForm, CasaForm, CartForm, MensForm, NewsForm
 
 class Home(TemplateView):
@@ -302,6 +302,7 @@ class MocidadeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['atividade_mocidades'] = Mocidade.objects.filter().order_by('-id')
         context['banco_form'] = BancoForm()
         context['news_form'] = NewsForm()
         return context
@@ -327,6 +328,7 @@ class SenhorasView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['atividade_senhoras'] = Senhoras.objects.filter().order_by('-id')
         context['banco_form'] = BancoForm()
         context['news_form'] = NewsForm()
         return context
@@ -352,6 +354,7 @@ class DevemView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['atividade_devems'] = Devem.objects.filter().order_by('-id')
         context['banco_form'] = BancoForm()
         context['news_form'] = NewsForm()
         return context
@@ -377,6 +380,7 @@ class HomensView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['atividade_homens'] = Homens.objects.filter().order_by('-id')
         context['banco_form'] = BancoForm()
         context['news_form'] = NewsForm()
         return context
@@ -402,6 +406,7 @@ class MusicaView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['noticias_recentes'] = Noticia.objects.filter(is_published=True).order_by('-id')
+        context['atividade_musicas'] = Musica.objects.filter().order_by('-id')
         context['banco_form'] = BancoForm()
         context['news_form'] = NewsForm()
         return context

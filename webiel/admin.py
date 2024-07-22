@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Noticia, BancoDeAlimentacao, Casamento, Carta, Newsletter, Mensagem
+from .models import Category, Devem, Homens, Mocidade, Musica, Noticia, BancoDeAlimentacao, Casamento, Carta, Newsletter, Mensagem, Senhoras
 
 # Register your models here.
 
@@ -14,3 +14,8 @@ admin.site.register(Casamento)
 admin.site.register(Carta)
 admin.site.register(Newsletter)
 admin.site.register(Mensagem)
+admin.site.register(Mocidade)
+admin.site.register(Devem)
+admin.site.register(Senhoras)
+admin.site.register(Homens)
+admin.site.register(Musica)
