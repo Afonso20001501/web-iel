@@ -22,14 +22,14 @@
                                  <h5><a style="font-weight: 700;
                                     font-family: "Barlow", sans-serif !important;" href="{% url 'webiel:noticia-view' noticia.slug %}">{{ noticia.title }} </a></h5>
                                  <small class="mt-4" style="text-decoration: none; color: #A5A5A5; font-style: italic;"> 
-                                 <i class='bx bxs-calendar'></i> {{ noticia.creted_at|date:"d/m/Y" }}  às {{ noticia.creted_at|date:"H:i" }} </small>
-                                 | <a style="color: #A5A5A5; font-style: italic;">
+                                 <i class='bx bxs-calendar'></i> {{ noticia.creted_at|date:"d/m/Y" }}  às {{ noticia.creted_at|date:"H:i " }}  </small>       
+                                   -   <a style="color: #A5A5A5; font-style: italic;">
                                  <i style="color: #A5A5A5; font-style: italic;" class="bx bxs-user" aria-hidden="true">
                                  {{ noticia.author.first_name }}   {{ noticia.author.last_name }}
                                  </i></a>
                                  <p class="card-text" style="font-weight: 400;
                                  font-family: "Barlow", sans-serif !important;">{{ noticia.description|slice:":94"}}... </p>
-                                 <a href="{% url 'webiel:noticia-view' noticia.slug %}" class="btn" style="color:white !important; background:#26599D !important">Ler Mais 
+                                 <a href="{% url 'webiel:noticia-view' noticia.slug %}" class="btn btn-light" style="color:#26599D !important;">Ler mais 
                                  <i class='bx bx-chevrons-right'></i></a>
                               </div>
                          </div>

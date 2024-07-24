@@ -1,6 +1,6 @@
 {% extends "global/base.html" %}
 
-{% block title %} | {{ noticia.title }} {% endblock title %}
+{% block title %} - {{ noticia.title }} {% endblock title %}
 
 {% block content %}
 
@@ -25,17 +25,29 @@
                              <img src="{{ noticia.cover.url }}" alt="Imagem" style="max-width: 100%; height: auto;">
                          </div>
                          <div class="post-content mb-5">
-                             <p style="font-weight: 700; font-size:20px;
-                             font-family: "Barlow", sans-serif !important;">{{ noticia.dataEvento }} de <script>document.write(new Date().getFullYear());</script> </p>
+                        
+                            <div class="col-12 col-sm-9 col-md-6 col-lg-3">
+                                <p class="contact-information" style="font-weight: 700; font-size:20px; font-family: "Barlow", sans-serif !important;"> 
+                                    {{ noticia.dataEvento }} de <script>document.write(new Date().getFullYear());</script>  <i style="color: #26599D; font-size: 25px;" class='bx bx-calendar-check'></i> 
+                                </p>
+                            </div>
+
                              <blockquote class="blockquote">
-                                 <div class="blockquote-text contact-information">
-                                     <h6 style="font-weight: 400;
-                                     font-family: "Barlow", sans-serif !important;" class="mb-3">"{{ noticia.citacao }}" </h6>
-                                     <h6 style="font-weight: 400;
-                                     font-family: "Barlow", sans-serif !important;" style="color: black;">{{ noticia.autorCitacao }} - <span>{{ noticia.autorCargo }}</span></h6>
+                                 <div class="blockquote-text">
+                                    
+                                     <h5 class="mb-3" style="font-weight: color: black;"> 
+                                        <i style="color: #26599D;" class='bx bxs-quote-alt-left'></i>
+                                            {{ noticia.citacao }}
+                                        <i style="color: #26599D;" class='bx bxs-quote-alt-right'></i>
+                                     </h5>
+                                     <h6 style="font-family: color: black; "Barlow", sans-serif !important;">
+                                        {{ noticia.autorCitacao }} <br/>
+                                        <span> {{ noticia.autorCargo }} </span>
+                                    </h6>
                                  </div>
+
                              </blockquote>
-                             <p class="contact-information" style="font-weight: 400;
+                             <p class="" style="font-weight: 400;
                              font-family: "Barlow", sans-serif !important;">{{ noticia.description }}</p>
                          </div>
                      </div>
@@ -64,5 +76,4 @@
          </div>
      </div>
  </Section>
- 
 {% endblock content %}
