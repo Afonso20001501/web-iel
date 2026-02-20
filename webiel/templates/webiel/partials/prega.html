@@ -16,9 +16,19 @@
                           "Porque onde estiverem dois ou três reunidos em meu nome, ali estou no meio deles." – <strong>Mateus 18:20</strong> 
                       </blockquote>
                       <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                        <a href="#about" class="btn btn-brand">Iniciar</a>
-                        <a href="https://youtu.be/e4AbUTNTEJU?si=u5VkVgFHK6VYEiv7" class="glightbox btn-watch-video d-flex align-items-center"><i class='bx bx-play-circle' ></i><span>Assistir Culto</span></a>
+                        <a id="latestVideo" href="#" class="btn-watch-video d-flex align-items-center" onclick="openVideo(); return false;">
+                            <i class='bx bx-play-circle'></i><span> Assistir Culto</span>
+                        </a>
                       </div>
+                    
+                    <!-- Contêiner para o vídeo (inicialmente oculto) -->
+                      <div id="videoContainer" style="display: none; margin-top: 20px;">
+                        <iframe id="videoFrame" width="100%" height="500px" 
+                            src="" 
+                            frameborder="0" allowfullscreen>
+                        </iframe>
+                      </div>
+              
                     </div>
                   </div>
                 </div>
@@ -32,3 +42,12 @@
         <span class="play-icon"></span>
     </a>
 </div> -->
+
+<!-- Script para carregar o vídeo dinamicamente -->
+<script>  
+  function openVideo() {
+      var videoUrl = "https://www.youtube.com/embed/I1YO7EbVlc8";
+      document.getElementById("videoFrame").src = videoUrl;
+      document.getElementById("videoContainer").style.display = "block";
+  }
+</script>

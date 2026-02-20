@@ -1,0 +1,958 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartas Recebidas - IEL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'webiel/img/icons/logo.png' %}"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            min-height: 100vh;
+            display: flex;
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            color: #212529;
+        }
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #1e3a8a, #3b82f6);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar a {
+            color: #fff;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .sidebar a:hover {
+            background-color: #2563eb;
+            transform: translateX(5px);
+        }
+        .sidebar .active {
+            background-color: #2563eb;
+            border-left: 4px solid #fff;
+        }
+        .sidebar .footer-bottom {
+            background: transparent;
+            padding: 15px 20px;
+            color: white;
+            margin-top: auto;
+            font-size: 12px;
+            text-align: center;
+        }
+        .sidebar .footer-bottom a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 30px;
+            width: 100%;
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1100;
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            display: none;
+        }
+        .menu-toggle:hover {
+            background-color: #2563eb;
+            transform: scale(1.1);
+        }
+        .table-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .table-section h2 {
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .table {
+            font-size: 14px;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        .table th {
+            background: #1e3a8a;
+            color: white;
+            padding: 12px;
+        }
+        .table td {
+            background: #f8fafc;
+            padding: 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .actions-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .status-icon {
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            font-size: 1.3rem;
+        }
+        .status-icon:hover {
+            transform: scale(1.2);
+        }
+        .card-carta {
+            display: none;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-carta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .card-carta .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 12px;
+        }
+        .card-carta .card-text {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 8px;
+        }
+        .pagination .page-link {
+            font-size: 14px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .pagination .page-link:hover {
+            background: #2563eb;
+            color: white;
+        }
+        .filter-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .filter-section .form-label {
+            font-weight: 500;
+            color: #1e3a8a;
+        }
+        .filter-section input, .filter-section select {
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+        }
+        .filter-section button {
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .filter-section button:hover {
+            transform: scale(1.05);
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .form-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .form-section h3 {
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .form-section input, .form-section select, .form-section textarea {
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+        }
+        .form-section button {
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .form-section button:hover {
+            transform: scale(1.05);
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .table-section {
+                padding: 15px;
+            }
+            .table-responsive {
+                display: none;
+            }
+            .card-carta {
+                display: block;
+            }
+            .pagination {
+                flex-wrap: wrap;
+            }
+            .pagination .page-link {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .filter-section .row {
+                flex-direction: column;
+            }
+            .filter-section input, .filter-section select, .filter-section button {
+                width: 100%;
+            }
+            .form-section .row {
+                flex-direction: column;
+            }
+            .form-section input, .form-section select, .form-section textarea, .form-section button {
+                width: 100%;
+            }
+            .actions-container {
+                gap: 8px;
+            }
+            .status-icon {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% csrf_token %}
+    <button class="menu-toggle" id="menuToggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">Menu</h4>
+        <a href="{% url 'webiel:dashboard' %}"><i class="bi bi-envelope me-2"></i> Cartas</a>
+        <a href="{% url 'webiel:cartas_recebidas' %}" class="active"><i class="bi bi-check-circle-fill me-2"></i> Cartas Recebidas</a>
+        <a href="{% url 'webiel:publicacao_criar' %}"><i class="bi bi-pencil-square me-2"></i> Cria Publicação</a>
+        <a href="{% url 'webiel:criar_foto' %}"><i class="bi bi-camera me-2"></i> Upload de Fotos</a>
+        <a href="{% url 'webiel:nubentes' %}"><i class="bi bi-people-fill me-2"></i> Nubentes</a>
+        <a href="{% url 'webiel:banco_de_alimentacao' %}"><i class="bi bi-database-fill me-2"></i> Banco de Alimentação</a>
+        <a href="{% url 'webiel:mensagens_newsletter' %}"><i class="bi bi-envelope-paper me-2"></i> Mensagens e Newsletter</a>
+        <a href="{% url 'webiel:inscricoes' %}"><i class="bi bi-check-circle-fill me-2"></i> Inscrições Feitas</a>
+        <div class="footer-bottom text-center">
+            <p class="mb-0">
+                Copyright © <script>document.write(new Date().getFullYear());</script> |
+                Todos os Direitos Reservados - IEL | Created by
+                <a id="afonso" href="https://api.whatsapp.com/send?phone=245934038572" target="_blank"
+                 style="color: #fff; text-decoration: none;">
+                    <i class="bi bi-heart-fill"></i> Afonso Miqueias
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container mt-5 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary">Cartas Recebidas</h2>
+                <div>
+                    <p class="text-muted mb-0">
+                        Bem-vindo, <strong>{{ user.username }}</strong> |
+                        <a href="{% url 'webiel:logout' %}" class="btn btn-sm btn-outline-danger">Sair</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Registrar Nova Carta ou Documento</h3>
+                <form id="addCartaForm" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="tipo" class="form-label">Tipo <span class="text-danger">*</span></label>
+                        <select class="form-select" id="tipo" name="tipo" required>
+                            <option value="" disabled selected>Selecione o tipo</option>
+                            <option value="transferencia">Transferência</option>
+                            <option value="recomendacao">Recomendação</option>
+                            <option value="convite">Convite</option>
+                            <option value="outros">Outros Documentos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="referencia" class="form-label">Referência</label>
+                        <input type="text" class="form-control" id="referencia" name="referencia">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="objetivo" class="form-label">Objetivo <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="objetivo" name="objetivo" rows="4" required></textarea>
+                    </div>
+                    <div class="col-md-12 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('addCartaForm').reset()">Limpar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="filter-section">
+                <h3>Filtros</h3>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="searchInput" class="form-label">Pesquisar</label>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Nome ou referência" value="{{ search }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="referenciaFilter" class="form-label">Referência</label>
+                        <input type="text" id="referenciaFilter" class="form-control" placeholder="Ex.: REC2025-001" value="{{ referencia }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="tipoFilter" class="form-label">Tipo de Carta</label>
+                        <select id="tipoFilter" class="form-select">
+                            <option value="">Todos os Tipos</option>
+                            <option value="transferencia" {% if tipo_carta == 'transferencia' %}selected{% endif %}>Transferência</option>
+                            <option value="recomendacao" {% if tipo_carta == 'recomendacao' %}selected{% endif %}>Recomendação</option>
+                            <option value="convite" {% if tipo_carta == 'convite' %}selected{% endif %}>Convite</option>
+                            <option value="outros" {% if tipo_carta == 'outros' %}selected{% endif %}>Outros Documentos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="dataFilter" class="form-label">Data de Recepção</label>
+                        <input type="date" id="dataFilter" class="form-control" value="{{ data }}">
+                    </div>
+                    <div class="col-md-3">
+                        <button id="clearFilters" class="btn btn-secondary w-100">Limpar Filtros</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-section">
+                {% if cartas %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="cartasTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Nome</th>
+                                <th>Referência</th>
+                                <th>Data de Recepção</th>
+                                <th>Autor de Recepção</th>
+                                <th>Objetivo</th>
+                                <th style="width: 150px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for carta in cartas %}
+                            <tr data-carta-id="{{ carta.id }}">
+                                <td>{{ carta.get_tipo_display }}</td>
+                                <td>{{ carta.nome }}</td>
+                                <td>{{ carta.referencia|default:"-" }}</td>
+                                <td>{{ carta.data_recepcao|date:"d/m/Y H:i" }}</td>
+                                <td>{{ carta.autor_recepcao.username|default:"Não definido" }}</td>
+                                <td>{{ carta.objetivo|truncatewords:10 }}</td>
+                                <td>
+                                    <div class="actions-container">
+                                        <span class="status-icon text-primary edit-icon" title="Editar" data-id="{{ carta.id }}" data-bs-toggle="modal" data-bs-target="#editCartaModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </span>
+                                        <span class="status-icon text-danger delete-icon" title="Deletar" data-id="{{ carta.id }}">
+                                            <i class="bi bi-trash"></i>
+                                        </span>
+                                        <span class="status-icon text-info view-icon" title="Visualizar" data-id="{{ carta.id }}" data-bs-toggle="modal" data-bs-target="#viewCartaModal">
+                                            <i class="bi bi-eye"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-list">
+                    {% for carta in cartas %}
+                    <div class="card-carta" data-carta-id="{{ carta.id }}">
+                        <div class="card-title">{{ carta.nome }} ({{ carta.referencia|default:"-" }})</div>
+                        <div class="card-text"><strong>Tipo:</strong> {{ carta.get_tipo_display }}</div>
+                        <div class="card-text"><strong>Referência:</strong> {{ carta.referencia|default:"-" }}</div>
+                        <div class="card-text"><strong>Data de Recepção:</strong> {{ carta.data_recepcao|date:"d/m/Y H:i" }}</div>
+                        <div class="card-text"><strong>Autor de Recepção:</strong> {{ carta.autor_recepcao.username|default:"Não definido" }}</div>
+                        <div class="card-text"><strong>Objetivo:</strong> {{ carta.objetivo }}</div>
+                        <div class="card-text">
+                            <strong>Ações:</strong>
+                            <div class="actions-container">
+                                <span class="status-icon text-primary edit-icon" title="Editar" data-id="{{ carta.id }}" data-bs-toggle="modal" data-bs-target="#editCartaModal">
+                                    <i class="bi bi-pencil-square"></i>
+                                </span>
+                                <span class="status-icon text-danger delete-icon" title="Deletar" data-id="{{ carta.id }}">
+                                    <i class="bi bi-trash"></i>
+                                </span>
+                                <span class="status-icon text-info view-icon" title="Visualizar" data-id="{{ carta.id }}" data-bs-toggle="modal" data-bs-target="#viewCartaModal">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="card-carta text-center">
+                        Nenhuma carta ou documento encontrado.
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <nav aria-label="Navegação de página" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search|urlencode }}{% endif %}{% if request.GET.referencia %}&referencia={{ request.GET.referencia|urlencode }}{% endif %}{% if request.GET.tipo %}&tipo={{ request.GET.tipo|urlencode }}{% endif %}{% if request.GET.data %}&data={{ request.GET.data|urlencode }}{% endif %}" aria-label="Página anterior">Anterior</a>
+                        </li>
+                        {% endif %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search|urlencode }}{% endif %}{% if request.GET.referencia %}&referencia={{ request.GET.referencia|urlencode }}{% endif %}{% if request.GET.tipo %}&tipo={{ request.GET.tipo|urlencode }}{% endif %}{% if request.GET.data %}&data={{ request.GET.data|urlencode }}{% endif %}" aria-label="Próxima página">Próxima</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% else %}
+                <div class="alert alert-warning rounded shadow-sm">Nenhuma carta ou documento encontrado.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="modal fade" id="viewCartaModal" tabindex="-1" aria-labelledby="viewCartaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewCartaModalLabel">Detalhes da Carta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Tipo:</strong> <span id="modal-tipo"></span></p>
+                        <p><strong>Nome:</strong> <span id="modal-nome"></span></p>
+                        <p><strong>Referência:</strong> <span id="modal-referencia"></span></p>
+                        <p><strong>Data de Recepção:</strong> <span id="modal-data-recepcao"></span></p>
+                        <p><strong>Autor de Recepção:</strong> <span id="modal-autor-recepcao"></span></p>
+                        <p><strong>Objetivo:</strong> <span id="modal-objetivo"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editCartaModal" tabindex="-1" aria-labelledby="editCartaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCartaModalLabel">Editar Carta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editCartaForm">
+                            <input type="hidden" id="edit-carta-id" name="carta_id">
+                            <div class="mb-3">
+                                <label for="edit-tipo" class="form-label">Tipo</label>
+                                <select class="form-select" id="edit-tipo" name="tipo" required>
+                                    <option value="transferencia">Transferência</option>
+                                    <option value="recomendacao">Recomendação</option>
+                                    <option value="convite">Convite</option>
+                                    <option value="outros">Outros Documentos</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-nome" class="form-label">Nome</label>
+                                <input type="text" class="form-control" id="edit-nome" name="nome" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-referencia" class="form-label">Referência</label>
+                                <input type="text" class="form-control" id="edit-referencia" name="referencia" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-objetivo" class="form-label">Objetivo</label>
+                                <textarea class="form-control" id="edit-objetivo" name="objetivo" rows="4" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="saveEditCarta">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast-container">
+            <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-success text-white">
+                    <strong class="me-auto">Sucesso</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="successToastMessage"></div>
+            </div>
+            <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-danger text-white">
+                    <strong class="me-auto">Erro</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="errorToastMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Função para obter o CSRF Token
+        function getCsrfToken() {
+            const cookie = document.cookie.split(';').find(c => c.trim().startsWith('csrftoken='));
+            if (!cookie) {
+                console.error('CSRF token not found in cookies.');
+                showToast('errorToast', 'CSRF token não encontrado.');
+                return null;
+            }
+            return decodeURIComponent(cookie.split('=')[1]);
+        }
+        const csrfToken = getCsrfToken();
+
+        // Função para exibir toast
+        function showToast(toastId, message) {
+            const toastElement = document.getElementById(toastId);
+            if (toastElement) {
+                toastElement.querySelector('.toast-body').textContent = message;
+                const toast = new bootstrap.Toast(toastElement, { delay: 5000 });
+                toast.show();
+            }
+        }
+
+        // Função para alternar o menu
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            sidebar.classList.toggle('closed');
+        });
+
+        // Função para filtrar cartas
+        function filterCartas() {
+            const search = document.getElementById('searchInput').value || '';
+            const referencia = document.getElementById('referenciaFilter').value || '';
+            const tipo = document.getElementById('tipoFilter').value || '';
+            const dataFiltro = document.getElementById('dataFilter').value || '';
+
+            fetch(`{% url 'webiel:cartas_recebidas' %}?referencia=${encodeURIComponent(referencia)}&tipo=${encodeURIComponent(tipo)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Resposta do servidor (filtro):', text);
+                        throw new Error(`Erro HTTP ${response.status}: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.querySelector('tbody');
+                const cardList = document.querySelector('.card-list');
+                tbody.innerHTML = '';
+                cardList.innerHTML = '';
+                if (!data.success || !data.cartas || data.cartas.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center">Nenhuma carta ou documento encontrado.</td></tr>';
+                    cardList.innerHTML = '<div class="card-carta text-center">Nenhuma carta ou documento encontrado.</div>';
+                } else {
+                    data.cartas.forEach(carta => {
+                        const row = document.createElement('tr');
+                        row.setAttribute('data-carta-id', carta.id);
+                        row.innerHTML = `
+                            <td>${carta.get_tipo_display || '-'}</td>
+                            <td>${carta.nome || '-'}</td>
+                            <td>${carta.referencia || '-'}</td>
+                            <td>${carta.data_recepcao || '-'}</td>
+                            <td>${carta.autor_recepcao || 'Não definido'}</td>
+                            <td>${carta.objetivo ? carta.objetivo.substring(0, 50) + (carta.objetivo.length > 50 ? '...' : '') : '-'}</td>
+                            <td>
+                                <div class="actions-container">
+                                    <span class="status-icon text-primary edit-icon" title="Editar" data-id="${carta.id}" data-bs-toggle="modal" data-bs-target="#editCartaModal">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </span>
+                                    <span class="status-icon text-danger delete-icon" title="Deletar" data-id="${carta.id}">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                    <span class="status-icon text-info view-icon" title="Visualizar" data-id="${carta.id}" data-bs-toggle="modal" data-bs-target="#viewCartaModal">
+                                        <i class="bi bi-eye"></i>
+                                    </span>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+
+                        const card = document.createElement('div');
+                        card.className = 'card-carta';
+                        card.setAttribute('data-carta-id', carta.id);
+                        card.innerHTML = `
+                            <div class="card-title">${carta.nome || '-'} (${carta.referencia || '-'})</div>
+                            <div class="card-text"><strong>Tipo:</strong> ${carta.get_tipo_display || '-'}</div>
+                            <div class="card-text"><strong>Referência:</strong> ${carta.referencia || '-'}</div>
+                            <div class="card-text"><strong>Data de Recepção:</strong> ${carta.data_recepcao || '-'}</div>
+                            <div class="card-text"><strong>Autor de Recepção:</strong> ${carta.autor_recepcao || 'Não definido'}</div>
+                            <div class="card-text"><strong>Objetivo:</strong> ${carta.objetivo || '-'}</div>
+                            <div class="card-text">
+                                <strong>Ações:</strong>
+                                <div class="actions-container">
+                                    <span class="status-icon text-primary edit-icon" title="Editar" data-id="${carta.id}" data-bs-toggle="modal" data-bs-target="#editCartaModal">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </span>
+                                    <span class="status-icon text-danger delete-icon" title="Deletar" data-id="${carta.id}">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                    <span class="status-icon text-info view-icon" title="Visualizar" data-id="${carta.id}" data-bs-toggle="modal" data-bs-target="#viewCartaModal">
+                                        <i class="bi bi-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                        cardList.appendChild(card);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Erro no filtro:', error);
+                showToast('errorToast', `Erro ao filtrar cartas: ${error.message}`);
+            });
+        }
+
+        // Enviar formulário de cadastro
+        document.getElementById('addCartaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            fetch('{% url 'webiel:cartas_recebidas' %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Resposta do servidor (cadastro):', text);
+                        throw new Error(`Erro HTTP ${response.status}: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showToast('successToast', data.message);
+                    form.reset();
+                    filterCartas();
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao registrar a carta.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro no cadastro:', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        });
+
+        // Ações de Deletar
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.delete-icon')) {
+                if (!confirm('Tem certeza que deseja deletar esta carta?')) return;
+                const icon = e.target.closest('.delete-icon');
+                const cartaId = icon.getAttribute('data-id');
+                const row = icon.closest('tr');
+                const card = document.querySelector(`.card-carta[data-carta-id="${cartaId}"]`);
+                fetch('{% url 'webiel:carta_deletar' %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ carta_id: cartaId })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error('Resposta do servidor (delete):', text);
+                            throw new Error(`Erro HTTP ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        showToast('successToast', data.message);
+                        if (row) row.remove();
+                        if (card) card.remove();
+                        if (!document.querySelector('#cartasTable tbody tr') && !document.querySelector('.card-carta')) {
+                            const noDataMessage = document.createElement('div');
+                            noDataMessage.className = 'alert alert-warning rounded shadow-sm';
+                            noDataMessage.textContent = 'Nenhuma carta ou documento encontrado.';
+                            document.querySelector('.table-section').appendChild(noDataMessage);
+                            document.querySelector('.table-responsive').style.display = 'none';
+                            document.querySelector('.card-list').style.display = 'none';
+                        }
+                        filterCartas();
+                    } else {
+                        showToast('errorToast', data.message || 'Erro ao deletar a carta.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao deletar:', error);
+                    showToast('errorToast', `Erro ao deletar a carta: ${error.message}`);
+                });
+            }
+        });
+
+        // Ações de Visualizar
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.view-icon')) {
+                const icon = e.target.closest('.view-icon');
+                const cartaId = icon.getAttribute('data-id');
+                fetch(`{% url 'webiel:carta_detalhes' %}?id=${cartaId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error('Resposta do servidor (view):', text);
+                            throw new Error(`Erro HTTP ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('modal-tipo').textContent = data.carta.get_tipo_display || '-';
+                        document.getElementById('modal-nome').textContent = data.carta.nome || '-';
+                        document.getElementById('modal-referencia').textContent = data.carta.referencia || '-';
+                        document.getElementById('modal-data-recepcao').textContent = data.carta.data_recepcao || '-';
+                        document.getElementById('modal-autor-recepcao').textContent = data.carta.autor_recepcao || 'Não definido';
+                        document.getElementById('modal-objetivo').textContent = data.carta.objetivo || '-';
+                    } else {
+                        showToast('errorToast', data.message || 'Erro ao carregar os detalhes da carta.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao visualizar:', error);
+                    showToast('errorToast', `Erro ao carregar os detalhes da carta: ${error.message}`);
+                });
+            }
+        });
+
+        // Ações de Editar
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.edit-icon')) {
+                const icon = e.target.closest('.edit-icon');
+                const cartaId = icon.getAttribute('data-id');
+                fetch(`{% url 'webiel:carta_detalhes' %}?id=${cartaId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error('Resposta do servidor (edit):', text);
+                            throw new Error(`Erro HTTP ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('edit-carta-id').value = cartaId;
+                        document.getElementById('edit-tipo').value = data.carta.tipo || '';
+                        document.getElementById('edit-nome').value = data.carta.nome || '';
+                        document.getElementById('edit-referencia').value = data.carta.referencia || '';
+                        document.getElementById('edit-objetivo').value = data.carta.objetivo || '';
+                    } else {
+                        showToast('errorToast', data.message || 'Erro ao carregar os dados da carta para edição.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao editar:', error);
+                    showToast('errorToast', `Erro ao carregar os dados da carta para edição: ${error.message}`);
+                });
+            }
+        });
+
+        document.getElementById('saveEditCarta').addEventListener('click', function() {
+            const form = document.getElementById('editCartaForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            const cartaId = data.carta_id;
+            fetch('{% url 'webiel:carta_editar' %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Resposta do servidor (save edit):', text);
+                        throw new Error(`Erro HTTP ${response.status}: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showToast('successToast', data.message);
+                    const row = document.querySelector(`tr[data-carta-id="${cartaId}"]`);
+                    const card = document.querySelector(`.card-carta[data-carta-id="${cartaId}"]`);
+                    if (row) {
+                        row.cells[0].textContent = data.carta.get_tipo_display || '-';
+                        row.cells[1].textContent = data.carta.nome || '-';
+                        row.cells[2].textContent = data.carta.referencia || '-';
+                        row.cells[3].textContent = data.carta.data_recepcao || '-';
+                        row.cells[4].textContent = data.carta.autor_recepcao || 'Não definido';
+                        row.cells[5].textContent = data.carta.objetivo ? data.carta.objetivo.substring(0, 50) + (data.carta.objetivo.length > 50 ? '...' : '') : '-';
+                    }
+                    if (card) {
+                        card.querySelector('.card-title').textContent = `${data.carta.nome || '-'} (${data.carta.referencia || '-'})`;
+                        card.querySelectorAll('.card-text')[0].innerHTML = `<strong>Tipo:</strong> ${data.carta.get_tipo_display || '-'}`;
+                        card.querySelectorAll('.card-text')[1].innerHTML = `<strong>Referência:</strong> ${data.carta.referencia || '-'}`;
+                        card.querySelectorAll('.card-text')[2].innerHTML = `<strong>Data de Recepção:</strong> ${data.carta.data_recepcao || '-'}`;
+                        card.querySelectorAll('.card-text')[3].innerHTML = `<strong>Autor de Recepção:</strong> ${data.carta.autor_recepcao || 'Não definido'}`;
+                        card.querySelectorAll('.card-text')[4].innerHTML = `<strong>Objetivo:</strong> ${data.carta.objetivo || '-'}`;
+                    }
+                    bootstrap.Modal.getInstance(document.getElementById('editCartaModal')).hide();
+                    filterCartas();
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao editar a carta.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao salvar edição:', error);
+                showToast('errorToast', `Erro ao editar a carta: ${error.message}`);
+            });
+        });
+
+        // Adicionar eventos aos filtros
+        document.getElementById('referenciaFilter').addEventListener('input', filterCartas);
+        document.getElementById('tipoFilter').addEventListener('change', filterCartas);
+        document.getElementById('clearFilters').addEventListener('click', () => {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('referenciaFilter').value = '';
+            document.getElementById('tipoFilter').value = '';
+            document.getElementById('dataFilter').value = '';
+            filterCartas();
+        });
+
+        // Mostrar mensagem de toast e configurar logout automático
+        document.addEventListener('DOMContentLoaded', () => {
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    showToast('successToast', '{{ message }}');
+                {% elif message.tags == 'error' %}
+                    showToast('errorToast', '{{ message }}');
+                {% endif %}
+            {% endfor %}
+
+            // Logout automático após 5 minutos de inatividade
+            let inactivityTimeout;
+            const inactivityTime = 5 * 60 * 1000;
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimeout);
+                inactivityTimeout = setTimeout(logout, inactivityTime);
+            }
+
+            function logout() {
+                window.location.href = "{% url 'webiel:logout' %}";
+            }
+
+            ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+
+            resetInactivityTimer();
+
+            // Carregar iniciais
+            filterCartas();
+        });
+    </script>
+</body>
+</html>

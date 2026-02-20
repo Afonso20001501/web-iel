@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
      
-<head>
+<head>  
     <meta
     name="theme-color"
     content="#26599D"
@@ -13,7 +13,7 @@
 {% include 'webiel/partials/head.html' %}
 
 
-<title>I.E.L {% block title %}{% endblock title %}</title>
+<title>{% block title %}{% endblock title %}</title>
 
 </head>
  
@@ -21,8 +21,6 @@
     <!-- NAVBAR-HEADER -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class='bx bx-up-arrow-alt'></i></a>
     
-    {% include 'webiel/partials/butão_flutuar.html' %}
-
     {% include 'webiel/partials/header.html'%}
 
     {% block content %}

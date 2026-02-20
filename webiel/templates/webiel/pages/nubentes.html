@@ -1,0 +1,946 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nubentes - IEL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'webiel/img/icons/logo.png' %}"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            min-height: 100vh;
+            display: flex;
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            color: #212529;
+        }
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #1e3a8a, #3b82f6);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar a {
+            color: #fff;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .sidebar a:hover {
+            background-color: #2563eb;
+            transform: translateX(5px);
+        }
+        .sidebar .active {
+            background-color: #2563eb;
+            border-left: 4px solid #fff;
+        }
+        .sidebar .footer-bottom {
+            background: transparent;
+            padding: 15px 20px;
+            color: white;
+            margin-top: auto;
+            font-size: 12px;
+            text-align: center;
+        }
+        .sidebar .footer-bottom a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 30px;
+            width: 100%;
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1100;
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            display: none;
+        }
+        .menu-toggle:hover {
+            background-color: #2563eb;
+            transform: scale(1.1);
+        }
+        .table-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .table-section h2 {
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .table {
+            font-size: 14px;
+            margin-bottom: 2rem;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            padding: 12px;
+        }
+        .table th {
+            background-color: #1e3a8a;
+            color: white;
+            font-weight: 500;
+        }
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .actions-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .action-icon {
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            font-size: 1.3rem;
+        }
+        .action-icon:hover {
+            transform: scale(1.2);
+        }
+        .btn-brand {
+            background-color: #2563eb;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-brand:hover {
+            background-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        .btn-outline-success {
+            border-color: #28a745;
+            color: #28a745;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-outline-success:hover {
+            background-color: #28a745;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .card-nubente {
+            display: none;
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-nubente:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+        .card-nubente .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 12px;
+        }
+        .card-nubente .card-text {
+            font-size: 14px;
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+        .card-nubente .actions-container {
+            gap: 12px;
+        }
+        .pagination .page-link {
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #2563eb;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .pagination .page-link:hover {
+            background-color: #2563eb;
+            color: white;
+        }
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+        }
+        .search-form .form-control {
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .search-form .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25);
+            outline: none;
+        }
+        .search-form .form-label {
+            font-weight: 500;
+            color: #343a40;
+            font-size: 14px;
+        }
+        .upcoming {
+            background-color: #fef3c7;
+        }
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .modal-header {
+            background-color: #1e3a8a;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .modal-title {
+            font-weight: 600;
+        }
+        .modal-body .form-label {
+            font-weight: 500;
+            color: #343a40;
+            font-size: 14px;
+        }
+        .modal-body .form-control {
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .modal-body .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25);
+            outline: none;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .table-section {
+                padding: 15px;
+            }
+            .table-responsive {
+                display: none;
+            }
+            .card-nubente {
+                display: block;
+            }
+            .btn-brand, .btn-secondary, .btn-outline-success {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            .pagination .page-link {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .search-form .form-control {
+                font-size: 12px;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% csrf_token %}
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Botão de alternância do menu -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">Menu</h4>
+        <a href="{% url 'webiel:dashboard' %}"><i class="bi bi-envelope me-2"></i> Cartas</a>
+        <a href="{% url 'webiel:cartas_recebidas' %}"><i class="bi bi-check-circle-fill me-2"></i> Cartas Recebidas</a>
+        <a href="{% url 'webiel:publicacao_criar' %}"><i class="bi bi-pencil-square me-2"></i> Cria Publicação</a>
+        <a href="{% url 'webiel:criar_foto' %}"><i class="bi bi-camera me-2"></i> Upload de Fotos</a>
+        <a href="{% url 'webiel:nubentes' %}" class="active"><i class="bi bi-people-fill me-2"></i> Nubentes</a>
+        <a href="{% url 'webiel:banco_de_alimentacao' %}"><i class="bi bi-database-fill me-2"></i> Banco de Alimentação</a>
+        <a href="{% url 'webiel:mensagens_newsletter' %}"><i class="bi bi-envelope-paper me-2"></i> Mensagens e Newsletter</a>
+        <a href="{% url 'webiel:inscricoes' %}"><i class="bi bi-check-circle-fill me-2"></i> Inscrições Feitas</a>
+        <div class="footer-bottom text-center">
+            <p class="mb-0">
+                Copyright © <script>document.write(new Date().getFullYear());</script> |
+                Todos os Direitos Reservados - IEL | Created by
+                <a id="afonso" href="https://api.whatsapp.com/send?phone=245934038572" target="_blank"
+                 style="color: #fff; text-decoration: none;">
+                    <i class="bi bi-heart-fill"></i> Afonso Miqueias
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container mt-5 mb-4">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary">Lista de Nubentes</h2>
+                <div>
+                    <p class="text-muted mb-0">
+                        Bem-vindo, <strong>{{ user.username }}</strong> |
+                        <a href="{% url 'webiel:logout' %}" class="btn btn-sm btn-outline-danger">Sair</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulário de Pesquisa -->
+            <div class="table-section">
+                <p class="text-muted mb-4">Pesquise os nubentes por ano ou nome.</p>
+                <form method="GET" class="search-form">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="ano" class="form-label">Ano do Casamento</label>
+                            <input type="number" class="form-control" id="ano" name="ano" value="{{ ano }}" placeholder="Ex.: 2025">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="nome" class="form-label">Nome (Noivo ou Noiva)</label>
+                            <input type="text" class="form-control" id="nome" name="nome" value="{{ nome }}" placeholder="Ex.: João">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end gap-2">
+                            <button type="submit" class="btn btn-brand">Pesquisar</button>
+                            {% if ano or nome %}
+                            <a href="{% url 'webiel:nubentes' %}" class="btn btn-secondary">Limpar</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Botão de Download -->
+                <div class="mt-3">
+                    <a href="{% url 'webiel:nubentes_download' %}{% if ano %}?ano={{ ano }}{% endif %}{% if nome %}&nome={{ nome }}{% endif %}" class="btn btn-outline-success">
+                        <i class="bi bi-download me-1"></i> Baixar PDF
+                    </a>
+                </div>
+
+                <!-- Tabela de Nubentes -->
+                <div class="border-top border-primary w-40 mb-4 mt-4"></div>
+                <div class="table-responsive shadow rounded">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Noivo</th>
+                                <th>Noiva</th>
+                                <th>Telefone</th>
+                                <th>Data do Casamento</th>
+                                <th style="width: 120px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for nubente in nubentes %}
+                            <tr id="nubente-{{ nubente.id }}" {% if nubente.id in upcoming_wedding_ids %}class="upcoming"{% endif %}>
+                                <td>{{ nubente.nome_noivo }}</td>
+                                <td>{{ nubente.nome_noiva }}</td>
+                                <td>{{ nubente.telefone }}</td>
+                                <td>{{ nubente.data_casam|date:"d/m/Y" }}</td>
+                                <td>
+                                    <div class="actions-container">
+                                        <span class="action-icon text-info view-icon" title="Visualizar" data-id="{{ nubente.id }}" data-bs-toggle="modal" data-bs-target="#viewModal" onclick="viewNubente(this)">
+                                            <i class="bi bi-eye"></i>
+                                        </span>
+                                        <span class="action-icon text-primary edit-icon" title="Editar" data-id="{{ nubente.id }}" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editNubente(this)">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </span>
+                                        <span class="action-icon text-danger delete-icon" title="Excluir" data-id="{{ nubente.id }}" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(this)">
+                                            <i class="bi bi-trash"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">Nenhum nubente encontrado.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Cartões para dispositivos móveis -->
+                <div class="card-list">
+                    {% for nubente in nubentes %}
+                    <div class="card-nubente {% if nubente.id in upcoming_wedding_ids %}upcoming{% endif %}" id="nubente-mobile-{{ nubente.id }}">
+                        <div class="card-title">{{ nubente.nome_noivo }} & {{ nubente.nome_noiva }}</div>
+                        <div class="card-text"><strong>Telefone:</strong> {{ nubente.telefone }}</div>
+                        <div class="card-text"><strong>Data:</strong> {{ nubente.data_casam|date:"d/m/Y" }}</div>
+                        <div class="card-text">
+                            <strong>Ações:</strong>
+                            <div class="actions-container">
+                                <span class="action-icon text-info view-icon" title="Visualizar" data-id="{{ nubente.id }}" data-bs-toggle="modal" data-bs-target="#viewModal" onclick="viewNubente(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                                <span class="action-icon text-primary edit-icon" title="Editar" data-id="{{ nubente.id }}" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editNubente(this)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </span>
+                                <span class="action-icon text-danger delete-icon" title="Excluir" data-id="{{ nubente.id }}" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(this)">
+                                    <i class="bi bi-trash"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="card-nubente text-center">
+                        Nenhum nubente encontrado.
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Paginação -->
+                <nav aria-label="Navegação de página" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if ano %}&ano={{ ano }}{% endif %}{% if nome %}&nome={{ nome }}{% endif %}" aria-label="Página anterior">Anterior</a>
+                        </li>
+                        {% endif %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if ano %}&ano={{ ano }}{% endif %}{% if nome %}&nome={{ nome }}{% endif %}" aria-label="Próxima página">Próxima</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Visualização -->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalLabel">Detalhes do Nubente</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Noivo:</strong> <span id="view-nome-noivo"></span></p>
+                    <p><strong>Noiva:</strong> <span id="view-nome-noiva"></span></p>
+                    <p><strong>Telefone:</strong> <span id="view-telefone"></span></p>
+                    <p><strong>Data do Casamento:</strong> <span id="view-data-casam"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Nubente</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editNubenteForm">
+                        <input type="hidden" id="edit-nubente-id" name="nubente_id">
+                        <div class="mb-3">
+                            <label for="edit-nome-noivo" class="form-label">Nome do Noivo</label>
+                            <input type="text" class="form-control" id="edit-nome-noivo" name="nome_noivo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-nome-noiva" class="form-label">Nome da Noiva</label>
+                            <input type="text" class="form-control" id="edit-nome-noiva" name="nome_noiva" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-telefone" class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="edit-telefone" name="telefone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-data-casam" class="form-label">Data do Casamento</label>
+                            <input type="date" class="form-control" id="edit-data-casam" name="data_casam" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-brand" id="saveEditBtn">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza de que deseja excluir este nubente? Esta ação não pode ser desfeita.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast para Feedback -->
+    <div class="toast-container">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Sucesso</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        {{ message }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-danger text-white">
+                <strong class="me-auto">Erro</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        {{ message }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div id="warningToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-warning text-dark">
+                <strong class="me-auto">Aviso</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Função para obter o CSRF Token
+        function getCsrfToken() {
+            const cookie = document.cookie.split(';').find(c => c.trim().startsWith('csrftoken='));
+            if (!cookie) {
+                console.error('CSRF token não encontrado.');
+                showToast('errorToast', 'CSRF token não encontrado.');
+                return null;
+            }
+            return decodeURIComponent(cookie.split('=')[1]);
+        }
+        const csrfToken = getCsrfToken();
+
+        // Função para alternar o menu
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', () => {
+                console.log('Alternando sidebar');
+                sidebar.classList.toggle('open');
+                sidebar.classList.toggle('closed');
+            });
+        } else {
+            console.error('Elementos de menu ou sidebar não encontrados.');
+        }
+
+        // Função para exibir toast
+        function showToast(toastId, message) {
+            console.log(`Exibindo toast: ${toastId} - ${message}`);
+            const toastElement = document.getElementById(toastId);
+            if (toastElement) {
+                toastElement.querySelector('.toast-body').textContent = message;
+                const toast = new bootstrap.Toast(toastElement, { delay: 5000 });
+                toast.show();
+            } else {
+                console.error(`Elemento toast não encontrado: ${toastId}`);
+            }
+        }
+
+        // Função para mostrar/esconder loading
+        function showLoading(show = true) {
+            console.log(show ? 'Mostrando overlay de carregamento' : 'Escondendo overlay de carregamento');
+            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+        }
+
+        // Visualizar Nubente
+        function viewNubente(icon) {
+            const nubenteId = icon.getAttribute('data-id');
+            console.log('Visualizando nubente ID:', nubenteId);
+            if (!nubenteId) {
+                showToast('errorToast', 'ID do nubente não encontrado.');
+                return;
+            }
+            showLoading(true);
+            fetch(`{% url 'webiel:nubente_detalhes' %}?id=${nubenteId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log('Status da resposta (visualizar):', response.status);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                showLoading(false);
+                console.log('Dados recebidos (visualizar):', data);
+                if (data.success) {
+                    document.getElementById('view-nome-noivo').textContent = data.nubente.nome_noivo;
+                    document.getElementById('view-nome-noiva').textContent = data.nubente.nome_noiva;
+                    document.getElementById('view-telefone').textContent = data.nubente.telefone;
+                    const date = new Date(data.nubente.data_casam);
+                    const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                    document.getElementById('view-data-casam').textContent = formattedDate;
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao carregar os detalhes do nubente.');
+                }
+            })
+            .catch(error => {
+                showLoading(false);
+                console.error('Erro na requisição (visualizar):', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        }
+
+        // Editar Nubente
+        function editNubente(icon) {
+            const nubenteId = icon.getAttribute('data-id');
+            console.log('Editando nubente ID:', nubenteId);
+            if (!nubenteId) {
+                showToast('errorToast', 'ID do nubente não encontrado.');
+                return;
+            }
+            showLoading(true);
+            fetch(`{% url 'webiel:nubente_detalhes' %}?id=${nubenteId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log('Status da resposta (editar):', response.status);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                showLoading(false);
+                console.log('Dados recebidos (editar):', data);
+                if (data.success) {
+                    document.getElementById('edit-nubente-id').value = nubenteId;
+                    document.getElementById('edit-nome-noivo').value = data.nubente.nome_noivo;
+                    document.getElementById('edit-nome-noiva').value = data.nubente.nome_noiva;
+                    document.getElementById('edit-telefone').value = data.nubente.telefone;
+                    document.getElementById('edit-data-casam').value = data.nubente.data_casam;
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao carregar os detalhes do nubente.');
+                }
+            })
+            .catch(error => {
+                showLoading(false);
+                console.error('Erro na requisição (editar):', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        }
+
+        // Salvar Edição
+        document.getElementById('saveEditBtn').addEventListener('click', () => {
+            const form = document.getElementById('editNubenteForm');
+            const nubenteId = document.getElementById('edit-nubente-id').value;
+            console.log('Salvando edição para nubente ID:', nubenteId);
+            if (!nubenteId) {
+                showToast('errorToast', 'ID do nubente não encontrado.');
+                return;
+            }
+            const formData = new FormData(form);
+            const data = {
+                nubente_id: nubenteId,
+                nome_noivo: formData.get('nome_noivo'),
+                nome_noiva: formData.get('nome_noiva'),
+                telefone: formData.get('telefone'),
+                data_casam: formData.get('data_casam')
+            };
+            console.log('Dados enviados para edição:', data);
+            showLoading(true);
+            fetch('{% url 'webiel:nubente_editar' %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                console.log('Status da resposta (salvar edição):', response.status);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                showLoading(false);
+                console.log('Resposta do servidor (salvar edição):', data);
+                if (data.success) {
+                    const row = document.getElementById(`nubente-${nubenteId}`);
+                    const card = document.getElementById(`nubente-mobile-${nubenteId}`);
+                    const date = new Date(data.nubente.data_casam);
+                    const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                    if (row) {
+                        row.querySelector('td:nth-child(1)').textContent = data.nubente.nome_noivo;
+                        row.querySelector('td:nth-child(2)').textContent = data.nubente.nome_noiva;
+                        row.querySelector('td:nth-child(3)').textContent = data.nubente.telefone;
+                        row.querySelector('td:nth-child(4)').textContent = formattedDate;
+                        row.classList.toggle('upcoming', data.nubente.is_upcoming);
+                        console.log(`Linha da tabela atualizada para nubente ID: ${nubenteId}`);
+                    }
+                    if (card) {
+                        card.querySelector('.card-title').textContent = `${data.nubente.nome_noivo} & ${data.nubente.nome_noiva}`;
+                        card.querySelector('.card-text:nth-child(1)').innerHTML = `<strong>Telefone:</strong> ${data.nubente.telefone}`;
+                        card.querySelector('.card-text:nth-child(2)').innerHTML = `<strong>Data:</strong> ${formattedDate}`;
+                        card.classList.toggle('upcoming', data.nubente.is_upcoming);
+                        console.log(`Cartão atualizado para nubente ID: ${nubenteId}`);
+                    }
+                    showToast('successToast', data.message || 'Nubente atualizado com sucesso!');
+                    bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao atualizar o nubente.');
+                }
+            })
+            .catch(error => {
+                showLoading(false);
+                console.error('Erro na requisição (salvar edição):', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        });
+
+        // Configurar ID para exclusão
+        function setDeleteId(icon) {
+            const nubenteId = icon.getAttribute('data-id');
+            console.log('Configurando exclusão para nubente ID:', nubenteId);
+            document.getElementById('confirmDeleteBtn').setAttribute('data-id', nubenteId);
+        }
+
+        // Confirmar Exclusão
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            const nubenteId = document.getElementById('confirmDeleteBtn').getAttribute('data-id');
+            console.log('Confirmando exclusão para nubente ID:', nubenteId);
+            if (!nubenteId) {
+                showToast('errorToast', 'ID do nubente não encontrado.');
+                return;
+            }
+            showLoading(true);
+            fetch('{% url 'webiel:nubente_deletar' %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                body: JSON.stringify({ nubente_id: nubenteId })
+            })
+            .then(response => {
+                console.log('Status da resposta (exclusão):', response.status);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                showLoading(false);
+                console.log('Resposta do servidor (exclusão):', data);
+                if (data.success) {
+                    const row = document.getElementById(`nubente-${nubenteId}`);
+                    const card = document.getElementById(`nubente-mobile-${nubenteId}`);
+                    if (row) row.remove();
+                    if (card) card.remove();
+                    showToast('successToast', data.message || 'Nubente excluído com sucesso!');
+                    bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+                    if (!document.querySelector('tbody tr') && !document.querySelector('.card-nubente:not(.text-center)')) {
+                        const noDataRow = document.createElement('tr');
+                        noDataRow.innerHTML = '<td colspan="5" class="text-center">Nenhum nubente encontrado.</td>';
+                        document.querySelector('tbody').appendChild(noDataRow);
+                        const noDataCard = document.createElement('div');
+                        noDataCard.className = 'card-nubente text-center';
+                        noDataCard.textContent = 'Nenhum nubente encontrado.';
+                        document.querySelector('.card-list').appendChild(noDataCard);
+                    }
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao excluir o nubente.');
+                }
+            })
+            .catch(error => {
+                showLoading(false);
+                console.error('Erro na requisição (exclusão):', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        });
+
+        // Exibir notificação de casamentos próximos
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Página carregada');
+            const upcomingWeddings = {{ upcoming_weddings_count|default:0 }};
+            if (upcomingWeddings > 0) {
+                const message = `${upcomingWeddings} casamento${upcomingWeddings > 1 ? 's' : ''} est${upcomingWeddings > 1 ? 'ão' : 'á'} a 3 meses ou menos!`;
+                showToast('warningToast', message);
+            }
+
+            // Mostrar mensagens iniciais
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    showToast('successToast', '{{ message }}');
+                {% elif message.tags == 'error' %}
+                    showToast('errorToast', '{{ message }}');
+                {% endif %}
+            {% endfor %}
+
+            // Logout automático após 5 minutos de inatividade
+            let inactivityTimeout;
+            const inactivityTime = 5 * 60 * 1000;
+            function resetInactivityTimer() {
+                console.log('Resetando temporizador de inatividade');
+                clearTimeout(inactivityTimeout);
+                inactivityTimeout = setTimeout(() => {
+                    console.log('Executando logout por inatividade');
+                    window.location.href = '{% url "webiel:logout" %}';
+                }, inactivityTime);
+            }
+            ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+            resetInactivityTimer();
+
+            // Validação do formulário de edição
+            const editForm = document.getElementById('editNubenteForm');
+            if (editForm) {
+                editForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    console.log('Formulário de edição submetido');
+                    document.getElementById('saveEditBtn').click();
+                });
+            } else {
+                console.error('Formulário de edição não encontrado.');
+            }
+        });
+
+        // Log para verificar a data no input
+        document.getElementById('edit-data-casam').addEventListener('change', (e) => {
+            console.log('Data selecionada:', e.target.value);
+        });
+    </script>
+</body>
+</html>

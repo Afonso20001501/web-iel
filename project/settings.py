@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'django_extensions',
     'webiel',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -62,6 +65,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.csrf',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -141,3 +145,24 @@ MESSAGE_TAGS = {
     message_constants.WARNING: 'warning',
     message_constants.ERROR: 'error',
 }
+
+
+LOGIN_URL = 'webiel:login'  # URL para redirecionar usuários não autenticados
+LOGIN_REDIRECT_URL = 'webiel:dashboard'  # Após login, redireciona aqui
+LOGOUT_REDIRECT_URL = 'webiel:home'  # Após logout, redireciona aqui
+
+
+CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+
+
+# Tempo de expiração da sessão em segundos (5 minutos = 300 segundos)
+SESSION_COOKIE_AGE = 300
+
+# Faz a sessão expirar quando o navegador é fechado
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Atualiza o tempo de expiração da sessão a cada requisição
+SESSION_SAVE_EVERY_REQUEST = True

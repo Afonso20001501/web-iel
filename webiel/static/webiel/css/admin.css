@@ -1,0 +1,113 @@
+
+body {
+    background: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#login{
+    background: linear-gradient(rgba(25, 49, 85, 0.9), rgba(25, 49, 85, 0.9)), url(../img/3.jpeg) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+.header-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.header-container h2 {
+    color: #343a40;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.header-container .current-time {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.header-container .bible-verse {
+    color: #495057;
+    font-style: italic;
+    font-size: 0.85rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.login-container {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+}
+.login-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+.form-control {
+    border-radius: 5px;
+}
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    font-weight: 500;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+.alert {
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.text-center a {
+    color: #007bff;
+    text-decoration: none;
+}
+.text-center a:hover {
+    text-decoration: underline;
+}
+.footer-bottom {
+    padding: 15px 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    margin-top: auto;
+}
+#titulo_1 {
+    margin-top: 150px !important;
+    color: #fff !important;
+}
+#titulo_2 {
+    text-align: center !important;
+}
+#bible-verse{
+    text-align: center !important;
+    color: #fff !important;
+    font-style: italic;
+    margin-top: 10px;
+}
+#hora{
+    color: #fff !important;
+    font-weight: 500;
+}
+ 
+.status-icon {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.filter-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+}

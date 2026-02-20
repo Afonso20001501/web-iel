@@ -24,23 +24,36 @@
                     </div>
                </div>
 
-               <div class="col-12 col-sm-6 col-lg-3 pt-lg-0">
+                <div class="col-12 col-sm-6 col-lg-3 pt-lg-0">
                     <h6 class="mb-2">
-                    <a  href="#useful-links" class="d-block text-white dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">Links</a>
+                        <a href="#useful-links" class="d-block text-white dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">Links</a>
                     </h6>
                     <div id="useful-links" class="collapse d-lg-block footer-iel mb-70" data-bs-parent="#footer-links">
-                       <div class="single-footer-widget footer-iel mb-70">
-                        <h5  class="widget-title">Links</h5>
-                        <ul  class="nav flex-column mb-lg-3">
-                            <li><a style="color:white" href="{% url "webiel:mocidade" %}"><i class="bx bxs-group" aria-hidden="true"></i> Mocidade</a></li>
-                            <li><a style="color:white" href="{% url "webiel:devem" %}"><i class="bx bxs-book" aria-hidden="true"></i> Devem</a></li>
-                            <li><a style="color:white" href="{% url "webiel:senhoras" %}"><i class="bx bx-female" aria-hidden="true"></i> Senhoras</a></li>
-                            <li><a style="color:white" href="{% url "webiel:homens" %}"><i class="bx bxs-user" aria-hidden="true"></i> Homens</a></li>
-                            <li><a style="color:white" href="{% url "webiel:musica" %}"><i class="bx bxs-music" aria-hidden="true"></i> Música</a></li>
-                        </ul>
-                       </div>
-                </div>
+                        <div class="single-footer-widget footer-iel mb-70">
+                            <h5 class="widget-title">Links</h5>
+                            
+                            <div class="d-flex flex-column gap-2">
+                                <a class="text-white" href="{% url 'webiel:mocidade' %}">
+                                    <i class="bx bxs-group" aria-hidden="true"></i> Mocidade
+                                </a>
+                                <a class="text-white" href="{% url 'webiel:devem' %}">
+                                    <i class="bx bxs-book" aria-hidden="true"></i> Devem
+                                </a>
+                                <a class="text-white" href="{% url 'webiel:senhoras' %}">
+                                    <i class="bx bx-female" aria-hidden="true"></i> Senhoras
+                                </a>
+                                <a class="text-white" href="{% url 'webiel:homens' %}">
+                                    <i class="bx bxs-user" aria-hidden="true"></i> Homens
+                                </a>
+                                <a class="text-white" href="{% url 'webiel:musica' %}">
+                                    <i class="bx bxs-music" aria-hidden="true"></i> Música
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
                </div>
+
 
                <div class="col-12 col-sm-6 col-lg-3 pt-lg-0">
                   <div class="single-footer-widget footer-iel mb-70">
@@ -94,3 +107,5 @@
 
 </footer>
 
+
+    

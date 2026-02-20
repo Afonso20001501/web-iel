@@ -1,0 +1,1318 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Inscrições - IEL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            min-height: 100vh;
+            display: flex;
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            color: #212529;
+        }
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #1e3a8a, #3b82f6);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar a {
+            color: #fff;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .sidebar a:hover {
+            background-color: #2563eb;
+            transform: translateX(5px);
+        }
+        .sidebar .active {
+            background-color: #2563eb;
+            border-left: 4px solid #fff;
+        }
+        .sidebar .footer-bottom {
+            background: transparent;
+            padding: 15px 20px;
+            color: white;
+            margin-top: auto;
+            font-size: 12px;
+            text-align: center;
+        }
+        .sidebar .footer-bottom a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 30px;
+            width: 100%;
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1100;
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            display: none;
+        }
+        .menu-toggle:hover {
+            background-color: #2563eb;
+            transform: scale(1.1);
+        }
+        .table-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .table-section h2 {
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .table {
+            font-size: 14px;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        .table th {
+            background: #1e3a8a;
+            color: white;
+            padding: 12px;
+        }
+        .table td {
+            background: #f8fafc;
+            padding: 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .actions-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .action-icon {
+            cursor: pointer;
+            transition: transform 0.3s ease, color 0.3s ease;
+            font-size: 1.3rem;
+        }
+        .action-icon:hover {
+            transform: scale(1.2);
+        }
+        .card-inscricao {
+            display: none;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-inscricao:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .card-inscricao .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 12px;
+        }
+        .card-inscricao .card-text {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 8px;
+        }
+        .pagination .page-link {
+            font-size: 14px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .pagination .page-link:hover {
+            background: #2563eb;
+            color: white;
+        }
+        .form-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .form-section h3 {
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .dashboard-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .summary-card {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .summary-card h4 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .summary-card p {
+            font-size: 26px;
+            font-weight: 700;
+        }
+        .summary-card .tooltip-text {
+            visibility: hidden;
+            background-color: #1e3a8a;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .summary-card:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .chart-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .filter-toggle {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .filter-toggle label {
+            font-weight: 500;
+            color: #1e3a8a;
+        }
+        .filter-toggle select, .filter-toggle input {
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+        }
+        .view-toggle-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .view-toggle-btn:hover {
+            background: #1e40af;
+            transform: scale(1.05);
+        }
+        .view-toggle-btn.active {
+            background: #1e40af;
+        }
+        .loader {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .table-section {
+                padding: 15px;
+            }
+            .table-responsive {
+                display: none;
+            }
+            .card-inscricao {
+                display: block;
+            }
+            .pagination {
+                flex-wrap: wrap;
+            }
+            .pagination .page-link {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .dashboard-summary {
+                grid-template-columns: 1fr;
+            }
+            .filter-toggle {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .filter-toggle select, .filter-toggle input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% csrf_token %}
+    <button class="menu-toggle" id="menuToggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">Menu</h4>
+        <a href="{% url 'webiel:dashboard' %}"><i class="bi bi-envelope me-2"></i> Cartas</a>
+        <a href="{% url 'webiel:cartas_recebidas' %}"><i class="bi bi-check-circle-fill me-2"></i> Cartas Recebidas</a>
+        <a href="{% url 'webiel:publicacao_criar' %}"><i class="bi bi-pencil-square me-2"></i> Cria Publicação</a>
+        <a href="{% url 'webiel:criar_foto' %}"><i class="bi bi-camera me-2"></i> Upload de fotos</a>
+        <a href="{% url 'webiel:nubentes' %}"><i class="bi bi-people-fill me-2"></i> Nubentes</a>
+        <a href="{% url 'webiel:banco_de_alimentacao' %}"><i class="bi bi-database-fill me-2"></i> Banco de Alimentação</a>
+        <a href="{% url 'webiel:mensagens_newsletter' %}"><i class="bi bi-envelope-paper me-2"></i> Mensagens e Newsletter</a>
+        <a href="{% url 'webiel:inscricoes' %}" class="active"><i class="bi bi-check-circle-fill me-2"></i> Inscrições Feitas</a>
+        <div class="footer-bottom text-center">
+            <p class="mb-0">
+                Copyright © <script>document.write(new Date().getFullYear());</script> |
+                Todos os Direitos Reservados - IEL | Created by
+                <a id="afonso" href="https://api.whatsapp.com/send?phone=245934038572" target="_blank"
+                style="color: #fff; text-decoration: none;">
+                    <i class="bi bi-heart-fill"></i> Afonso Miqueias
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container mt-5 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary">Gerenciar Inscrições</h2>
+                <div>
+                    <p class="text-muted mb-0">
+                        Bem-vindo, <strong>{{ user.username }}</strong> |
+                        <a href="{% url 'webiel:logout' %}" class="btn btn-sm btn-outline-danger">Sair</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Filtros</h3>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="filtro_departamento" class="form-label">Departamento</label>
+                        <select class="form-control" id="filtro_departamento">
+                            <option value="">Todos os Departamentos</option>
+                            {% for departamento in departamentos %}
+                            <option value="{{ departamento.id }}">{{ departamento.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="filtro_atividade" class="form-label">Actividade</label>
+                        <select class="form-control" id="filtro_atividade">
+                            <option value="">Todas as Actividades</option>
+                            {% for atividade in atividades %}
+                            <option value="{{ atividade.id }}" data-preco="{{ atividade.preco }}">{{ atividade.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="filtro_data" class="form-label">Período</label>
+                        <input type="date" class="form-control" id="filtro_data">
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-2" id="downloadPdfBtn">Baixar Lista em PDF</button>
+            </div>
+
+            <div class="filter-toggle mt-3"> 
+                <label for="dashboard-view">Visualizar Totais:</label>
+                <button class="view-toggle-btn active" data-view="atividade">Por Actividade</button>
+                <button class="view-toggle-btn" data-view="departamento">Por Departamento</button>
+            </div>
+
+            <div class="dashboard-summary">
+                <div class="summary-card" id="total-inscritos-card">
+                    <h4>Total de Inscritos</h4>
+                    <p id="total-inscritos" data-value="0">0</p>
+                    <span class="tooltip-text">Número total de inscrições registradas</span>
+                </div>
+                <div class="summary-card" id="total-valor-card">
+                    <h4>Valor Total Entrando</h4>
+                    <p id="total-valor" data-value="0">0.00 Kz</p>
+                    <span class="tooltip-text">Soma dos valores totais das inscrições</span>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Inscritos e Valores </h3>
+                <div class="loader" id="chart-loader"></div>
+                <canvas id="atividadeChart" width="400" height="200"></canvas>
+            </div>
+
+            <div class="table-section mt-4">
+                <p class="text-muted mb-4">Gerencie as inscrições abaixo.</p>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Nome Completo</th>
+                                <th>Actividade</th>
+                                <th>Departamento</th>
+                                <th>Telefone</th>
+                                <th>Data de Criação</th>
+                                <th>Valor Total</th>
+                                <th>Pago</th>
+                                <th style="width: 120px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for inscricao in inscricoes %}
+                            <tr id="inscricao-{{ inscricao.id }}" data-total="{{ inscricao.total }}" data-preco="{{ inscricao.atividade.preco }}" data-pago="{{ inscricao.pago|yesno:'true,false' }}">
+                                <td>{{ inscricao.nome_completo }}</td>
+                                <td>{{ inscricao.atividade.nome }}</td>
+                                <td>{{ inscricao.departamento.name }}</td>
+                                <td>{{ inscricao.telefone }}</td>
+                                <td>{{ inscricao.data_criacao|date:"d/m/Y H:i" }}</td>
+                                <td>{{ inscricao.total }} Kz</td>
+                                <td class="pago-cell">{{ inscricao.pago|yesno:"Sim,Não" }}</td>
+                                <td>
+                                    <div class="actions-container">
+                                        <span class="action-icon text-info view-icon" data-id="{{ inscricao.id }}" onclick="viewInscricao(this)">
+                                            <i class="bi bi-eye"></i>
+                                        </span>
+                                        <span class="action-icon text-primary edit-icon" data-id="{{ inscricao.id }}" onclick="editInscricao(this)">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </span>
+                                        <span class="action-icon text-danger delete-icon" data-id="{{ inscricao.id }}" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(this)">
+                                            <i class="bi bi-trash"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center">Nenhuma inscrição encontrada.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-list">
+                    {% for inscricao in inscricoes %}
+                    <div class="card-inscricao" id="inscricao-mobile-{{ inscricao.id }}" data-total="{{ inscricao.total }}" data-preco="{{ inscricao.atividade.preco }}" data-pago="{{ inscricao.pago|yesno:'true,false' }}">
+                        <div class="card-title">{{ inscricao.nome_completo }}</div>
+                        <div class="card-text"><strong>Actividade:</strong> {{ inscricao.atividade.nome }}</div>
+                        <div class="card-text"><strong>Departamento:</strong> {{ inscricao.departamento.name }}</div>
+                        <div class="card-text"><strong>Telefone:</strong> {{ inscricao.telefone }}</div>
+                        <div class="card-text"><strong>Data de Criação:</strong> {{ inscricao.data_criacao|date:"d/m/Y H:i" }}</div>
+                        <div class="card-text"><strong>Valor Total:</strong> {{ inscricao.total }} Kz</div>
+                        <div class="card-text pago-cell"><strong>Pago:</strong> {{ inscricao.pago|yesno:"Sim,Não" }}</div>
+                        <div class="card-text">
+                            <strong>Ações:</strong>
+                            <div class="actions-container">
+                                <span class="action-icon text-info view-icon" data-id="{{ inscricao.id }}" onclick="viewInscricao(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                                <span class="action-icon text-primary edit-icon" data-id="{{ inscricao.id }}" onclick="editInscricao(this)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </span>
+                                <span class="action-icon text-danger delete-icon" data-id="{{ inscricao.id }}" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(this)">
+                                    <i class="bi bi-trash"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="card-inscricao text-center">
+                        Nenhuma inscrição encontrada.
+                    </div>
+                    {% endfor %}
+                </div>
+                <nav aria-label="Navegação de página" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior">Anterior</a>
+                        </li>
+                        {% endif %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Próxima página">Próxima</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalLabel">Detalhes da Inscrição</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Nome Completo:</strong> <span id="view-nome_completo"></span></p>
+                    <p><strong>Atividade:</strong> <span id="view-atividade"></span></p>
+                    <p><strong>Departamento:</strong> <span id="view-departamento"></span></p>
+                    <p><strong>Email:</strong> <span id="view-email"></span></p>
+                    <p><strong>Telefone:</strong> <span id="view-telefone"></span></p>
+                    <p><strong>Data de Nascimento:</strong> <span id="view-data_nascimento"></span></p>
+                    <p><strong>Emergência Nome 1:</strong> <span id="view-emergencia_nome1"></span></p>
+                    <p><strong>Emergência Telefone 1:</strong> <span id="view-emergencia_telefone1"></span></p>
+                    <p><strong>Emergência Nome 2:</strong> <span id="view-emergencia_nome2"></span></p>
+                    <p><strong>Emergência Telefone 2:</strong> <span id="view-emergencia_telefone2"></span></p>
+                    <p><strong>Observações:</strong> <span id="view-observacoes"></span></p>
+                    <p><strong>Método de Pagamento:</strong> <span id="view-metodo_pagamento"></span></p>
+                    <p><strong>Valor em Espécie:</strong> <span id="view-valor_entrada"></span></p>
+                    <p><strong>Valor Transferência:</strong> <span id="view-valor_transferencia"></span></p>
+                    <p><strong>Comprovativo:</strong> <span id="view-comprovativo_transferencia"></span></p>
+                    <p><strong>Referência de Pagamento:</strong> <span id="view-referencia_pagamento"></span></p>
+                    <p><strong>Total:</strong> <span id="view-total"></span></p>
+                    <p><strong>Pago:</strong> <span id="view-pago"></span></p>
+                    <p><strong>Data de Criação:</strong> <span id="view-data_criacao"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Inscrição</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editInscricaoForm" enctype="multipart/form-data">
+                        <input type="hidden" id="edit-inscricao-id" name="inscricao_id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-departamento" class="form-label">Departamento</label>
+                                <select class="form-control" id="edit-departamento" name="departamento" required>
+                                    <option value="" disabled>Selecione o departamento</option>
+                                    {% for departamento in departamentos %}
+                                    <option value="{{ departamento.id }}">{{ departamento.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-atividade" class="form-label">Atividade</label>
+                                <select class="form-control" id="edit-atividade" name="atividade" required>
+                                    <option value="" disabled>Selecione a atividade</option>
+                                    {% for atividade in atividades %}
+                                    <option value="{{ atividade.id }}" data-preco="{{ atividade.preco }}">{{ atividade.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-nome_completo" class="form-label">Nome Completo</label>
+                                <input type="text" class="form-control" id="edit-nome_completo" name="nome_completo" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="edit-email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-telefone" class="form-label">Telefone</label>
+                                <input type="text" class="form-control" id="edit-telefone" name="telefone" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-data_nascimento" class="form-label">Data de Nascimento</label>
+                                <input type="date" class="form-control" id="edit-data_nascimento" name="data_nascimento" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-emergencia_nome1" class="form-label">Nome de Emergência 1</label>
+                                <input type="text" class="form-control" id="edit-emergencia_nome1" name="emergencia_nome1">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-emergencia_telefone1" class="form-label">Telefone de Emergência 1</label>
+                                <input type="text" class="form-control" id="edit-emergencia_telefone1" name="emergencia_telefone1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-emergencia_nome2" class="form-label">Nome de Emergência 2</label>
+                                <input type="text" class="form-control" id="edit-emergencia_nome2" name="emergencia_nome2">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-emergencia_telefone2" class="form-label">Telefone de Emergência 2</label>
+                                <input type="text" class="form-control" id="edit-emergencia_telefone2" name="emergencia_telefone2">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-observacoes" class="form-label">Observações</label>
+                            <textarea class="form-control" id="edit-observacoes" name="observacoes" rows="4"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-metodo_pagamento" class="form-label">Método de Pagamento</label>
+                                <select class="form-control" id="edit-metodo_pagamento" name="metodo_pagamento" required>
+                                    <option value="mao">Dinheiro em Espécie</option>
+                                    <option value="transferencia">Transferência Bancária</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-valor_entrada" class="form-label">Valor em Espécie (Kz)</label>
+                                <input type="number" step="0.01" class="form-control" id="edit-valor_entrada" name="valor_entrada">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-valor_transferencia" class="form-label">Valor Transferência (Kz)</label>
+                                <input type="number" step="0.01" class="form-control" id="edit-valor_transferencia" name="valor_transferencia">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-comprovativo_transferencia" class="form-label">Comprovativo de Transferência</label>
+                                <input type="file" class="form-control" id="edit-comprovativo_transferencia" name="comprovativo_transferencia" accept=".pdf,.png,.jpg,.jpeg">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-referencia_pagamento" class="form-label">Referência de Pagamento</label>
+                                <input type="text" class="form-control" id="edit-referencia_pagamento" name="referencia_pagamento" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-total" class="form-label">Total (Kz)</label>
+                                <input type="number" step="0.01" class="form-control" id="edit-total" name="total" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-pago" class="form-label">Pago</label>
+                            <input type="checkbox" id="edit-pago" name="pago" disabled>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza de que deseja excluir esta inscrição? Esta ação não pode ser desfeita.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Sucesso</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-danger text-white">
+                <strong class="me-auto">Erro</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Função para obter o CSRF Token
+        function getCsrfToken() {
+            const cookie = document.cookie.split(';').find(c => c.trim().startsWith('csrftoken='));
+            if (!cookie) {
+                console.error('CSRF token not found in cookies.');
+                showToast('errorToast', 'CSRF token não encontrado.');
+                return null;
+            }
+            return decodeURIComponent(cookie.split('=')[1]);
+        }
+        const csrfToken = getCsrfToken();
+
+        // Função para exibir toast
+        function showToast(toastId, message) {
+            const toastElement = document.getElementById(toastId);
+            if (toastElement) {
+                toastElement.querySelector('.toast-body').textContent = message;
+                const toast = new bootstrap.Toast(toastElement, { delay: 5000 });
+                toast.show();
+            }
+        }
+
+        // Função para alternar o menu
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            sidebar.classList.toggle('closed');
+        });
+
+        // Função para filtrar atividades com base no departamento
+        function filterAtividades(departamentoSelect, atividadeSelect) {
+            const departamentoId = departamentoSelect.value;
+            const atividades = Array.from(atividadeSelect.options).slice(1);
+            atividades.forEach(opt => {
+                const atividadeNome = opt.textContent.toLowerCase();
+                if (departamentoId) {
+                    const isAdolescentes = departamentoSelect.options[departamentoSelect.selectedIndex].text.toLowerCase() === 'adolescentes';
+                    if (atividadeNome === 'gala' && !isAdolescentes) {
+                        opt.style.display = 'none';
+                    } else {
+                        opt.style.display = 'block';
+                    }
+                } else {
+                    opt.style.display = 'block';
+                }
+            });
+        }
+
+        document.getElementById('edit-departamento').addEventListener('change', () => {
+            filterAtividades(document.getElementById('edit-departamento'), document.getElementById('edit-atividade'));
+        });
+
+        // Função para calcular total no formulário
+        function calcularTotal(formId) {
+            const form = document.getElementById(formId);
+            const valorEntrada = parseFloat(form.querySelector('[name="valor_entrada"]').value || 0);
+            const valorTransferencia = parseFloat(form.querySelector('[name="valor_transferencia"]').value || 0);
+            const totalInput = form.querySelector('[name="total"]');
+            const total = valorEntrada + valorTransferencia;
+            totalInput.value = total.toFixed(2);
+        }
+
+        document.getElementById('editInscricaoForm').addEventListener('input', (e) => {
+            if (e.target.name === 'valor_entrada' || e.target.name === 'valor_transferencia') {
+                calcularTotal('editInscricaoForm');
+            }
+        });
+
+        // Função para animar contagem
+        function animateCount(element, target, isFloat = false, duration = 1000) {
+            const start = parseFloat(element.dataset.value) || 0;
+            const end = isFloat ? parseFloat(target) : Math.round(target);
+            const increment = (end - start) / (duration / 16);
+            let current = start;
+            const step = () => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                } else {
+                    requestAnimationFrame(step);
+                }
+                element.textContent = isFloat ? `${current.toFixed(2)} Kz` : Math.round(current);
+                element.dataset.value = current;
+            };
+            requestAnimationFrame(step);
+        }
+
+        // Função para atualizar o status de pago
+        function updatePagoStatus() {
+            const rows = document.querySelectorAll('tbody tr');
+            const cards = document.querySelectorAll('.card-inscricao');
+            rows.forEach(row => {
+                const pago = row.dataset.pago === 'true';
+                const pagoCell = row.querySelector('.pago-cell');
+                if (pagoCell) {
+                    pagoCell.textContent = pago ? 'Sim' : 'Não';
+                }
+            });
+            cards.forEach(card => {
+                const pago = card.dataset.pago === 'true';
+                const pagoCell = card.querySelector('.pago-cell');
+                if (pagoCell) {
+                    pagoCell.innerHTML = `<strong>Pago:</strong> ${pago ? 'Sim' : 'Não'}`;
+                }
+            });
+        }
+
+        // Função para atualizar dashboard
+        function updateDashboard(data) {
+            console.log('Dados recebidos para o dashboard:', data);
+            if (!data.inscricoes || !Array.isArray(data.inscricoes)) {
+                console.error('Inscrições não encontradas ou formato inválido:', data.inscricoes);
+                showToast('errorToast', 'Erro: Dados de inscrições inválidos.');
+                return;
+            }
+
+            const viewType = document.querySelector('.view-toggle-btn.active').dataset.view;
+            let totalInscritos = data.inscricoes.length;
+            let totalValor = data.total_valor ? parseFloat(data.total_valor) : data.inscricoes.reduce((sum, inscricao) => {
+                const valor = parseFloat(inscricao.total) || 0;
+                console.log(`Inscrição ${inscricao.id}: total = ${inscricao.total}, parsed = ${valor}`);
+                return sum + valor;
+            }, 0);
+
+            const atividadesData = {};
+            const departamentosData = {};
+
+            data.inscricoes.forEach((inscricao, index) => {
+                const valor = parseFloat(inscricao.total) || 0;
+
+                const atividade = inscricao.atividade || 'Desconhecida';
+                if (!atividadesData[atividade]) {
+                    atividadesData[atividade] = { count: 0, valor: 0 };
+                }
+                atividadesData[atividade].count++;
+                atividadesData[atividade].valor += valor;
+
+                const departamento = inscricao.departamento || 'Desconhecido';
+                if (!departamentosData[departamento]) {
+                    departamentosData[departamento] = { count: 0, valor: 0 };
+                }
+                departamentosData[departamento].count++;
+                departamentosData[departamento].valor += valor;
+            });
+
+            console.log('Total Inscritos:', totalInscritos);
+            console.log('Total Valor:', totalValor);
+            console.log('Atividades Data:', atividadesData);
+            console.log('Departamentos Data:', departamentosData);
+
+            animateCount(document.getElementById('total-inscritos'), totalInscritos);
+            animateCount(document.getElementById('total-valor'), totalValor, true);
+
+            const ctx = document.getElementById('atividadeChart').getContext('2d');
+            let labels, inscritosData, valoresData;
+            if (viewType === 'atividade') {
+                labels = Object.keys(atividadesData);
+                inscritosData = labels.map(label => atividadesData[label].count);
+                valoresData = labels.map(label => atividadesData[label].valor);
+                document.querySelector('.chart-container h3').textContent = 'Inscritos e Valores por Atividade';
+            } else {
+                labels = Object.keys(departamentosData);
+                inscritosData = labels.map(label => departamentosData[label].count);
+                valoresData = labels.map(label => departamentosData[label].valor);
+                document.querySelector('.chart-container h3').textContent = 'Inscritos e Valores por Departamento';
+            }
+
+            if (window.atividadeChartInstance) {
+                window.atividadeChartInstance.destroy();
+            }
+            window.atividadeChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: `Inscritos por ${viewType === 'atividade' ? 'Atividade' : 'Departamento'}`,
+                            data: inscritosData,
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: `Valor por ${viewType === 'atividade' ? 'Atividade' : 'Departamento'} (Kz)`,
+                            data: valoresData,
+                            backgroundColor: 'rgba(34, 197, 94, 0.6)',
+                            borderColor: 'rgba(34, 197, 94, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#e2e8f0' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { size: 14, family: 'Poppins' },
+                                color: '#1e3a8a'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1e3a8a',
+                            titleFont: { family: 'Poppins' },
+                            bodyFont: { family: 'Poppins' },
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label.includes('Valor')) {
+                                        return `${label}: ${context.parsed.y.toFixed(2)} Kz`;
+                                    }
+                                    return `${label}: ${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Função para filtrar inscrições
+        function filterInscricoes() {
+            const departamentoId = document.getElementById('filtro_departamento').value || '';
+            const atividadeId = document.getElementById('filtro_atividade').value || '';
+            const dataFiltro = document.getElementById('filtro_data').value || '';
+            const chartLoader = document.getElementById('chart-loader');
+            chartLoader.style.display = 'block';
+
+            fetch(`{% url 'webiel:inscricoes' %}?departamento=${departamentoId}&atividade=${atividadeId}&data=${dataFiltro}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Erro na resposta do servidor: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                chartLoader.style.display = 'none';
+                const tbody = document.querySelector('tbody');
+                const cardList = document.querySelector('.card-list');
+                tbody.innerHTML = '';
+                cardList.innerHTML = '';
+                if (!data.success || !data.inscricoes || data.inscricoes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="text-center">Nenhuma inscrição encontrada.</td></tr>';
+                    cardList.innerHTML = '<div class="card-inscricao text-center">Nenhuma inscrição encontrada.</div>';
+                } else {
+                    data.inscricoes.forEach(inscricao => {
+                        const row = document.createElement('tr');
+                        row.id = `inscricao-${inscricao.id}`;
+                        row.dataset.total = inscricao.total || 0;
+                        row.dataset.preco = inscricao.preco || 0;
+                        row.dataset.pago = inscricao.pago;
+                        row.innerHTML = `
+                            <td>${inscricao.nome_completo || '-'}</td>
+                            <td>${inscricao.atividade || '-'}</td>
+                            <td>${inscricao.departamento || '-'}</td>
+                            <td>${inscricao.telefone || '-'}</td>
+                            <td>${inscricao.data_criacao || '-'}</td>
+                            <td>${parseFloat(inscricao.total || 0).toFixed(2)} Kz</td>
+                            <td class="pago-cell">${inscricao.pago ? 'Sim' : 'Não'}</td>
+                            <td>
+                                <div class="actions-container">
+                                    <span class="action-icon text-info view-icon" data-id="${inscricao.id}" onclick="viewInscricao(this)">
+                                        <i class="bi bi-eye"></i>
+                                    </span>
+                                    <span class="action-icon text-primary edit-icon" data-id="${inscricao.id}" onclick="editInscricao(this)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </span>
+                                    <span class="action-icon text-danger delete-icon" data-id="${inscricao.id}" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+
+                        const card = document.createElement('div');
+                        card.className = 'card-inscricao';
+                        card.id = `inscricao-mobile-${inscricao.id}`;
+                        card.dataset.total = inscricao.total || 0;
+                        card.dataset.preco = inscricao.preco || 0;
+                        card.dataset.pago = inscricao.pago;
+                        card.innerHTML = `
+                            <div class="card-title">${inscricao.nome_completo || '-'}</div>
+                            <div class="card-text"><strong>Atividade:</strong> ${inscricao.atividade || '-'}</div>
+                            <div class="card-text"><strong>Departamento:</strong> ${inscricao.departamento || '-'}</div>
+                            <div class="card-text"><strong>Telefone:</strong> ${inscricao.telefone || '-'}</div>
+                            <div class="card-text"><strong>Data de Criação:</strong> ${inscricao.data_criacao || '-'}</div>
+                            <div class="card-text"><strong>Valor Total:</strong> ${parseFloat(inscricao.total || 0).toFixed(2)} Kz</div>
+                            <div class="card-text pago-cell"><strong>Pago:</strong> ${inscricao.pago ? 'Sim' : 'Não'}</div>
+                            <div class="card-text">
+                                <strong>Ações:</strong>
+                                <div class="actions-container">
+                                    <span class="action-icon text-info view-icon" data-id="${inscricao.id}" onclick="viewInscricao(this)">
+                                        <i class="bi bi-eye"></i>
+                                    </span>
+                                    <span class="action-icon text-primary edit-icon" data-id="${inscricao.id}" onclick="editInscricao(this)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </span>
+                                    <span class="action-icon text-danger delete-icon" data-id="${inscricao.id}" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                        cardList.appendChild(card);
+                    });
+                }
+                updatePagoStatus();
+                updateDashboard(data);
+            })
+            .catch(error => {
+                chartLoader.style.display = 'none';
+                console.error('Erro no filtro:', error);
+                showToast('errorToast', `Erro ao filtrar inscrições: ${error.message}`);
+            });
+        }
+
+        // Adicionar eventos aos filtros
+        document.getElementById('filtro_departamento').addEventListener('change', filterInscricoes);
+        document.getElementById('filtro_atividade').addEventListener('change', filterInscricoes);
+        document.getElementById('filtro_data').addEventListener('change', filterInscricoes);
+
+        // Alternar visualização
+        document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterInscricoes();
+            });
+        });
+
+        // Carregar iniciais
+        filterInscricoes();
+
+        // Visualizar Inscrição
+        function viewInscricao(icon) {
+            const inscricaoId = icon.getAttribute('data-id');
+            if (!inscricaoId) {
+                showToast('errorToast', 'ID da inscrição não encontrado.');
+                return;
+            }
+            fetch(`{% url 'webiel:inscricao_detalhes' %}?id=${inscricaoId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Erro na resposta do servidor: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('view-nome_completo').textContent = data.inscricao.nome_completo || '-';
+                    document.getElementById('view-atividade').textContent = data.inscricao.atividade || '-';
+                    document.getElementById('view-departamento').textContent = data.inscricao.departamento || '-';
+                    document.getElementById('view-email').textContent = data.inscricao.email || '-';
+                    document.getElementById('view-telefone').textContent = data.inscricao.telefone || '-';
+                    document.getElementById('view-data_nascimento').textContent = data.inscricao.data_nascimento || '-';
+                    document.getElementById('view-emergencia_nome1').textContent = data.inscricao.emergencia_nome1 || '-';
+                    document.getElementById('view-emergencia_telefone1').textContent = data.inscricao.emergencia_telefone1 || '-';
+                    document.getElementById('view-emergencia_nome2').textContent = data.inscricao.emergencia_nome2 || '-';
+                    document.getElementById('view-emergencia_telefone2').textContent = data.inscricao.emergencia_telefone2 || '-';
+                    document.getElementById('view-observacoes').textContent = data.inscricao.observacoes || '-';
+                    document.getElementById('view-metodo_pagamento').textContent = data.inscricao.get_metodo_pagamento_display || '-';
+                    document.getElementById('view-valor_entrada').textContent = data.inscricao.valor_entrada ? `${parseFloat(data.inscricao.valor_entrada).toFixed(2)} Kz` : '-';
+                    document.getElementById('view-valor_transferencia').textContent = data.inscricao.valor_transferencia ? `${parseFloat(data.inscricao.valor_transferencia).toFixed(2)} Kz` : '-';
+                    document.getElementById('view-comprovativo_transferencia').innerHTML = data.inscricao.comprovativo_transferencia ? `<a href="${data.inscricao.comprovativo_transferencia}" target="_blank">Ver Comprovativo</a>` : '-';
+                    document.getElementById('view-referencia_pagamento').textContent = data.inscricao.referencia_pagamento || '-';
+                    document.getElementById('view-total').textContent = data.inscricao.total ? `${parseFloat(data.inscricao.total).toFixed(2)} Kz` : '0.00 Kz';
+                    document.getElementById('view-pago').textContent = data.inscricao.pago ? 'Sim' : 'Não';
+                    document.getElementById('view-data_criacao').textContent = data.inscricao.data_criacao || '-';
+                    new bootstrap.Modal(document.getElementById('viewModal')).show();
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao carregar os detalhes da inscrição.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro na requisição (visualizar):', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        }
+
+        // Editar Inscrição
+        function editInscricao(icon) {
+            const inscricaoId = icon.getAttribute('data-id');
+            if (!inscricaoId) {
+                showToast('errorToast', 'ID da inscrição não encontrado.');
+                return;
+            }
+            fetch(`{% url 'webiel:inscricao_detalhes' %}?id=${inscricaoId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Erro na resposta do servidor: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('edit-inscricao-id').value = inscricaoId;
+                    document.getElementById('edit-departamento').value = data.inscricao.departamento_id || '';
+                    filterAtividades(document.getElementById('edit-departamento'), document.getElementById('edit-atividade'));
+                    document.getElementById('edit-atividade').value = data.inscricao.atividade_id || '';
+                    document.getElementById('edit-nome_completo').value = data.inscricao.nome_completo || '';
+                    document.getElementById('edit-email').value = data.inscricao.email || '';
+                    document.getElementById('edit-telefone').value = data.inscricao.telefone || '';
+                    document.getElementById('edit-data_nascimento').value = data.inscricao.data_nascimento || '';
+                    document.getElementById('edit-emergencia_nome1').value = data.inscricao.emergencia_nome1 || '';
+                    document.getElementById('edit-emergencia_telefone1').value = data.inscricao.emergencia_telefone1 || '';
+                    document.getElementById('edit-emergencia_nome2').value = data.inscricao.emergencia_nome2 || '';
+                    document.getElementById('edit-emergencia_telefone2').value = data.inscricao.emergencia_telefone2 || '';
+                    document.getElementById('edit-observacoes').value = data.inscricao.observacoes || '';
+                    document.getElementById('edit-metodo_pagamento').value = data.inscricao.metodo_pagamento || 'mao';
+                    document.getElementById('edit-valor_entrada').value = data.inscricao.valor_entrada || '';
+                    document.getElementById('edit-valor_transferencia').value = data.inscricao.valor_transferencia || '';
+                    document.getElementById('edit-referencia_pagamento').value = data.inscricao.referencia_pagamento || '';
+                    document.getElementById('edit-total').value = data.inscricao.total || '0.00';
+                    document.getElementById('edit-pago').checked = data.inscricao.pago;
+                    new bootstrap.Modal(document.getElementById('editModal')).show();
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao carregar os detalhes da inscrição.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro na requisição (editar):', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        }
+
+        // Salvar Edição
+        document.getElementById('saveEditBtn').addEventListener('click', () => {
+            const form = document.getElementById('editInscricaoForm');
+            const inscricaoId = document.getElementById('edit-inscricao-id').value;
+            const formData = new FormData(form);
+            fetch('{% url 'webiel:inscricao_editar' %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Erro na resposta do servidor: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const row = document.getElementById(`inscricao-${inscricaoId}`);
+                    const card = document.getElementById(`inscricao-mobile-${inscricaoId}`);
+                    if (row) {
+                        row.dataset.total = data.inscricao.total || 0;
+                        row.dataset.preco = data.inscricao.preco || 0;
+                        row.dataset.pago = data.inscricao.pago;
+                        row.querySelector('td:nth-child(1)').textContent = data.inscricao.nome_completo || '-';
+                        row.querySelector('td:nth-child(2)').textContent = data.inscricao.atividade || '-';
+                        row.querySelector('td:nth-child(3)').textContent = data.inscricao.departamento || '-';
+                        row.querySelector('td:nth-child(4)').textContent = data.inscricao.telefone || '-';
+                        row.querySelector('td:nth-child(5)').textContent = data.inscricao.data_criacao || '-';
+                        row.querySelector('td:nth-child(6)').textContent = `${parseFloat(data.inscricao.total || 0).toFixed(2)} Kz`;
+                        row.querySelector('.pago-cell').textContent = data.inscricao.pago ? 'Sim' : 'Não';
+                    }
+                    if (card) {
+                        card.dataset.total = data.inscricao.total || 0;
+                        card.dataset.preco = data.inscricao.preco || 0;
+                        card.dataset.pago = data.inscricao.pago;
+                        card.querySelector('.card-title').textContent = data.inscricao.nome_completo || '-';
+                        card.querySelector('.card-text:nth-child(1)').innerHTML = `<strong>Atividade:</strong> ${data.inscricao.atividade || '-'}`;
+                        card.querySelector('.card-text:nth-child(2)').innerHTML = `<strong>Departamento:</strong> ${data.inscricao.departamento || '-'}`;
+                        card.querySelector('.card-text:nth-child(3)').innerHTML = `<strong>Telefone:</strong> ${data.inscricao.telefone || '-'}`;
+                        card.querySelector('.card-text:nth-child(4)').innerHTML = `<strong>Data de Criação:</strong> ${data.inscricao.data_criacao || '-'}`;
+                        card.querySelector('.card-text:nth-child(5)').innerHTML = `<strong>Valor Total:</strong> ${parseFloat(data.inscricao.total || 0).toFixed(2)} Kz`;
+                        card.querySelector('.pago-cell').innerHTML = `<strong>Pago:</strong> ${data.inscricao.pago ? 'Sim' : 'Não'}`;
+                    }
+                    showToast('successToast', data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                    filterInscricoes();
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao atualizar a inscrição.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro na requisição (editar):', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        });
+
+        // Configurar ID para exclusão
+        function setDeleteId(icon) {
+            const inscricaoId = icon.getAttribute('data-id');
+            document.getElementById('confirmDeleteBtn').setAttribute('data-id', inscricaoId);
+        }
+
+        // Confirmar exclusão
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            const inscricaoId = document.getElementById('confirmDeleteBtn').getAttribute('data-id');
+            if (!inscricaoId) {
+                showToast('errorToast', 'ID da inscrição não encontrado.');
+                return;
+            }
+            fetch('{% url 'webiel:inscricao_deletar' %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ inscricao_id: inscricaoId })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Erro na resposta do servidor: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`inscricao-${inscricaoId}`)?.remove();
+                    document.getElementById(`inscricao-mobile-${inscricaoId}`)?.remove();
+                    showToast('successToast', data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+                    filterInscricoes();
+                } else {
+                    showToast('errorToast', data.message || 'Erro ao excluir a inscrição.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro na requisição (exclusão):', error);
+                showToast('errorToast', `Erro ao conectar com o servidor: ${error.message}`);
+            });
+        });
+
+        // Baixar PDF
+        document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+            const departamentoId = document.getElementById('filtro_departamento').value || '';
+            const atividadeId = document.getElementById('filtro_atividade').value || '';
+            const dataFiltro = document.getElementById('filtro_data').value || '';
+            window.location.href = `{% url 'webiel:download_inscricoes_pdf' %}?departamento=${departamentoId}&atividade=${atividadeId}&data=${dataFiltro}`;
+        });
+    </script>
+</body>
+</html>

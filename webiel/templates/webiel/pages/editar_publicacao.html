@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Publicação - IEL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+   
+    
+    <style>
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            margin: 0;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar a {
+            color: #fff;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            font-size: 14px;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .sidebar .active {
+            background-color: #007bff;
+        }
+        .sidebar .footer-bottom {
+            background-color: #343a40;
+            padding: 10px 20px;
+            color: white;
+            margin-top: auto;
+            font-size: 12px;
+        }
+        .sidebar .footer-bottom a {
+            color: rgb(185, 71, 71);
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            width: 100%;
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1100;
+            background-color: #343a40;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        .form-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 900px;
+        }
+        .form-section h2 {
+            font-family: "Barlow", sans-serif;
+            color: #007bff;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-section .form-label {
+            font-weight: 500;
+            color: #343a40;
+            margin-bottom: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+        .form-section .form-control,
+        .form-section .form-select {
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 12px 15px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fff;
+        }
+        .form-section .form-control:focus,
+        .form-section .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+        .form-section textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .form-section .form-control::placeholder {
+            color: #6c757d;
+            opacity: 0.8;
+        }
+        .form-section .btn-brand {
+            background-color: #007bff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 16px;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .form-section .btn-brand:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .form-section .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 16px;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .form-section .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        .form-buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .border-top.border-primary.w-40 {
+            width: 40%;
+            margin: 20px 0;
+            border-top: 2px solid #007bff;
+        }
+        .form-check {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .form-section {
+                padding: 15px;
+            }
+            .form-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão de alternância do menu -->
+        <button class="menu-toggle" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <h4 class="text-center mb-4">Menu</h4>
+            <a href="{% url 'webiel:dashboard' %}"><i class="bi bi-envelope me-2"></i> Cartas</a>
+            <a href="{% url 'webiel:cartas_recebidas' %}"><i class="bi bi-check-circle-fill me-2"></i> Cartas Recebidas</a>
+            <a href="{% url 'webiel:publicacao_criar' %}" class="active"><i class="bi bi-pencil-square me-2"></i> Cria Publicação</a>
+            <a href="{% url 'webiel:criar_foto' %}" ><i class="bi bi-camera me-2"></i> Upload de fotos</a>
+            <a href="{% url 'webiel:nubentes' %}"><i class="bi bi-people-fill me-2"></i> Nubentes</a>
+            <a href="{% url 'webiel:banco_de_alimentacao' %}"><i class="bi bi-database-fill me-2"></i> Banco de Alimentação</a>
+            <a href="{% url 'webiel:mensagens_newsletter' %}" ><i class="bi bi-envelope-paper me-2"></i> Mensagens e Newsletter</a>
+            <a href="{% url 'webiel:inscricoes' %}"><i class="i bi-check-circle-fill me-2"></i> Inscrições Feitas</a>
+            <!-- Footer -->
+            <div class="footer-bottom text-center text-white">
+                <p class="mb-0">
+                    Copyright © <script>document.write(new Date().getFullYear());</script> |
+                    Todos os Direitos Reservados - IEL | Created by
+                    <a id="afonso" href="https://api.whatsapp.com/send?phone=245934038572" target="_blank"
+                     style="color: #fff; text-decoration: none;">
+                    <i class="bi bi-heart-fill"></i> Afonso Miqueias
+                    </a>
+                </p>
+            </div>
+        </div>
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container mt-5 mb-4">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary">Editar Publicação</h2>
+                <div>
+                    <p class="text-muted mb-0">
+                        Bem-vindo, <strong>{{ user.username }}</strong> |
+                        <a href="{% url 'webiel:publicacoes' %}" class="btn btn-sm btn-outline-primary">Ver Publicações</a>
+                        <a href="{% url 'webiel:logout' %}" class="btn btn-sm btn-outline-danger">Sair</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulário -->
+            <div class="form-section">
+                <p class="text-muted mb-4">Edite os detalhes da publicação abaixo.</p>
+                <div class="border-top border-primary w-40 mb-4"></div>
+                <form action="" method="post" class="row p-lg-4 gy-2" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-lg-6">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+                        {{ form.title }}
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="{{ form.category.id_for_label }}" class="form-label">{{ form.category.label }}</label>
+                        {{ form.category }}
+                    </div>
+                    <div class="col-12">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                        {{ form.description }}
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="{{ form.cover.id_for_label }}" class="form-label">{{ form.cover.label }}</label>
+                        {{ form.cover }}
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="{{ form.dataEvento.id_for_label }}" class="form-label">{{ form.dataEvento.label }}</label>
+                        {{ form.dataEvento }}
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="{{ form.autorCitacao.id_for_label }}" class="form-label">{{ form.autorCitacao.label }}</label>
+                        {{ form.autorCitacao }}
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="{{ form.autorCargo.id_for_label }}" class="form-label">{{ form.autorCargo.label }}</label>
+                        {{ form.autorCargo }}
+                    </div>
+                    <div class="col-12">
+                        <label for="{{ form.citacao.id_for_label }}" class="form-label">{{ form.citacao.label }}</label>
+                        {{ form.citacao }}
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            {{ form.is_published }}
+                            <label class="form-check-label" for="{{ form.is_published.id_for_label }}">
+                                {{ form.is_published.label }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-brand">Salvar Alterações</button>
+                            <a href="{% url 'webiel:publicacoes' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast para Feedback -->
+    <div class="toast-container">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Sucesso</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        {{ message }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-danger text-white">
+                <strong class="me-auto">Erro</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        {{ message }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Função para alternar o menu
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        menuToggle.addEventListener('click', () => {
+            console.log('Menu toggle clicado');
+            sidebar.classList.toggle('open');
+            sidebar.classList.toggle('closed');
+        });
+
+        // Mostrar mensagem de toast
+        document.addEventListener('DOMContentLoaded', () => {
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+                    successToast.show();
+                {% elif message.tags == 'error' %}
+                    const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+                    errorToast.show();
+                {% endif %}
+            {% endfor %}
+        });
+             // Mostrar mensagem de toast
+        document.addEventListener('DOMContentLoaded', () => {
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+                    successToast.show();
+                {% elif message.tags == 'error' %}
+                    const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+                    errorToast.show();
+                {% endif %}
+            {% endfor %}
+
+            // Logout automático após 5 minutos de inatividade
+            let inactivityTimeout;
+            const inactivityTime = 5 * 60 * 1000; // 5 minutos em milissegundos
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimeout);
+                inactivityTimeout = setTimeout(logout, inactivityTime);
+            }
+
+            function logout() {
+                // Redireciona para a URL de logout
+                window.location.href = "{% url 'webiel:logout' %}";
+            }
+
+            // Eventos que indicam atividade do usuário
+            ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+
+            // Inicia o temporizador
+            resetInactivityTimer();
+        });
+    </script>
+</body>
+</html>

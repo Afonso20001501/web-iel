@@ -1,0 +1,212 @@
+{% load static %}
+
+<section id="mocidade" class="about_page bg-cover">
+     <div class="container">
+          <div class="col-ms-12 text-center mt-6 my-5">
+               <h1 data-aos="fade-up" class="text-white pt-4">DEPARTAMENTO DOS ADOLESCENTES/</h1>
+               <div class="border-top border-primary w-25 mx-auto my-4"></div>
+               <p class="about_text text-white center" data-aos="fade-up"  class="lead" style="font-weight: 400; font-size:12pt;
+               font-family: "Barlow", sans-serif !important;">O departamento de adolescentes da IEL existe para capacitar e equipar adolescentes para um ministério global eficaz. <br/>
+              O departamento deverá ser comprometido com a preservação e desenvolvimento de adolescentes<br/> 
+               fiéis por meio de enriquecimento espiritual, educacional, cultural e recreativo..</p>
+          </div>
+     </div>
+</section>
+
+<section id="preg bg-light">
+     <div class="container-fluid mt-4">
+        <div class="row g-4 mb-3">
+            <div class="col-ms-12 text-center">
+                <h1 data-aos="fade-up" class="text-dark pt-4 header">Agenda</h1>
+                <div class="border-top border-primary w-25 mx-auto my-4"></div>
+                <p class="about_text" data-aos="fade-up"  class="lead " style="font-weight: 400; font-size:12pt;
+                font-family: "Barlow", sans-serif !important;">Esteja actualizado, conheça a nossa agenda, e participe das nossas actividades.</p>
+            </div>
+        </div>
+   
+        <div class="container mt-5 mb-3">
+
+           <div class="row justify-content-between mt-5">
+                <div class="col-12 col-lg-8">
+                    <div class="row">
+                        {% for atividade_mocidade in atividade_mocidades|slice:":4" %}
+                        <div data-aos="flip-left" class="col-md-6 event-card">
+                            <div class="card shadow-sm">
+                                <div class="card-header">
+                                    {{ atividade_adolescente.atividade }}
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Data:</strong>  {{ atividade_adolescente.dataAtividade }} </p>
+                                    <p><strong>Horário:</strong> {{ atividade_adolescente.horario }}</p>
+                                    <p><strong>Local:</strong> {{ atividade_adolescente.local }} </p>
+                                    <p style="font-family: Arial, sans-serif; line-height: 1.6; white-space: pre-line;">{{ atividade_adolescente.descrica|safe }}!</p>
+                                    <div class="post-meta mb-3">
+                                        <a class="text-muted">Presidente <i class="bx bxs-user" aria-hidden="true"> </i> 
+                                            {{  atividade_adolescente.presidente }} 
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                            <div class="center m-y">
+                                <h2> Não tem Actividade </h2>
+                            </div>
+                       {% endfor %}
+                    </div>
+            
+                    <h3 data-aos="flip-down" class="mt-2 mb-2">Eventos Recorrentes</h3>
+            
+                    <div class="row mb-3">
+                        <div data-aos="flip-up" class="col-md-6 event-card">
+                            <div class="card shadow-sm">
+                                <div class="card-header">
+                                    Tarde de Partilha
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Quando:</strong> Todas as Sextas-Feiras</p>
+                                    <p><strong>Horário:</strong> 176h - 18h</p>
+                                    <p><strong>Local:</strong> Templo</p>
+                                    <p>Encontro semanal de partilha da palavra. Todos os jovens são bem-vindos!</p>
+                                    <div class="post-meta mb-3">
+                                        <a class="text-muted">Presidente <i class="bx bxs-user" aria-hidden="true"></i> 
+                                            Júlio Cesar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div data-aos="flip-up" class="col-md-6 event-card">
+                            <div class="card shadow-sm">
+                                <div class="card-header">
+                                    Ensaio dos Sub-departamentos
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Quando:</strong> Todos os sábados</p>
+                                    <p><strong>Horário:</strong> 15h - 17h </p>
+                                    <p><strong>Horário:</strong> 09h - 11h | para os Embaixdores de Cristo I </p>
+                                    <p>Ensaios referente aos grupos <strong>Embaixadores de Cristo I , Orquídeas de Cristo, Levitas e Mirians</strong>.</p>
+                                    <div class="post-meta mb-3">
+                                        <a class="text-muted">Presidente <i class="bx bxs-user" aria-hidden="true"></i> 
+                                            Júlio Cesar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+
+                    <div data-aos="zoom-out-up" class="post-sidebar-area">
+                        <div class="single-widget-area contact-information">
+                            <!-- Title -->
+                            <div data-aos="zoom-out-up" class="widget-title mb-3">
+                                <h6 data-aos="zoom-out-up" style="font-size:25px;">Notícias Recentes</h6>
+                            </div>
+   
+                            {% for noticias_recente in noticias_recentes|slice:":4" %}
+                             <div data-aos="zoom-out-up" class="single-latest-post mb-4">
+                               <div class="container">
+                                   <div class="row">
+                                       <div class="col-3">
+                                           <img class="card-img-top" src="{{ noticias_recente.cover.url }}" alt="Imagem"> 
+                                       </div>
+                                       <div class="col-9">
+                                           <a href="{% url 'webiel:noticia-view' noticias_recente.slug %}" class="post-title">
+                                               <h6>{{ noticias_recente.title }}</h6>
+                                           </a>
+                                           <p class="post-date text-muted" style="color:#8ba2bd !important; font-style:italic !important;"> <i style="color:#8ba2bd; font-style:italic;" class="bx bxs-calendar" aria-hidden="true"></i> {{ noticias_recente.dataEvento }} de <script>document.write(new Date().getFullYear());</script></p>
+                                       </div>
+                                   </div>
+                               </div>
+                             </div>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+
+                    <div data-aos="zoom-out-up" class="contact-info mt-5">
+                        <h5>Contactos</h5>
+                        <p ><strong> Presidente:</strong> <i style="color: #26599D" class='bx bxs-user'></i>Júlio Cesar</p>
+                        <p ><a style="text-decoration: none; color: black;" href="http://"><i style="color: #26599D" class='bx bxs-envelope'></i> mocidade-iel@igreja.com</a></p>
+                        <p ><a style="text-decoration: none; color: black;" href="https://api.whatsapp.com/send?phone=244948888293"><i style="color: #26599D"  class='bx bxl-whatsapp'></i> + (244) 926 279 725</a></p>
+                    </div>
+            
+                    <div data-aos="zoom-out-up" class="mt-4">
+                        <a href="#" class="btn btn-brand">Inscrição para Acampamento</a>
+                    </div>
+                </div>
+           </div>
+
+        </div>
+        
+    </div>
+</section>
+
+
+<!-- Seção de Portfólio -->
+    <section id="portfolio" class="portfolio section mb-3">
+        <div class="container">
+            <div class="row g-4 mb-3">
+                <div class="col-md-12 text-center">
+                    <h1 data-aos="fade-up" class="text-dark pt-4">Galeria de {{ department.name }}</h1>
+                    <div class="border-top border-primary w-25 mx-auto my-4"></div>
+                    <p class="about_text" data-aos="fade-up" class="lead" style="font-weight: 400; font-size:12pt; font-family: 'Barlow', sans-serif !important;">
+                        Acompanhe um pouco do muito que tem acontecido no Departamento de {{ department.name }}.
+                    </p>
+                </div>
+            </div>
+
+            <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+                <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+                    {% for photo in photos %}
+                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+                        <div class="portfolio-content h-100">
+                            <img src="{{ photo.image.url }}" class="img-fluid" alt="Foto de {{ department.name }}">
+                            <div class="portfolio-info">
+                                <p>{{ department.name }}</p>
+                                {% if photo.description %}
+                                <p>{{ photo.description }}</p>
+                                {% endif %}
+                                <a href="{{ photo.image.url }}" title="Foto de {{ department.name }}" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bx bx-zoom-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center">
+                        <p>Nenhuma foto encontrada para este departamento.</p>
+                    </div>
+                    {% endfor %}
+                </div><!-- Fim do Contêiner de Portfólio -->
+
+                <!-- Paginação -->
+                <nav aria-label="Navegação de página" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior">Anterior</a>
+                        </li>
+                        {% endif %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Próxima página">Próxima</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+

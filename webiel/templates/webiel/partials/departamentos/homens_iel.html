@@ -11,7 +11,6 @@
      </div>
 </section>
 
-
 <section id="preg bg-light">
      <div class="container-fluid mt-4">
       <div class="row g-4 mb-3">
@@ -25,7 +24,7 @@
       <div class="container mt-5 mb-3">
 
         <div class="row justify-content-between mt-5">
-             <div class="col-12 col-lg-9">
+             <div class="col-12 col-lg-8">
                  <div class="row">
                      {% for atividade_homen in atividade_homens|slice:":4" %}
                      <div data-aos="flip-left" class="col-md-6 event-card">
@@ -37,7 +36,7 @@
                                  <p><strong>Data:</strong>  {{ atividade_homen.dataAtividade }} </p>
                                  <p><strong>Horário:</strong> {{ atividade_homen.horario }}</p>
                                  <p><strong>Local:</strong> {{ atividade_homen.local }} </p>
-                                 <p>{{ atividade_homen.descricao }}!</p>
+                                 <p style="font-family: Arial, sans-serif; line-height: 1.6; white-space: pre-line;">{{ atividade_homen.descrica|safe }}!</p>
                                  <div class="post-meta mb-3">
                                      <a class="text-muted">Presidente <i class="bx bxs-user" aria-hidden="true"></i>
                                          {{  atividade_homen.presidente }} 
@@ -95,24 +94,34 @@
                  </div>
              </div>
 
-             <div class="col-12 col-sm-9 col-md-6 col-lg-3">
-                 <div data-aos="zoom-out" class="post-sidebar-area">
-                     <div class="single-widget-area">
-                         <!-- Title -->
-                         <div class="widget-title contact-information mb-2">
-                             <h6 data-aos="zoom-out">Notícias Recentes</h6>
-                         </div>
+             <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                <div data-aos="zoom-out-up" class="post-sidebar-area">
+                    <div class="single-widget-area contact-information">
+                        <!-- Title -->
+                        <div data-aos="zoom-out-up" class="widget-title mb-3">
+                            <h6 data-aos="zoom-out-up" style="font-size:25px;">Notícias Recentes</h6>
+                        </div>
 
-                         {% for noticias_recente in noticias_recentes|slice:":3" %}
-                         <div data-aos="zoom-out" class="single-latest-post contact-information">
-                             <a  href="{% url 'webiel:noticia-view' noticias_recente.slug %}" class="post-title">
-                                 <h6>{{ noticias_recente.title }}</h6>
-                             </a>
-                             <p class="post-date text-muted" style="font-style:italic;"> <i style="color:#000; font-style:italic;" class="bx bxs-calendar" aria-hidden="true"></i> {{ noticias_recente.dataEvento }} de <script>document.write(new Date().getFullYear());</script> </p>
+                        {% for noticias_recente in noticias_recentes|slice:":4" %}
+                         <div data-aos="zoom-out-up" class="single-latest-post mb-4">
+                           <div class="container">
+                               <div class="row">
+                                   <div class="col-3">
+                                       <img class="card-img-top" src="{{ noticias_recente.cover.url }}" alt="Imagem"> 
+                                   </div>
+                                   <div class="col-9">
+                                       <a href="{% url 'webiel:noticia-view' noticias_recente.slug %}" class="post-title">
+                                           <h6>{{ noticias_recente.title }}</h6>
+                                       </a>
+                                       <p class="post-date text-muted" style="color:#8ba2bd !important; font-style:italic !important;"> <i style="color:#8ba2bd; font-style:italic;" class="bx bxs-calendar" aria-hidden="true"></i> {{ noticias_recente.dataEvento }} de <script>document.write(new Date().getFullYear());</script></p>
+                                   </div>
+                               </div>
+                           </div>
                          </div>
-                         {% endfor %}
-                     </div>
-                 </div>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
                  <div data-aos="zoom-out-up" class="contact-info mt-5">
                      <h5>Contactos</h5>
                      <p ><strong> Presidente:</strong> <i style="color: #26599D" class='bx bxs-user'></i>Elias Angelino</p>
@@ -126,136 +135,58 @@
   </div>
 </section>
 
-<section class="mb-4 bg-light">
-   <div class="container">
-         <div class="row g-4 mb-3">
-            <div class="col-ms-12 text-center">
-                 <h1 data-aos="fade-up" class="text-dark pt-4">Galeria dos Homens</h1>
-                 <div class="border-top border-primary w-25 mx-auto my-4"></div>
-                 <p class="about_text" data-aos="fade-up"  class="lead" style="font-weight: 400; font-size:12pt;
-                 font-family: "Barlow", sans-serif !important;">companhe um pouco do muito que tem acontecido no Departamento da Juventude.</p>
-           </div>
-         </div>
-
-         <ul data-aos="fade-up" class="nav nav-tabs" id="albumTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="album1-tab" data-bs-toggle="tab" href="#album1" role="tab" aria-controls="album1" aria-selected="true">Álbum 1</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="album2-tab" data-bs-toggle="tab" href="#album2" role="tab" aria-controls="album2" aria-selected="false">Álbum 2</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="album3-tab" data-bs-toggle="tab" href="#album3" role="tab" aria-controls="album3" aria-selected="false">Álbum 3</a>
-            </li>
-        </ul>
-
-        <!-- Conteúdo das telas -->
-        <div data-aos="fade-up" class="tab-content">
-            <div class="tab-pane fade show active" id="album1" role="tabpanel" aria-labelledby="album1-tab">
-                <div class="row" id="album1-content">
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/1.jpg' %}" data-lightbox="gallery" data-title="Imagem 1">
-                            <img src="{% static 'webiel/img/moci/1.jpg' %}" class="img-fluid" alt="Imagem 1">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/2.jpg' %}" data-lightbox="gallery" data-title="Imagem 2">
-                            <img src="{% static 'webiel/img/moci/2.jpg' %}" class="img-fluid" alt="Imagem 2">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/3.jpg' %}" data-lightbox="gallery" data-title="Imagem 3">
-                            <img src="{% static 'webiel/img/moci/3.jpg' %}" class="img-fluid" alt="Imagem 3">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/3.jpg' %}" data-lightbox="gallery" data-title="Imagem 3">
-                            <img src="{% static 'webiel/img/moci/3.jpg' %}" class="img-fluid" alt="Imagem 3">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Adicione mais imagens conforme necessário, incrementando o data-page -->
+ <section id="portfolio" class="portfolio section mb-3">
+        <div class="container">
+            <div class="row g-4 mb-3">
+                <div class="col-md-12 text-center">
+                    <h1 data-aos="fade-up" class="text-dark pt-4">Galeria de {{ department.name }}</h1>
+                    <div class="border-top border-primary w-25 mx-auto my-4"></div>
+                    <p class="about_text" data-aos="fade-up" class="lead" style="font-weight: 400; font-size:12pt; font-family: 'Barlow', sans-serif !important;">
+                        Acompanhe um pouco do muito que tem acontecido no Departamento de {{ department.name }}.
+                    </p>
                 </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination" id="pagination1"></ul>
-                </nav>
             </div>
-            <div data-aos="fade-up" class="tab-pane fade" id="album2" role="tabpanel" aria-labelledby="album2-tab">
-                <div class="row" id="album2-content">
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/4.jpg' %}" data-lightbox="gallery" data-title="Imagem 4">
-                            <img src="{% static 'webiel/img/moci/4.jpg' %}" class="img-fluid" alt="Imagem 4">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
+
+            <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+                <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+                    {% for photo in photos %}
+                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+                        <div class="portfolio-content h-100">
+                            <img src="{{ photo.image.url }}" class="img-fluid" alt="Foto de {{ department.name }}">
+                            <div class="portfolio-info">
+                                <p>{{ department.name }}</p>
+                                {% if photo.description %}
+                                <p>{{ photo.description }}</p>
+                                {% endif %}
+                                <a href="{{ photo.image.url }}" title="Foto de {{ department.name }}" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bx bx-zoom-in"></i></a>
                             </div>
-                        </a>
+                        </div>
                     </div>
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/5.jpg' %}" data-lightbox="gallery" data-title="Imagem 5">
-                            <img src="{% static 'webiel/img/moci/5.jpg' %}" class="img-fluid" alt="Imagem 5">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
+                    {% empty %}
+                    <div class="col-12 text-center">
+                        <p>Nenhuma foto encontrada para este departamento.</p>
                     </div>
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/6.jpg' %}" data-lightbox="gallery" data-title="Imagem 6">
-                            <img src="{% static 'webiel/img/moci/6.jpg' %}" class="img-fluid" alt="Imagem 6">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Adicione mais imagens conforme necessário, incrementando o data-page -->
-                </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination" id="pagination2"></ul>
-                </nav>
-            </div>
-            <div data-aos="fade-up" class="tab-pane fade" id="album3" role="tabpanel" aria-labelledby="album3-tab">
-                <div class="row" id="album3-content">
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/7.jpg' %}" data-lightbox="gallery" data-title="Imagem 7">
-                            <img src="{% static 'webiel/img/moci/7.jpg' %}" class="img-fluid" alt="Imagem 7">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/8.jpg' %}" data-lightbox="gallery" data-title="Imagem 8">
-                            <img src="{% static 'webiel/img/moci/8.jpg' %}" class="img-fluid" alt="Imagem 8">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-4 gallery-item" data-page="1">
-                        <a href="{% static 'webiel/img/moci/9.jpg' %}" data-lightbox="gallery" data-title="Imagem 9">
-                            <img src="{% static 'webiel/img/moci/9.jpg' %}" class="img-fluid" alt="Imagem 9">
-                            <div class="overlay">
-                                <div class="overlay-content"></div>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Adicione mais imagens conforme necessário, incrementando o data-page -->
-                </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination" id="pagination3"></ul>
+                    {% endfor %}
+                </div><!-- Fim do Contêiner de Portfólio -->
+
+                <!-- Paginação -->
+                <nav aria-label="Navegação de página" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior">Anterior</a>
+                        </li>
+                        {% endif %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Próxima página">Próxima</a>
+                        </li>
+                        {% endif %}
+                    </ul>
                 </nav>
             </div>
         </div>
-  </div>
-
-</section>
+    </section>

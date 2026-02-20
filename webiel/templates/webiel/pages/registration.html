@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="pt"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realize a sua inscrição</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        .error-message.active {
+            display: block;
+        } 
+          
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .activity-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .activity-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .activity-card.selected {
+            border: 3px solid #667eea;
+            background: linear-gradient(135deg, #667eea10, #764ba210);
+        }
+        
+        .step-indicator {
+            transition: all 0.3s ease;
+        }
+        
+        .step-indicator.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .step-indicator.completed {
+            background: #10b981;
+            color: white;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .payment-method {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .payment-method:hover {
+            background: #f3f4f6;
+        }
+        
+        .payment-method.selected {
+            background: #667eea;
+            color: white;
+        }
+
+        .footer-bottom {
+            background: #f8f9fa;
+            padding: 1.5rem 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-bottom .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .footer-bottom a {
+            color: rgb(185, 71, 71);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: rgb(220, 38, 38);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-indicator {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.9rem;
+            }
+
+            .w-16 {
+                width: 2rem;
+            }
+
+            h1.text-4xl {
+                font-size: 2rem;
+            }
+
+            h2.text-3xl {
+                font-size: 1.8rem;
+            }
+
+            .activity-card {
+                padding: 1rem;
+            }
+
+            button {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .footer-bottom p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- CSRF Token -->
+    {% csrf_token %}
+    <!-- Header -->
+    <div class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-2">🎉 Faça a sua Inscrição!</h1>
+            <p class="text-xl opacity-90">Participe das nossas actividades incríveis</p>
+        </div>
+    </div>
+
+    <!-- Second Payment Section -->
+    <div class="container mx-auto px-4 py-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Já fez a sua Inscrição? Pague a Segunda Prestação!</h2>
+        <div class="flex gap-4">
+            <input type="text" id="searchQuery" class="flex-grow px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500" placeholder="Referência do pagamento ou Nome">
+            <button id="searchBtn" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600">Buscar</button>
+        </div>
+        <div id="searchResults" class="mt-6 hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <h3 class="text-xl font-semibold mb-4">Detalhes da Inscrição</h3>
+                <div id="inscricaoSummary" class="space-y-3"></div>
+                <hr class="my-4">
+                <div class="flex justify-between text-xl font-bold">
+                    <span>Restante:</span>
+                    <span id="remainingAmount" class="text-red-600">Kz 0</span>
+                </div>
+                <!-- Payment methods for second payment -->
+                <h3 class="text-xl font-semibold mt-6 mb-4">💰 Método de Pagamento</h3>
+                <div class="space-y-3">
+                    <div class="payment-method-second border-2 border-gray-200 rounded-lg p-4 flex items-center cursor-pointer" data-method="mao">
+                        <div class="text-2xl mr-3">💵</div>
+                        <div>
+                            <div class="font-semibold">Dinheiro em Espécie</div>
+                            <div class="text-sm text-gray-600">Pagamento em dinheiro</div>
+                        </div>
+                    </div>
+                    <div class="payment-method-second border-2 border-gray-200 rounded-lg p-4 flex items-center cursor-pointer" data-method="transferencia">
+                        <div class="text-2xl mr-3">🏦</div>
+                        <div>
+                            <div class="font-semibold">Transferência Bancária via IBAN</div>
+                            <div class="text-sm text-gray-600">Pagamento por transferência bancária</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Details for second payment -->
+                <div id="maoDetailsSecond" class="mt-6 hidden">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Valor da Segunda Prestação *</label>
+                    <input type="number" id="valorEntradaSecond" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" readonly>
+                </div>
+                <div id="transferenciaDetailsSecond" class="mt-6 hidden">
+                    <p class="text-gray-600 mb-2">Transfira para:</p>
+                    <p class="font-semibold">IBAN: AO06 0006 0000 0000 0000 0000 23</p>
+                    <p class="font-semibold mb-4">Igreja Evangélica do Lubango</p>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Upload do Comprovativo *</label>
+                    <input type="file" id="comprovativoSecond" accept="image/png,image/jpeg,application/pdf" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg">
+                    <label class="block text-sm font-semibold text-gray-700 mt-4 mb-2">Valor da Transferência *</label>
+                    <input type="number" id="valorTransferenciaSecond" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" readonly>
+                </div>
+                <button id="paySecondBtn" class="mt-6 bg-green-500 text-white px-8 py-3 rounded-full font-semibold disabled:opacity-50" disabled>
+                    Pagar Segunda Prestação ➡️
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex justify-center items-center space-x-4 mb-8">
+            <div class="step-indicator active w-10 h-10 rounded-full flex items-center justify-center font-semibold">1</div>
+            <div class="w-16 h-1 bg-gray-300"></div>
+            <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center font-semibold bg-gray-300">2</div>
+            <div class="w-16 h-1 bg-gray-300"></div>
+            <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center font-semibold bg-gray-300">3</div>
+            <div class="w-16 h-1 bg-gray-300"></div>
+            <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center font-semibold bg-gray-300">4</div>
+        </div>
+    </div>
+
+    <!-- Main Form Container -->
+    <div class="container mx-auto px-4 pb-8 flex-grow">
+        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+            
+            <!-- Step 1: Escolha da Atividade -->
+            <div id="step1" class="p-8 fade-in">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">🎯 Escolha sua Actividade</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="activities-container">
+                    <!-- As atividades serão carregadas dinamicamente aqui -->
+                    <div class="text-center py-8">
+                        <div class="animate-spin inline-block w-8 h-8 border-4 border-purple-500 rounded-full border-t-transparent"></div>
+                        <p class="mt-4 text-gray-600">Carregando actividades...</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8">
+                    <button id="nextStep1" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50" disabled>
+                        Continuar ➡️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Dados Pessoais -->
+            <div id="step2" class="p-8 hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">👤 Seus Dados</h2>
+                {% csrf_token %}
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Departamento *</label>
+                        <select id="departamento" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors">
+                            <option value="">Selecione um departamento</option>
+                            {% for departamento in departamentos %}
+                            <option value="{{ departamento.slug }}">{{ departamento.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nome Completo *</label>
+                        <input type="text" id="fullName" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="Digite seu nome completo">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                        <input type="email" id="email" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="seu@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Telefone *</label>
+                        <input type="tel" id="phone" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="+244 xxx xxx xxx">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Data de Nascimento *</label>
+                        <input type="date" id="birthDate" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nome do Contacto de Emergência 1</label>
+                        <input type="text" id="emergenciaNome1" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="Nome do contacto 1">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Telefone do Contacto de Emergência 1</label>
+                        <input type="tel" id="emergenciaTelefone1" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="+244 xxx xxx xxx">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nome do Contacto de Emergência 2</label>
+                        <input type="text" id="emergenciaNome2" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="Nome do contacto 2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Telefone do Contacto de Emergência 2</label>
+                        <input type="tel" id="emergenciaTelefone2" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="+244 xxx xxx xxx">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Necessidades Especiais ou Observações</label>
+                        <textarea id="observations" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" rows="3" placeholder="Alergias, restrições alimentares, necessidades especiais..."></textarea>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button id="backStep2" class="bg-gray-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-600 transition-colors">
+                        ⬅️ Voltar
+                    </button>
+                    <button id="nextStep2" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50" disabled>
+                        Continuar ➡️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Resumo e Pagamento -->
+            <div id="step3" class="p-8 hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">💳 Resumo e Pagamento</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Resumo da Inscrição -->
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold mb-4">📋 Resumo da Inscrição</h3>
+                        <div id="summaryContent" class="space-y-3">
+                            <!-- Conteúdo será preenchido dinamicamente -->
+                        </div>
+                        <hr class="my-4">
+                        <div class="flex justify-between items-center text-xl font-bold">
+                            <span>Total:</span>
+                            <span id="totalAmount" class="text-green-600">Kz 0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Método de Pagamento -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">💰 Método de Pagamento</h3>
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Número de Prestações *</label>
+                            <select id="installments" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors">
+                                <option value="1">1 Prestação (Pagamento Integral)</option>
+                                <option value="2">2 Prestações (50% agora, 50% depois)</option>
+                            </select>
+                            <div class="payment-method border-2 border-gray-200 rounded-lg p-4 flex items-center" data-method="mao">
+                                <div class="text-2xl mr-3">💵</div>
+                                <div>
+                                    <div class="font-semibold">Dinheiro em Espécie</div>
+                                    <div class="text-sm text-gray-600">Pagamento em dinheiro</div>
+                                </div>
+                            </div>
+                            <div class="payment-method border-2 border-gray-200 rounded-lg p-4 flex items-center" data-method="transferencia">
+                                <div class="text-2xl mr-3">🏦</div>
+                                <div>
+                                    <div class="font-semibold">Transferência Bancária via IBAN</div>
+                                    <div class="text-sm text-gray-600">Pagamento por transferência bancária</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detalhes para Valor em Mão -->
+                        <div id="maoDetails" class="mt-6 hidden">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Valor da Entrada *</label>
+                                <input type="number" id="valorEntrada" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="Digite o valor pago em mão (Kz)">
+                                <div id="valorEntradaError" class="error-message"></div>
+                            </div>
+                        </div>
+
+                        <!-- Dentro do div de transferenciaDetails -->
+                        <div id="transferenciaDetails" class="mt-6 hidden">
+                            <p class="text-gray-600 mb-2">Transfira para:</p>
+                            <p class="font-semibold">IBAN: AO06 0006 0000 0141 2891 3063 9</p>
+                            <p class="font-semibold mb-4">Igreja Evangélica do Lubango</p>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Upload do Comprovativo *</label>
+                                <input type="file" id="comprovativo" accept="image/png,image/jpeg,application/pdf" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors">
+                                <div id="comprovativoError" class="error-message"></div>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Valor da Transferência *</label>
+                                <input type="number" id="valorTransferencia" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition-colors" placeholder="Digite o valor transferido (Kz)">
+                                <div id="valorTransferenciaError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button id="backStep3" class="bg-gray-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-600 transition-colors">
+                        ⬅️ Voltar
+                    </button>
+                    <button id="nextStep3" class="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-3 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50 pulse-animation" disabled>
+                        Finalizar Inscrição ➡️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Confirmação -->
+            <div id="step4" class="p-8 hidden text-center">
+                <div class="text-8xl mb-6">🎉</div>
+                <h2 class="text-4xl font-bold text-green-600 mb-4">Inscrição Confirmada!</h2>
+                <p class="text-xl text-gray-600 mb-6">Parabéns! Sua inscrição foi registrada com sucesso.</p>
+                
+                <div class="bg-green-50 border-2 border-green-200 rounded-xl p-6 max-w-md mx-auto mb-8">
+                    <h3 class="text-lg font-semibold text-green-800 mb-2">📧 Próximos Passos</h3>
+                    <p class="text-green-700">Fique atento nos meios de comunicação digitais da I.E.L para se manter informado.</p>
+                    <div id="confirmacaoPagamento"></div>
+                </div>
+                
+                <div class="space-y-4">
+                    <button id="downloadReceipt" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition-colors">
+                        📄 Baixar o comprovativo
+                    </button>
+                    <br>
+                    <button id="newRegistration" class="bg-purple-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition-colors">
+                        ➕ Nova Inscrição
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-bottom">
+        <div class="container">
+            <p class="mb-0">
+                Copyright © <script>document.write(new Date().getFullYear());</script> |
+                Todos os Direitos Reservados - IEL | Created by
+                <a id="afonso" href="https://api.whatsapp.com/send?phone=245934038572" target="_blank"
+                   style="color: rgb(185, 71, 71); text-decoration: none;">
+                   <i class="bi bi-heart-fill"></i> Afonso Miqueias
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Estado da aplicação
+        let currentStep = 1;
+        let selectedActivity = null;
+        let selectedPrice = 0;
+        let selectedPaymentMethod = null;
+        let selectedDepartamento = null;
+        let formData = {};
+        let activityCards = [];
+        let selectedPaymentMethodSecond = null;
+        let currentInscricao = null;
+        let selectedInstallments = 1;
+
+        // Elementos DOM
+        const steps = {
+            1: document.getElementById('step1'),
+            2: document.getElementById('step2'),
+            3: document.getElementById('step3'),
+            4: document.getElementById('step4')
+        };
+
+        const stepIndicators = document.querySelectorAll('.step-indicator');
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const paymentMethodsSecond = document.querySelectorAll('.payment-method-second');
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado, configurando eventos...');
+            loadActivities();
+            setupEventListeners();
+            updateStepIndicators();
+            checkCsrfToken();
+        });
+
+        // Função para carregar atividades do backend
+        function loadActivities() {
+            fetch('/api/atividades/')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar atividades');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const container = document.getElementById('activities-container');
+                    container.innerHTML = '';
+                    
+                    data.forEach(atividade => {
+                        const card = document.createElement('div');
+                        card.className = 'activity-card border-2 border-gray-200 rounded-xl p-6 text-center card-hover';
+                        card.dataset.activity = atividade.slug;
+                        card.dataset.price = atividade.preco;
+                        
+                        card.innerHTML = `
+                            <div class="text-6xl mb-4">${atividade.icone || '🎯'}</div>
+                            <h3 class="text-xl font-semibold mb-2">${atividade.nome}</h3>
+                            <p class="text-gray-600 mb-4">${atividade.descricao}</p>
+                            <div class="text-2xl font-bold text-green-600">${formatCurrency(atividade.preco)}</div>                        
+                        `;
+                        
+                        card.addEventListener('click', function() {
+                            selectActivity(this);
+                        });
+                        
+                        container.appendChild(card);
+                    });
+                    
+                    // Atualiza a lista de cards após carregar
+                    activityCards = document.querySelectorAll('.activity-card');
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar atividades:', error);
+                    const container = document.getElementById('activities-container');
+                    container.innerHTML = `
+                        <div class="md:col-span-3 text-center py-8">
+                            <p class="text-red-500">Erro ao carregar atividades. Por favor, recarregue a página.</p>
+                            <button onclick="loadActivities()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+                                Tentar novamente
+                            </button>
+                        </div>
+                    `;
+                });
+        }
+
+        function checkCsrfToken() {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+            if (!csrftoken || csrftoken.length < 32) {
+                console.warn('Token CSRF inválido ou ausente:', csrftoken);
+                alert('Erro: Token CSRF inválido ou ausente. Certifique-se de que o formulário está sendo servido pelo Django e que {% csrf_token %} está presente.');
+            } else {
+                console.log('Token CSRF encontrado:', csrftoken, 'Comprimento:', csrftoken.length);
+            }
+        }
+
+        function setupEventListeners() {
+            console.log('Configurando eventos para botões e inputs...');
+            
+            // Seleção de método de pagamento
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    console.log('Método de pagamento selecionado:', method.dataset.method);
+                    selectPaymentMethod(this);
+                });
+            });
+
+            // Seleção de prestações
+            document.getElementById('installments').addEventListener('change', function() {
+                selectedInstallments = parseInt(this.value);
+                console.log('Número de prestações selecionado:', selectedInstallments);
+                validateStep3();
+            });
+
+            // Validação de formulário
+            const requiredFields = ['departamento', 'fullName', 'email', 'phone', 'birthDate'];
+            requiredFields.forEach(fieldId => {
+                document.getElementById(fieldId).addEventListener('input', () => {
+                    console.log(`Campo ${fieldId} alterado, validando Step 2...`);
+                    validateStep2();
+                });
+            });
+
+            // Validação de campos de pagamento
+            document.getElementById('valorEntrada')?.addEventListener('input', () => {
+                console.log('Valor de entrada alterado, validando Step 3...');
+                validateStep3();
+            });
+            document.getElementById('comprovativo')?.addEventListener('change', () => {
+                console.log('Comprovativo selecionado, validando Step 3...');
+                validateStep3();
+            });
+            document.getElementById('valorTransferencia')?.addEventListener('input', () => {
+                console.log('Valor de transferência alterado, validando Step 3...');
+                validateStep3();
+            });
+
+            // Formatação do telefone
+            document.getElementById('phone').addEventListener('input', formatPhone);
+            document.getElementById('emergenciaTelefone1').addEventListener('input', formatPhone);
+            document.getElementById('emergenciaTelefone2').addEventListener('input', formatPhone);
+
+            // Navegação entre steps
+            document.getElementById('nextStep1').addEventListener('click', () => {
+                console.log('Clicado em Continuar (Step 1) -> Indo para Step 2');
+                goToStep(2);
+            });
+            document.getElementById('nextStep2').addEventListener('click', () => {
+                console.log('Clicado em Continuar (Step 2) -> Indo para Step 3');
+                goToStep(3);
+            });
+            document.getElementById('nextStep3').addEventListener('click', () => {
+                console.log('Clicado em Finalizar Inscrição (Step 3) -> Processando pagamento');
+                processPayment();
+            });
+            
+            document.getElementById('backStep2').addEventListener('click', () => {
+                console.log('Clicado em Voltar (Step 2) -> Indo para Step 1');
+                goToStep(1);
+            });
+            document.getElementById('backStep3').addEventListener('click', () => {
+                console.log('Clicado em Voltar (Step 3) -> Indo para Step 2');
+                goToStep(2);
+            });
+
+            // Botões finais
+            document.getElementById('downloadReceipt').addEventListener('click', () => {
+                console.log('Clicado em Baixar Resumo da Inscrição');
+                downloadReceipt();
+            });
+            document.getElementById('newRegistration').addEventListener('click', () => {
+                console.log('Clicado em Nova Inscrição');
+                resetForm();
+            });
+
+            // Eventos para segunda prestação
+            document.getElementById('searchBtn').addEventListener('click', searchInscricao);
+            paymentMethodsSecond.forEach(method => {
+                method.addEventListener('click', function() {
+                    selectPaymentMethodSecond(this);
+                });
+            });
+            document.getElementById('comprovativoSecond')?.addEventListener('change', validateSecondPayment);
+            document.getElementById('paySecondBtn').addEventListener('click', processSecondPayment);
+        }
+
+        function selectActivity(card) {
+            activityCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedActivity = card.dataset.activity;
+            selectedPrice = parseFloat(card.dataset.price);
+            document.getElementById('nextStep1').disabled = false;
+            console.log('Actividade selecionada:', selectedActivity, 'Preço:', selectedPrice);
+        }
+
+        function selectPaymentMethod(method) {
+            paymentMethods.forEach(m => m.classList.remove('selected'));
+            method.classList.add('selected');
+            selectedPaymentMethod = method.dataset.method;
+
+            const maoDetails = document.getElementById('maoDetails');
+            const transferenciaDetails = document.getElementById('transferenciaDetails');
+            maoDetails.classList.add('hidden');
+            transferenciaDetails.classList.add('hidden');
+
+            if (selectedPaymentMethod === 'mao') {
+                maoDetails.classList.remove('hidden');
+            } else if (selectedPaymentMethod === 'transferencia') {
+                transferenciaDetails.classList.remove('hidden');
+            }
+
+            console.log('Método de pagamento:', selectedPaymentMethod);
+            validateStep3();
+        }
+
+        function selectPaymentMethodSecond(method) {
+            paymentMethodsSecond.forEach(m => m.classList.remove('selected'));
+            method.classList.add('selected');
+            selectedPaymentMethodSecond = method.dataset.method;
+
+            const maoDetailsSecond = document.getElementById('maoDetailsSecond');
+            const transferenciaDetailsSecond = document.getElementById('transferenciaDetailsSecond');
+            maoDetailsSecond.classList.add('hidden');
+            transferenciaDetailsSecond.classList.add('hidden');
+
+            if (selectedPaymentMethodSecond === 'mao') {
+                maoDetailsSecond.classList.remove('hidden');
+            } else if (selectedPaymentMethodSecond === 'transferencia') {
+                transferenciaDetailsSecond.classList.remove('hidden');
+            }
+
+            console.log('Método de pagamento segunda prestação:', selectedPaymentMethodSecond);
+            validateSecondPayment();
+        }
+
+        function goToStep(step) {
+            if (step === 2 && !selectedActivity) {
+                console.warn('Tentativa de ir para Step 2 sem actividade selecionada');
+                return;
+            }
+            if (step === 3 && !validateStep2()) {
+                console.warn('Tentativa de ir para Step 3 com Step 2 inválido');
+                return;
+            }
+            
+            steps[currentStep].classList.add('hidden');
+            currentStep = step;
+            steps[currentStep].classList.remove('hidden');
+            steps[currentStep].classList.add('fade-in');
+            updateStepIndicators();
+            if (step === 3) {
+                console.log('Indo para Step 3, actualizando resumo...');
+                updateSummary();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStepIndicators() {
+            stepIndicators.forEach((indicator, index) => {
+                const stepNumber = index + 1;
+                indicator.classList.remove('active', 'completed');
+                if (stepNumber < currentStep) {
+                    indicator.classList.add('completed');
+                } else if (stepNumber === currentStep) {
+                    indicator.classList.add('active');
+                }
+            });
+            console.log('Indicadores de passos actualizados, passo actual:', currentStep);
+        }
+
+        function validateStep2() {
+            const departamento = document.getElementById('departamento').value.trim();
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const birthDate = document.getElementById('birthDate').value;
+            const isValid = departamento && fullName && email && phone && birthDate;
+            document.getElementById('nextStep2').disabled = !isValid;
+            console.log('Validação Step 2:', { departamento, fullName, email, phone, birthDate, isValid });
+            return isValid;
+        }
+
+         function validateStep3(showAlerts = false) {
+            let isValid = selectedPaymentMethod !== null && selectedInstallments !== null;
+            let paidAmount = 0;
+            const minimumPayment = selectedInstallments === 2 ? selectedPrice * 0.5 : selectedPrice;
+            console.log('Validação Step 3 - Método:', selectedPaymentMethod, 'Prestações:', selectedInstallments, 'Pagamento mínimo:', minimumPayment, 'Preço total:', selectedPrice);
+
+            // Limpar mensagens de erro anteriores
+            clearError('valorEntradaError');
+            clearError('comprovativoError');
+            clearError('valorTransferenciaError');
+
+            if (selectedPaymentMethod === 'mao') {
+                paidAmount = parseFloat(document.getElementById('valorEntrada').value) || 0;
+                isValid = selectedInstallments === 1 ? Math.abs(paidAmount - selectedPrice) < 0.1 : paidAmount >= minimumPayment && paidAmount <= selectedPrice;
+                if (!isValid && paidAmount > 0 && showAlerts) {
+                    showError('valorEntradaError', `O valor em mão deve ser ${selectedInstallments === 1 ? 'exatamente' : 'pelo menos'} ${formatCurrency(minimumPayment)} para ${selectedInstallments} prestação${selectedInstallments > 1 ? 'es' : ''}.`);
+                }
+                console.log('Validação Step 3 (Mão) - Valor:', paidAmount, 'Válido:', isValid);
+            } else if (selectedPaymentMethod === 'transferencia') {
+                const comprovativoFile = document.getElementById('comprovativo').files[0];
+                paidAmount = parseFloat(document.getElementById('valorTransferencia').value) || 0;
+                const maxSize = 2 * 1024 * 1024; // 2MB
+                isValid = comprovativoFile && comprovativoFile.size <= maxSize && (selectedInstallments === 1 ? Math.abs(paidAmount - selectedPrice) < 0.1 : paidAmount >= minimumPayment && paidAmount <= selectedPrice);
+                if (showAlerts) {
+                    if (!comprovativoFile) {
+                        showError('comprovativoError', 'Por favor, selecione um comprovativo de transferência.');
+                        isValid = false;
+                    } else if (comprovativoFile.size > maxSize) {
+                        showError('comprovativoError', 'O arquivo do comprovativo excede o limite de 2MB.');
+                        isValid = false;
+                    }
+                    if (!isValid && paidAmount > 0) {
+                        showError('valorTransferenciaError', `O valor da transferência deve ser ${selectedInstallments === 1 ? 'exatamente' : 'pelo menos'} ${formatCurrency(minimumPayment)} para ${selectedInstallments} prestação${selectedInstallments > 1 ? 'es' : ''}.`);
+                    }
+                }
+                console.log('Validação Step 3 (Transferência) - Comprovativo:', !!comprovativoFile, 'Tamanho:', comprovativoFile?.size, 'Valor:', paidAmount, 'Válido:', isValid);
+            } else {
+                console.log('Nenhum método de pagamento selecionado');
+                isValid = false;
+            }
+
+            document.getElementById('nextStep3').disabled = !isValid;
+            console.log('Botão nextStep3 disabled:', document.getElementById('nextStep3').disabled);
+            return isValid;
+        }
+
+        function validateSecondPayment() {
+            let isValid = selectedPaymentMethodSecond !== null;
+            if (!currentInscricao) return;
+            
+            if (selectedPaymentMethodSecond === 'mao') {
+                const valor = parseFloat(document.getElementById('valorEntradaSecond').value);
+                isValid = valor === currentInscricao.remaining;
+            } else if (selectedPaymentMethodSecond === 'transferencia') {
+                const comprovativo = document.getElementById('comprovativoSecond').files[0];
+                const valor = parseFloat(document.getElementById('valorTransferenciaSecond').value);
+                const maxSize = 2 * 1024 * 1024;
+                isValid = comprovativo && comprovativo.size <= maxSize && valor === currentInscricao.remaining;
+                if (comprovativo && comprovativo.size > maxSize) {
+                    alert('O arquivo do comprovativo excede o limite de 2MB.');
+                    isValid = false;
+                }
+            }
+            document.getElementById('paySecondBtn').disabled = !isValid;
+        }
+
+        function updateSummary() {
+            const departamento = document.getElementById('departamento').options[document.getElementById('departamento').selectedIndex].text;
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const emergenciaNome1 = document.getElementById('emergenciaNome1').value || 'Não informado';
+            const emergenciaTelefone1 = document.getElementById('emergenciaTelefone1').value || 'Não informado';
+            const emergenciaNome2 = document.getElementById('emergenciaNome2').value || 'Não informado';
+            const emergenciaTelefone2 = document.getElementById('emergenciaTelefone2').value || 'Não informado';
+            
+            const summaryHTML = `
+                <div class="flex justify-between">
+                    <span>Atividade:</span>
+                    <span class="font-semibold">${selectedActivity}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Departamento:</span>
+                    <span class="font-semibold">${departamento}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Participante:</span>
+                    <span class="font-semibold">${fullName}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Email:</span>
+                    <span class="font-semibold">${email}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Contacto do Participante:</span>
+                    <span class="font-semibold">${phone}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Contacto de Emergência 1:</span>
+                    <span class="font-semibold">${emergenciaNome1} - ${emergenciaTelefone1}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Contacto de Emergência 2:</span>
+                    <span class="font-semibold">${emergenciaNome2} - ${emergenciaTelefone2}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Preço:</span>
+                    <span class="font-semibold">${formatCurrency(selectedPrice)}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Prestações:</span>
+                    <span class="font-semibold">${selectedInstallments} ${selectedInstallments > 1 ? 'prestações' : 'prestação'}</span>
+                </div>
+            `;
+            
+            document.getElementById('summaryContent').innerHTML = summaryHTML;
+            document.getElementById('totalAmount').textContent = formatCurrency(selectedPrice);
+            console.log('Resumo atualizado:', { activity: selectedActivity, total: selectedPrice, installments: selectedInstallments });
+        }
+         
+        function showConfirmation(data) {
+              if (data && (!formData || !formData.referencia)) {
+                formData = {
+                    referencia: data.referencia,
+                    activity: data.activity,
+                    fullName: data.fullName,
+                    total: data.total,
+                    paidAmount: data.paid,
+                    remaining: data.remaining,
+                    pago: data.pago,
+                    installments: data.installments,
+                    paymentMethod: data.paymentMethod || selectedPaymentMethodSecond,
+                    isSecond: data.isSecond || false,
+                    timestamp: new Date().toISOString(),
+                    prestacoes: data.prestacoes
+                };
+            }
+            let paymentDetails = '';
+            if (data.pago || data.remaining === 0) {
+                paymentDetails = `
+                    <p class="font-bold text-green-600">Pagamento concluído! Inscrição totalmente paga.</p>
+                    <p>Atividade: ${data.activity || formData.activity}</p>
+                    <p>Participante: ${data.fullName || formData.fullName}</p>
+                    <p>Total pago: ${formatCurrency(data.total || formData.total)}</p>
+                    <p>Referência: ${data.referencia || formData.referencia}</p>
+                `;
+                (data.prestacoes || formData.prestacoes || []).forEach(p => {
+                    if (p.pago) {
+                        const metodo = p.metodo === 'mao' ? 'Dinheiro em Espécie' : 
+                                    p.metodo === 'transferencia' ? 'Transferência Bancária' : 'Não disponível';
+                        paymentDetails += `
+                            <p>Prestação ${p.numero}: ${formatCurrency(p.valor)}</p>
+                            <p>Método da Prestação ${p.numero}: ${metodo}</p>
+                            <p>Data da Prestação ${p.numero}: ${p.data}</p>
+                        `;
+                    }
+                });
+            } else {
+                paymentDetails = `
+                    <p>Primeira Prestação paga: ${formatCurrency(data.paidAmount || formData.paidAmount)}</p>
+                    <p>Método da Primeira Prestação: ${formData.paymentMethod === 'mao' ? 'Dinheiro em Espécie' : 'Transferência Bancária'}</p>
+                    <p>Data da Primeira Prestação: ${formatDateTime(formData.timestamp)}</p>
+                    <p>Restante a pagar: ${formatCurrency(data.remaining || formData.remaining)}</p>
+                    <p>Referência: ${data.referencia || formData.referencia}</p>
+                    <p>Use esta referência para pagar a segunda prestação no site.</p>
+                `;
+            }
+            
+            document.getElementById('confirmacaoPagamento').innerHTML = `
+                <div class="mt-4">
+                    <p class="font-semibold">Detalhes do pagamento:</p>
+                    ${paymentDetails}
+                </div>
+            `;
+        }
+
+        function processPayment() {
+            console.log('Iniciando processPayment...');
+            collectFormData();
+            console.log('Dados do formulário:', formData);
+            const button = document.getElementById('nextStep3');
+            button.innerHTML = '⏳ Processando...';
+            button.disabled = true;
+
+            // Garantir que valores numéricos sejam formatados corretamente
+            if (formData.paymentMethod === 'mao') {
+                formData.valorEntrada = parseFloat(formData.paidAmount || 0).toFixed(2);
+                formData.valorTransferencia = '';
+            } else if (formData.paymentMethod === 'transferencia') {
+                formData.valorTransferencia = parseFloat(formData.paidAmount || 0).toFixed(2);
+                formData.valorEntrada = '';
+            }
+            formData.installments = parseInt(formData.installments || 1);
+            console.log('Dados formatados:', formData);
+
+            const formDataObj = new FormData();
+            formDataObj.append('formData', JSON.stringify(formData));
+
+            if (formData.paymentMethod === 'transferencia') {
+                const comprovativo = document.getElementById('comprovativo').files[0];
+                if (comprovativo) {
+                    formDataObj.append('comprovativo', comprovativo);
+                    console.log('Comprovativo adicionado:', comprovativo.name, comprovativo.size);
+                } else {
+                    console.warn('Nenhum comprovativo selecionado');
+                    alert('Por favor, selecione um comprovativo para transferência.');
+                    button.innerHTML = 'Finalizar Inscrição ➡️';
+                    button.disabled = false;
+                    return;
+                }
+            }
+
+            console.log('CSRF Token:', getCookie('csrftoken'));
+            console.log('FormData enviado:');
+            for (var pair of formDataObj.entries()) {
+                console.log(`${pair[0]}: ${pair[1]}`);
+            }
+
+            fetch('/inscricao/create/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formDataObj
+            })
+            .then(response => {
+                console.log('Resposta do servidor:', response.status, response.statusText);
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro desconhecido');
+                    }
+                    return data;
+                });
+            })
+            .then(data => {
+                console.log('Dados recebidos:', data);
+                if (data.success) {
+                    formData.referencia = data.referencia;
+                    formData.isSecond = false;
+                    showConfirmation(data);
+                    goToStep(4);
+                } else {
+                    throw new Error(data.error || 'Erro ao processar inscrição');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao processar pagamento:', error.message);
+                alert(`Erro: ${error.message}`);
+                button.innerHTML = 'Finalizar Inscrição ➡️';
+                button.disabled = false;
+            });
+        }
+
+        function formatCurrency(value) {
+            return parseFloat(value).toLocaleString('pt-AO', {
+                style: 'currency',
+                currency: 'AOA',
+                minimumFractionDigits: 2
+            }).replace('AOA', 'Kz');
+        }
+
+        function collectFormData() {
+            formData = {
+                activity: selectedActivity,
+                departamento: document.getElementById('departamento').value,
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                birthDate: document.getElementById('birthDate').value,
+                emergenciaNome1: document.getElementById('emergenciaNome1').value,
+                emergenciaTelefone1: document.getElementById('emergenciaTelefone1').value,
+                emergenciaNome2: document.getElementById('emergenciaNome2').value,
+                emergenciaTelefone2: document.getElementById('emergenciaTelefone2').value,
+                observations: document.getElementById('observations').value,
+                paymentMethod: selectedPaymentMethod,
+                total: selectedPrice,
+                installments: selectedInstallments,
+                timestamp: new Date().toISOString()
+            };
+            if (selectedPaymentMethod === 'mao') {
+                formData.paidAmount = parseFloat(document.getElementById('valorEntrada').value) || 0;
+            } else if (selectedPaymentMethod === 'transferencia') {
+                formData.paidAmount = parseFloat(document.getElementById('valorTransferencia').value) || 0;
+            }
+            formData.remaining = formData.total - formData.paidAmount;
+            console.log('Dados do formulário coletados:', formData);
+        }
+
+         function downloadReceipt() {
+            try {
+                console.log('Iniciando downloadReceipt...');
+                console.log('formData atual:', formData);
+
+                 // Verifica e completa os dados se necessário
+                if (!ensureFormDataCompleteness()) {
+                    throw new Error('Dados incompletos para gerar o comprovativo. Por favor, recarregue a página e tente novamente.');
+                }
+
+                // Validar formData
+                const requiredFields = ['activity', 'fullName', 'total', 'paymentMethod', 'paidAmount', 'timestamp', 'referencia'];
+                const missingFields = requiredFields.filter(field => !formData[field]);
+                if (missingFields.length > 0) {
+                    // Tentar recuperar os dados do servidor usando a referência
+                    if (formData.referencia) {
+                        fetch(`/inscricao/search/?query=${encodeURIComponent(formData.referencia)}`, {
+                            headers: {
+                                'Cache-Control': 'no-cache'
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success && data.inscricoes.length > 0) {
+                                    const inscricao = data.inscricoes[0];
+                                    formData = {
+                                        referencia: inscricao.referencia,
+                                        activity: inscricao.activity,
+                                        fullName: inscricao.fullName,
+                                        total: inscricao.total,
+                                        paidAmount: inscricao.paid,
+                                        remaining: inscricao.remaining,
+                                        pago: inscricao.pago,
+                                        installments: inscricao.installments,
+                                        paymentMethod: inscricao.prestacoes[inscricao.prestacoes.length - 1].metodo,
+                                        timestamp: inscricao.prestacoes[inscricao.prestacoes.length - 1].data,
+                                        departamento: inscricao.departamento,
+                                        email: inscricao.email,
+                                        phone: inscricao.phone,
+                                        emergenciaNome1: inscricao.emergenciaNome1 || '',
+                                        emergenciaTelefone1: inscricao.emergenciaTelefone1 || '',
+                                        emergenciaNome2: inscricao.emergenciaNome2 || '',
+                                        emergenciaTelefone2: inscricao.emergenciaTelefone2 || '',
+                                        observations: inscricao.observations || '',
+                                        isSecond: inscricao.prestacoes.length > 1,
+                                        prestacoes: inscricao.prestacoes
+                                    };
+                                    console.log('Dados recuperados do servidor:', formData);
+                                    generateReceipt(); // Chama uma função para gerar o PDF
+                                } else {
+                                    throw new Error('Inscrição não encontrada no servidor');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Erro ao recuperar dados:', error);
+                                alert('Erro: Não foi possível recuperar os dados da inscrição. Tente novamente.');
+                            });
+                    } else {
+                        throw new Error('Dados incompletos para gerar o comprovativo. Campos ausentes: ' + missingFields.join(', '));
+                    }
+                    return;
+                }
+
+                generateReceipt(); // Chama a função para gerar o PDF se os dados estão completos
+            } catch (error) {
+                console.error('Erro ao gerar comprovativo:', error.message);
+                alert(`Erro ao gerar comprovativo: ${error.message}`);
+            }
+        }
+        // Função separada para gerar o PDF
+        function generateReceipt() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Resto do código de geração do PDF (mantém o código original da função downloadReceipt)
+            const activityNames = {
+                'acampamento': 'Acampamento',
+                'piquenique': 'Piquenique',
+                'gala': 'Gala',
+                'encontros-de-casais': 'Encontros de Casais',
+                'excursao': 'Excursão'
+            };
+
+            const activityUnits = {
+                'encontros-de-casais': 'por casal',
+                'acampamento': 'por pessoa',
+                'piquenique': 'por pessoa',
+                'gala': 'por pessoa',
+                'excursao': 'por pessoa'
+            };
+
+            const instituicao = {
+                nome: "IGREJA EVANGÉLICA DO LUBANGO",
+                endereco: "Dr.António Agostinho Neto, Lubango, Angola",
+                telefone: "+244 939 207 821",
+                email: "apoio@igrejaevangelicadolubango.org",
+                site: "www.igrejaevangelicadolubango.org",
+                iban: "AO06 0006 0000 0000 0000 0000 3",
+                nib: "0006 0000 0000 0000 0000 23"
+            };
+
+            const departamento = formData.departamento || 'N/A';
+            const dataInscricao = formData.timestamp 
+                ? new Date(formData.timestamp).toLocaleDateString('pt-AO', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                : 'Data não disponível';
+            const horaInscricao = formData.timestamp 
+                ? new Date(formData.timestamp).toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' })
+                : 'Hora não disponível';
+            const valorTotal = formData.total ? formatCurrency(formData.total) : 'Kz 0,00';
+            const valorPago = formData.paidAmount ? formatCurrency(formData.paidAmount) : 'Kz 0,00';
+            const prestacaoTitle = formData.isSecond ? 'Segunda Prestação' : (formData.paidAmount < formData.total ? 'Primeira Prestação' : 'Pagamento em Uma Prestação (Integral)');
+            const remaining = formData.remaining || 0;
+
+            // Cabeçalho institucional
+            doc.setFillColor(40, 53, 147);
+            doc.rect(0, 0, 210, 30, 'F');
+            doc.setFontSize(16);
+            doc.setTextColor(255, 255, 255);
+            doc.text(instituicao.nome, 105, 15, { align: 'center' });
+
+            // Linha divisória
+            doc.setDrawColor(200, 200, 200);
+            doc.setLineWidth(0.5);
+            doc.line(20, 35, 190, 35);
+
+            // Título do documento
+            doc.setFontSize(14);
+            doc.setTextColor(40, 53, 147);
+            doc.text('COMPROVATIVO DE INSCRIÇÃO', 105, 45, { align: 'center' });
+
+            // Código de referência
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Código: ${formData.referencia || 'N/A'}`, 20, 55);
+            doc.text(`Data: ${dataInscricao} ${horaInscricao}`, 160, 55);
+
+            // Linha divisória
+            doc.line(20, 60, 190, 60);
+
+            // Configurações de texto
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+
+            // Dados da inscrição
+            let yPosition = 70;
+
+            const addText = (label, value, y) => {
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${label}:`, 20, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(value, 60, y);
+                return y + 7;
+            };
+
+            yPosition = addText('Actividade', `${activityNames[formData.activity] || formData.activity} (${activityUnits[formData.activity] || 'por pessoa'})`, yPosition);
+            yPosition = addText('Departamento', departamento, yPosition);
+            yPosition = addText('Participante', formData.fullName, yPosition);
+            yPosition = addText('Email', formData.email || 'N/A', yPosition);
+            yPosition = addText('Telefone', formData.phone || 'N/A', yPosition);
+            yPosition += 5;
+
+            doc.setFont('helvetica', 'bold');
+            doc.text('Contactos de Emergência:', 20, yPosition);
+            yPosition += 7;
+            yPosition = addText('Contacto 1', 
+                `${formData.emergenciaNome1 || 'Não informado'} - ${formData.emergenciaTelefone1 || 'Não informado'}`, 
+                yPosition);
+            yPosition = addText('Contacto 2', 
+                `${formData.emergenciaNome2 || 'Não informado'} - ${formData.emergenciaTelefone2 || 'Não informado'}`, 
+                yPosition);
+            yPosition += 10;
+
+            doc.setFillColor(240, 240, 240);
+            doc.rect(20, yPosition, 170, 40 + (remaining > 0 ? 7 : 0), 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.text('DETALHES DO PAGAMENTO:', 25, yPosition + 7);
+            doc.setFont('helvetica', 'normal');
+            let paymentY = yPosition + 15;
+            doc.text(`• Tipo: ${prestacaoTitle}`, 25, paymentY);
+            paymentY += 7;
+            doc.text(`• Método: ${formData.paymentMethod === 'mao' ? 'Dinheiro em Espécie' : 'Transferência Bancária'}`, 25, paymentY);
+            paymentY += 7;
+            doc.text(`• Valor Pago: ${valorPago}`, 25, paymentY);
+            if (remaining > 0) {
+                paymentY += 7;
+                doc.text(`• Restante: ${formatCurrency(remaining)}`, 25, paymentY);
+            }
+            if (formData.paymentMethod === 'transferencia') {
+                paymentY += 7;
+                doc.text(`• Referência: ${formData.referencia || 'N/A'}`, 25, paymentY);
+            }
+            yPosition += 40 + (remaining > 0 ? 7 : 0);
+
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`TOTAL: ${valorTotal}`, 20, yPosition + 10);
+
+            doc.line(20, yPosition + 15, 190, yPosition + 15);
+
+            if (formData.paymentMethod === 'transferencia') {
+                yPosition += 25;
+                doc.setFont('helvetica', 'bold');
+                doc.text('DADOS BANCÁRIOS:', 20, yPosition);
+                doc.setFont('helvetica', 'normal');
+                yPosition += 7;
+                doc.text(`• Titular: ${instituicao.nome}`, 25, yPosition);
+                yPosition += 7;
+                doc.text(`• IBAN: ${instituicao.iban}`, 25, yPosition);
+                yPosition += 7;
+                doc.text(`• NIB: ${instituicao.nib}`, 25, yPosition);
+            }
+
+            doc.setFontSize(9);
+            doc.setTextColor(100, 100, 100);
+            yPosition = 270;
+            doc.text(instituicao.endereco, 105, yPosition, { align: 'center' });
+            yPosition += 5;
+            doc.text(`Telefone: ${instituicao.telefone} | Email: ${instituicao.email}`, 105, yPosition, { align: 'center' });
+            yPosition += 5;
+            doc.text(`Site: ${instituicao.site}`, 105, yPosition, { align: 'center' });
+
+            const safeFullName = formData.fullName.replace(/[^a-zA-Z0-9]/g, '_');
+            const safePrestacaoTitle = prestacaoTitle.replace(/[^a-zA-Z0-9]/g, '_');
+            doc.save(`Comprovativo_Inscricao_${safeFullName}_${safePrestacaoTitle}_${Date.now()}.pdf`);
+            console.log('PDF gerado com sucesso:', `Comprovativo_Inscricao_${safeFullName}_${safePrestacaoTitle}_${Date.now()}.pdf`);
+        }
+
+        function ensureFormDataCompleteness() {
+            // Se formData estiver vazio ou incompleto, tenta recuperar do currentInscricao
+            if (!formData || !formData.referencia) {
+                if (currentInscricao) {
+                    formData = {
+                        referencia: currentInscricao.referencia,
+                        activity: currentInscricao.activity,
+                        fullName: currentInscricao.fullName,
+                        total: currentInscricao.total,
+                        paidAmount: currentInscricao.paid,
+                        remaining: currentInscricao.remaining,
+                        pago: currentInscricao.pago,
+                        installments: currentInscricao.installments,
+                        paymentMethod: selectedPaymentMethodSecond || 'transferencia',
+                        isSecond: true,
+                        timestamp: new Date().toISOString(),
+                        prestacoes: currentInscricao.prestacoes,
+                        departamento: currentInscricao.departamento,
+                        email: currentInscricao.email,
+                        phone: currentInscricao.phone,
+                        emergenciaNome1: currentInscricao.emergenciaNome1,
+                        emergenciaTelefone1: currentInscricao.emergenciaTelefone1,
+                        emergenciaNome2: currentInscricao.emergenciaNome2,
+                        emergenciaTelefone2: currentInscricao.emergenciaTelefone2,
+                        observations: currentInscricao.observations
+                    };
+                }
+            }
+            
+            // Garante que campos essenciais existam
+            const essentialFields = ['activity', 'fullName', 'total', 'paymentMethod', 'paidAmount', 'timestamp', 'referencia'];
+            const missingFields = essentialFields.filter(field => !formData[field]);
+            
+            if (missingFields.length > 0) {
+                console.warn('Campos essenciais faltando no formData:', missingFields);
+                return false;
+            }
+            
+            return true;
+        }
+
+        function resetForm() {
+            // Preservar formData para download do comprovativo, se necessário
+            const savedFormData = { ...formData }; // Faz uma cópia do formData atual
+            currentStep = 1;
+            selectedActivity = null;
+            selectedPrice = 0;
+            selectedPaymentMethod = null;
+            selectedDepartamento = null;
+            selectedInstallments = 1;
+            formData = {}; // Reinicia o formData
+            
+            activityCards.forEach(card => card.classList.remove('selected'));
+            paymentMethods.forEach(method => method.classList.remove('selected'));
+            
+            document.querySelectorAll('input, textarea, select').forEach(input => input.value = '');
+            document.getElementById('installments').value = '1';
+            
+            document.getElementById('nextStep1').disabled = true;
+            document.getElementById('nextStep2').disabled = true;
+            document.getElementById('nextStep3').disabled = true;
+            document.getElementById('nextStep3').innerHTML = 'Finalizar Inscrição ➡️';
+            
+            Object.values(steps).forEach(step => step.classList.add('hidden'));
+            steps[1].classList.remove('hidden');
+            updateStepIndicators();
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            console.log('Formulário reiniciado');
+            // Restaurar formData após reiniciar, se necessário
+            if (currentStep === 4) {
+                formData = savedFormData; // Restaura os dados para o comprovativo
+            }
+        }
+
+        function formatPhone(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.startsWith('244')) {
+                value = '+' + value;
+            } else if (!value.startsWith('+')) {
+                value = '+244' + value;
+            }
+            e.target.value = value;
+            console.log('Telefone formatado:', e.target.id, value);
+        }
+
+        // Função para formatar data
+        function formatDateTime(isoString) {
+            if (!isoString || isoString === 'Não disponível') return 'Não disponível';
+            const date = new Date(isoString);
+            return date.toLocaleString('pt-BR', { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(value);
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+       
+        // Função para buscar inscrição
+       function searchInscricao() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) {
+                alert('Por favor, insira a referência ou nome');
+                return;
+            }
+
+            fetch(`/inscricao/search/?query=${encodeURIComponent(query)}`, {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            })
+                .then(response => {
+                    console.log('Resposta da busca:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Dados da busca:', data);
+                    if (!data.success || data.inscricoes.length === 0) {
+                        alert('Inscrição não encontrada');
+                        return;
+                    }
+                    // Assume o primeiro resultado
+                    currentInscricao = data.inscricoes[0];
+                    let summaryHtml = `
+                        <div class="flex justify-between">
+                            <span>Atividade:</span>
+                            <span class="font-semibold">${currentInscricao.activity}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Participante:</span>
+                            <span class="font-semibold">${currentInscricao.fullName}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Total:</span>
+                            <span class="font-semibold">${formatCurrency(currentInscricao.total)}</span>
+                        </div>
+                    `;
+                    if (currentInscricao.pago || currentInscricao.remaining <= 0) {
+                        summaryHtml += `
+                            <div class="flex justify-between">
+                                <span class="font-bold text-green-600">Status:</span>
+                                <span class="font-semibold text-green-600">Inscrição totalmente paga</span>
+                            </div>
+                        `;
+                        currentInscricao.prestacoes.forEach(p => {
+                            if (p.pago) {
+                                const metodo = p.metodo === 'mao' ? 'Dinheiro em Espécie' : 
+                                            p.metodo === 'transferencia' ? 'Transferência Bancária' : 'Não disponível';
+                                summaryHtml += `
+                                    <div class="flex justify-between">
+                                        <span>Prestação ${p.numero}:</span>
+                                        <span class="font-semibold">${formatCurrency(p.valor)}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Método da Prestação ${p.numero}:</span>
+                                        <span class="font-semibold">${metodo}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Data da Prestação ${p.numero}:</span>
+                                        <span class="font-semibold">${p.data}</span>
+                                    </div>
+                                `;
+                            }
+                        });
+                        document.getElementById('searchResults').classList.add('hidden');
+                        document.getElementById('confirmacaoPagamento').innerHTML = summaryHtml;
+                        goToStep(4);
+                    } else {
+                        summaryHtml += `
+                            <div class="flex justify-between">
+                                <span>Pago anteriormente:</span>
+                                <span class="font-semibold">${formatCurrency(currentInscricao.paid)}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Método da Primeira Prestação:</span>
+                                <span class="font-semibold">${currentInscricao.prestacoes[0].metodo === 'mao' ? 'Dinheiro em Espécie' : currentInscricao.prestacoes[0].metodo === 'transferencia' ? 'Transferência Bancária' : 'Não disponível'}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Data da Primeira Prestação:</span>
+                                <span class="font-semibold">${currentInscricao.prestacoes[0].data}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Restante:</span>
+                                <span class="font-semibold">${formatCurrency(currentInscricao.remaining)}</span>
+                            </div>
+                        `;
+                        document.getElementById('remainingAmount').textContent = formatCurrency(currentInscricao.remaining);
+                        document.getElementById('valorEntradaSecond').value = currentInscricao.remaining;
+                        document.getElementById('valorTransferenciaSecond').value = currentInscricao.remaining;
+                        document.getElementById('searchResults').classList.remove('hidden');
+                        Object.values(steps).forEach(step => step.classList.add('hidden'));
+                    }
+                    document.getElementById('inscricaoSummary').innerHTML = summaryHtml;
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar inscrição:', error);
+                    alert('Erro ao buscar inscrição');
+                });
+        }
+
+       // Função para processar pagamento da segunda prestação
+       function processSecondPayment() {
+
+        const button = document.getElementById('paySecondBtn');
+        button.innerHTML = '⏳ Processando...';
+        button.disabled = true;
+
+        const formDataObj = new FormData();
+        formDataObj.append('reference', currentInscricao.referencia);
+        formDataObj.append('paymentMethod', selectedPaymentMethodSecond);
+        formDataObj.append('amount', parseFloat(currentInscricao.remaining).toFixed(2));
+
+        if (selectedPaymentMethodSecond === 'transferencia') {
+            const comprovativo = document.getElementById('comprovativoSecond').files[0];
+            if (!comprovativo) {
+                alert('Por favor, selecione um comprovativo para transferência.');
+                button.innerHTML = 'Pagar Segunda Prestação ➡️';
+                button.disabled = false;
+                return;
+            }
+            formDataObj.append('comprovativo', comprovativo);
+            console.log('Comprovativo adicionado:', comprovativo.name, comprovativo.size);
+        }
+
+        console.log('FormData enviado para segunda prestação:');
+        for (var pair of formDataObj.entries()) {
+            console.log(`${pair[0]}: ${pair[1]}`);
+        }
+
+        fetch('/inscricao/pay_second/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formDataObj
+        })
+            .then(response => {
+                console.log('Resposta do pagamento:', response.status, response.statusText);
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro desconhecido');
+                    }
+                    return data;
+                });
+            })
+            .then(data => {
+                console.log('Dados do pagamento:', data);
+                if (data.success) {
+                    // CORREÇÃO: Preencher formData com todos os dados necessários
+                    formData = {
+                        referencia: data.referencia,
+                        activity: data.activity,
+                        fullName: data.fullName,
+                        total: data.total,
+                        paidAmount: data.paid,
+                        remaining: data.remaining,
+                        pago: data.pago,
+                        installments: data.installments,
+                        paymentMethod: selectedPaymentMethodSecond,
+                        isSecond: true,
+                        timestamp: new Date().toISOString(),
+                        prestacoes: data.prestacoes,
+                        // Adicionar campos que podem estar faltando
+                        departamento: data.departamento || currentInscricao.departamento,
+                        email: data.email || currentInscricao.email,
+                        phone: data.phone || currentInscricao.phone,
+                        emergenciaNome1: data.emergenciaNome1 || currentInscricao.emergenciaNome1,
+                        emergenciaTelefone1: data.emergenciaTelefone1 || currentInscricao.emergenciaTelefone1,
+                        emergenciaNome2: data.emergenciaNome2 || currentInscricao.emergenciaNome2,
+                        emergenciaTelefone2: data.emergenciaTelefone2 || currentInscricao.emergenciaTelefone2,
+                        observations: data.observations || currentInscricao.observations
+                    };
+                    
+                    alert('Segunda prestação paga com sucesso!');
+                    document.getElementById('searchResults').classList.add('hidden');
+                    document.getElementById('searchQuery').value = '';
+                    goToStep(4);
+                    showConfirmation(data);
+                } else {
+                    throw new Error(data.error || 'Erro ao processar pagamento');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao processar pagamento:', error.message);
+                alert(`Erro ao processar pagamento: ${error.message}`);
+            })
+            .finally(() => {
+                button.innerHTML = 'Pagar Segunda Prestação ➡️';
+                button.disabled = false;
+            });
+       }
+
+       // Função de debounce para limitar chamadas repetitivas
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Função para exibir mensagens de erro no DOM
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('active');
+        }
+
+        function clearError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = '';
+            errorElement.classList.remove('active');
+        }
+
+        // Modificar o evento do botão nextStep3 para mostrar alertas
+        document.getElementById('nextStep3').addEventListener('click', () => {
+            console.log('Clicado em Finalizar Inscrição (Step 3) -> Processando pagamento');
+            if (validateStep3(true)) {
+                processPayment();
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
