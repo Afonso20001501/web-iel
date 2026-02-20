@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-s!52rjk9_yoyf5wm2b7%io@wf715+u$z-%5@=!$^y2!)w+89=^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['igrejaevangelicadolubango.org', 'www.igrejaevangelicadolubango.org']
+ALLOWED_HOSTS = ['127.0.0.1:8000','127.0.0.1','igrejaevangelicadolubango.org', 'www.igrejaevangelicadolubango.org']
 
 
 # Application definition
