@@ -1,53 +1,59 @@
 {% load static %}
 
 
+<section class="live-section">
 
-              <section id="hero" class="hero section dark-background">
+  <div class="live-container">
 
-                <img src=" {% static "webiel/img/c.jpg" %} " alt="" data-aos="fade-in">
-          
-                <div class="container">
-                  <div class="row">
-                    <div class="col-xl-4">
-                      <h1 data-aos="fade-up" class="text-white">Cultos On-line</h1>
-                      <blockquote data-aos="fade-up" data-aos-delay="100">
-                        <p>Acompanhe os cultos que temos frequentemente preparados para si. Esperamos que cada momento seja de grande edificação espiritual e crescimento em sua jornada de fé.
-                          <br/>
-                          "Porque onde estiverem dois ou três reunidos em meu nome, ali estou no meio deles." – <strong>Mateus 18:20</strong> 
-                      </blockquote>
-                      <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                        <a id="latestVideo" href="#" class="btn-watch-video d-flex align-items-center" onclick="openVideo(); return false;">
-                            <i class='bx bx-play-circle'></i><span> Assistir Culto</span>
-                        </a>
-                      </div>
-                    
-                    <!-- Contêiner para o vídeo (inicialmente oculto) -->
-                      <div id="videoContainer" style="display: none; margin-top: 20px;">
-                        <iframe id="videoFrame" width="100%" height="500px" 
-                            src="" 
-                            frameborder="0" allowfullscreen>
-                        </iframe>
-                      </div>
-              
-                    </div>
-                  </div>
-                </div>
-          
-              </section><!-- /Hero Section -->
+    <div class="live-text">
+      <h1>Cultos On-line</h1>
+      <p>
+        Acompanhe os cultos que temos frequentemente preparados para si.
+        Cada momento é uma oportunidade de edificação e crescimento espiritual.
+      </p>
+      <blockquote>
+        "Porque onde estiverem dois ou três reunidos em meu nome,
+        ali estou no meio deles." – Mateus 18:20
+      </blockquote>
+    </div>
+
+    <div class="live-video" id="videoArea">
+      <iframe
+        id="youtubeVideo"
+        src="https://www.youtube.com/embed/DzABU0QQdMk?enablejsapi=1&mute=1"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+      <div class="video-overlay">
+        <span>Passa o cursor para assistir</span>
+      </div>
+    </div>
+
+  </div>
+
+</section>
 
 
 
-<!-- <div class="container text-center mt-5">
-    <a href="https://web.facebook.com/share/v/ixBCaBXuUUXUT8jv/" target="_blank" class="btn-play">
-        <span class="play-icon"></span>
-    </a>
-</div> -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
 
-<!-- Script para carregar o vídeo dinamicamente -->
-<script>  
-  function openVideo() {
-      var videoUrl = "https://www.youtube.com/embed/I1YO7EbVlc8";
-      document.getElementById("videoFrame").src = videoUrl;
-      document.getElementById("videoContainer").style.display = "block";
-  }
+  const videoArea = document.getElementById("videoArea");
+  const iframe = document.getElementById("youtubeVideo");
+
+  videoArea.addEventListener("mouseenter", function() {
+      iframe.contentWindow.postMessage(
+          '{"event":"command","func":"playVideo","args":""}',
+          '*'
+      );
+  });
+
+  videoArea.addEventListener("mouseleave", function() {
+      iframe.contentWindow.postMessage(
+          '{"event":"command","func":"pauseVideo","args":""}',
+          '*'
+      );
+  });
+
+});
 </script>

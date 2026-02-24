@@ -166,3 +166,23 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Atualiza o tempo de expiração da sessão a cada requisição
 SESSION_SAVE_EVERY_REQUEST = True
+
+# ------------------------------
+# Content Security Policy (CSP) - YouTube
+# ------------------------------
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+    "'unsafe-eval'",
+    "https://www.youtube.com",
+    "https://youtube.com",
+    "https://*.youtube.com",
+    "https://*.google.com",
+    "blob:",
+)
+
+CSP_FRAME_SRC = (
+    "'self'",
+    "https://www.youtube.com",
+    "https://youtube.com",
+)
