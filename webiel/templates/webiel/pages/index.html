@@ -20,6 +20,18 @@
 
 
 
+<script>
+ 
+    // Proteção para o AOS não quebrar a página
+    try {
+      if (typeof AOS !== 'undefined') {
+        AOS.init();
+      }
+    } catch (e) {
+      console.warn("AOS não definido, ignorando...");
+    }
 
+
+</script>
     
     

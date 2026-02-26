@@ -7,6 +7,7 @@
 
 <script src="{% static 'webiel/js/glightbox.min.js' %} "></script>
 <script>
+  
   const glightbox = GLightbox({
       selector: 'glightbox'
   });
@@ -32,7 +33,6 @@
 
 <!-- Custom scripts -->
 <script>
-
 $(document).ready(function() {
   $('#main-fab').on('click', function() {
       $('.fab-options').toggle();
@@ -41,17 +41,17 @@ $(document).ready(function() {
   $('#back-to-top').on('click', function() {
       $('html, body').animate({ scrollTop: 0 }, 'slow');
   });
-  // Initialize AOS
 
+  // Initialize AOS
   if (typeof AOS !== 'undefined') {
       AOS.init({
-    duration: 800, // Duration of animation in milliseconds
-    easing: 'ease-in-out', // Easing function
-    once: false, // Whether animation should happen only once
-    mirror: false // Whether elements should animate out while scrolling past them
-});
+          duration: 800,
+          easing: 'ease-in-out',
+          once: false,
+          mirror: false
+      });
   }
-
+});
 </script>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
