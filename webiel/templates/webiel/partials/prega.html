@@ -1,10 +1,7 @@
 {% load static %}
 
-
 <section class="live-section">
-
   <div class="live-container">
-
     <div class="live-text">
       <h1>Cultos On-line</h1>
       <p>
@@ -18,42 +15,75 @@
     </div>
 
     <div class="live-video" id="videoArea">
-      <iframe
-        id="youtubeVideo"
-        src="https://www.youtube.com/embed/DzABU0QQdMk?enablejsapi=1&mute=1"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-      </iframe>
-      <div class="video-overlay">
+      <div id="player"></div>
+      
+      <div class="video-overlay" id="videoOverlay" style="pointer-events: none;">
         <span>Passa o cursor para assistir</span>
       </div>
     </div>
-
   </div>
-
 </section>
 
-
-
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+  // 1. Evitar conflitos: verificamos se a tag já existe
+  if (!document.getElementById('yt-api-script')) {
+    var tag = document.createElement('script');
+    tag.id = 'yt-api-script';
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
 
-  const videoArea = document.getElementById("videoArea");
-  const iframe = document.getElementById("youtubeVideo");
+  var player;
+  var isPlayerReady = false;
 
-  videoArea.addEventListener("mouseenter", function() {
-      iframe.contentWindow.postMessage(
-          '{"event":"command","func":"playVideo","args":""}',
-          '*'
-      );
+  // Função global exigida pela API do YouTube
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      videoId: 'DzABU0QQdMk',
+      playerVars: {
+        'autoplay': 0,
+        'mute': 1,
+        'enablejsapi': 1,
+        'origin': window.location.origin,
+        'rel': 0,
+        'controls': 1
+      },
+      events: {
+        'onReady': function(event) {
+          isPlayerReady = true;
+          console.log("✅ Conexão segura estabelecida.");
+        }
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const videoArea = document.getElementById("videoArea");
+
+    // Proteção para o AOS não quebrar a página
+    try {
+      if (typeof AOS !== 'undefined') {
+        AOS.init();
+      }
+    } catch (e) {
+      console.warn("AOS não definido, ignorando...");
+    }
+
+    if (videoArea) {
+      videoArea.addEventListener("mouseenter", function() {
+        if (isPlayerReady && player && typeof player.playVideo === 'function') {
+          player.playVideo();
+        }
+      });
+
+      videoArea.addEventListener("mouseleave", function() {
+        if (isPlayerReady && player && typeof player.pauseVideo === 'function') {
+          player.pauseVideo();
+        }
+      });
+    }
   });
-
-  videoArea.addEventListener("mouseleave", function() {
-      iframe.contentWindow.postMessage(
-          '{"event":"command","func":"pauseVideo","args":""}',
-          '*'
-      );
-  });
-
-});
 </script>

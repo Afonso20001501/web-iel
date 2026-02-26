@@ -1085,7 +1085,7 @@ def editar_carta(request, carta_id):
     logger.warning(f"Método inválido para editar_carta: {request.method}")
     return JsonResponse({'status': 'error', 'message': 'Método inválido'}, status=400)
 
-@csrf_exempt
+@csrf_exempt 
 @login_required
 def deletar_carta(request, carta_id):
     if request.method == 'POST':

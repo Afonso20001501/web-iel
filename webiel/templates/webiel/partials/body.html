@@ -42,16 +42,19 @@ $(document).ready(function() {
       $('html, body').animate({ scrollTop: 0 }, 'slow');
   });
   // Initialize AOS
-  AOS.init({
+
+  if (typeof AOS !== 'undefined') {
+      AOS.init({
     duration: 800, // Duration of animation in milliseconds
     easing: 'ease-in-out', // Easing function
     once: false, // Whether animation should happen only once
     mirror: false // Whether elements should animate out while scrolling past them
 });
-});
+  }
+
 </script>
 
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v10.0"></script>
 </body>
 </html>
