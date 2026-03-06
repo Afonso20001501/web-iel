@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{% static 'webiel/img/icons/logo.png' %}"/>
+
     <style>
         body {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
@@ -340,7 +341,9 @@
             }
         }
     </style>
+
 </head>
+
 <body>
     {% csrf_token %}
     <!-- Loading Overlay -->
@@ -397,11 +400,11 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label for="ano" class="form-label">Ano do Casamento</label>
-                            <input type="number" class="form-control" id="ano" name="ano" value="{{ ano }}" placeholder="Ex.: 2025">
+                            <input type="number" class="form-control" id="ano" name="ano" value="{{ ano }}" placeholder="Ex.: 2026">
                         </div>
                         <div class="col-md-4">
                             <label for="nome" class="form-label">Nome (Noivo ou Noiva)</label>
-                            <input type="text" class="form-control" id="nome" name="nome" value="{{ nome }}" placeholder="Ex.: João">
+                            <input type="text" class="form-control" id="nome" name="nome" value="{{ nome }}" placeholder="Ex.: Igreja">
                         </div>
                         <div class="col-md-4 d-flex align-items-end gap-2">
                             <button type="submit" class="btn btn-brand">Pesquisar</button>
