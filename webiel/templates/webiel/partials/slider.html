@@ -2,42 +2,82 @@
 
 <!-- SLIDER -->
 <div class="slider-wrapper owl-carousel owl-theme" id="hero-slider">
-  
-     <div class="slide1 min-vh-100 bg-cover d-flex align-items-center">
-       <div class="container">
-         <div class="row">
-           <div class="col-12">
-             <h6  class="text-uppercase slider_text ">Seja Bem - Vindo(a) <strong>igreja evangélica do Lubango</strong></h6>
-             <h1 class="display-2 my-3 text-uppercase text-white">Saiba Quem Somos</h1>
-             <a  href="{% url "webiel:sobre_historial" %}" class="btn btn-brand">Sobre Nós</a>
-           </div>
-         </div>
-       </div>
-     </div>
-     
-      <div class="slide2 min-vh-100 bg-cover d-flex align-items-center">
-          <div class="container">
-            <div class="row">
-              <div class="col-12 text-center">
-                  <h6 class="text-uppercase  slider_text">A voz do Evangelho</h6>
-                  <h1  class="display-2 my-3 text-uppercase text-white">CultoS Radiofonicos  <br/> ISPI 93.3</h1>
-                  <a  href="https://radioispi.com/index.php" target="_blank" rel="noopener noreferrer" class="btn btn-brand" id="btn-brand">Rádio ISPI</a>
-              </div>
-            </div>
-          </div>
-      </div>
 
-      <div class="slide3 min-vh-100 bg-cover d-flex align-items-center">
-          <div class="container">
+    <!-- SLIDE 1 -->
+    <div class="slide1 min-vh-100 bg-cover d-flex align-items-center">
+        <div class="container">
             <div class="row">
-              <div class="col-12 text-end">
-                <h6  class="text-uppercase slider_text"> Conheça e participe dos programas semanais</h6>
-                <h1  class="display-2 my-3 text-uppercase text-white">Nossos Programas</h1>
-                <a  href="{% url "webiel:noticia_iel" %}" class="btn btn-brand" id="btn-brand">Programas</a>
-              </div>
+                <div class="col-lg-10">
+
+                    <h1 class="slider_text">
+                        <span style="font-size:42px;">Seja Bem-vindo(a)</span>
+                        <span>Igreja Evangélica do Lubango</span>
+                    </h1>
+
+                    <p class="section-tag-slide fs-4 mb-4" style="color: #d6d6d6; font-size: 12px !important;">
+                        Uma comunidade de fé, adoração e transformação.
+                    </p>
+
+                    <a href="{% url 'webiel:sobre_historial' %}" class="btn btn-brand btn-lg">
+                        Saiba Quem Somos
+                    </a>
+
+                </div>
             </div>
-          </div>
-      </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2 (PADRONIZADO) -->
+    <div class="slide2 min-vh-100 bg-cover d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+
+                    <h1 class="slider_text">
+                        <span style="font-size:42px;">A voz do Evangelho</span>
+                        <span>ISPI 93.3 FM</span>
+                    </h1>
+
+                    <p class="section-tag-slide fs-4 mb-4" style="color: #d6d6d6; font-size: 12px !important;">
+                        Acompanhe mensagens, louvores e programação especial ao vivo.
+                    </p>
+
+                    <a href="https://radioispi.com/index.php"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn btn-brand btn-lg">
+                        Ouvir Rádio ISPI
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3 (PADRONIZADO) -->
+    <div class="slide3 min-vh-100 bg-cover d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+
+                    <h1 class="slider_text">
+                        <span style="font-size:42px;">Conheça e participe</span>
+                        <span>Dos Nossos Programas</span>
+                    </h1>
+
+                    <p class="section-tag-slide fs-4 mb-4" style="color: #d6d6d6; font-size: 12px !important;">
+                        Momentos especiais de ensino, adoração e comunhão.
+                    </p>
+
+                    <a href="{% url 'webiel:noticia_iel' %}" class="btn btn-brand btn-lg">
+                        Ver Programas
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 

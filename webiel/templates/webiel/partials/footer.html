@@ -3,23 +3,21 @@
 <footer class="footer bg-cover pb-lg-3 footer-area" id="footer">
 
      <div class="container">
-          <div class="row">
+          <div class="row"> 
                <div class="col-12 col-sm-6 col-lg-3 pt-lg-0">
                     <div class="single-footer-widget footer-iel mb-70">
                         <div id="news" class="nav-brand text-white p-0 me-0 mb-lg-4">
-                            <h5 class="widget-title" style="font-size: 25px !important; font-weight: 800 !important;">I.E.L</h5>
+                            <a href="{% url "webiel:home" %}" class="navbar-brand logo"><img src=" {% static "webiel/img/Logo_iel.png" %} "/></a> 
+                            <div class="divider_footer"></div>
                             <p>A Visão da Igreja, está centrada em Pessoas salvas e discípuladas para o compromisso com a missão. <strong>Mateus 28:19-20</strong>
                             </p>
-                            <form action="" class="needs-validation mt-3" method="post"   novalidate="">
-                                {% csrf_token %}
-                                <label for="subscr-email" class="form-label1 mb-2">Subescreve na Newsletter</label>
-                                <div class="input-group">
-                                  <input type="email" id="subscr-email" name="email" class="form-control rounded-start ps-5" placeholder="seu email" required>
-                                  <i class="bx bx-envelope fs-lg text-muted position-absolute top-50 start-0 translate-middle-y ms-3 zindex-5"></i>
-                                  <div  class="invalid-tooltip position-absolute top-100 start-0">Por favor insere o seu indereço de Email.</div>
-                                  <button  type="submit" name="enviar" class="btn btn-brand">Subescrever</button>
-                                </div>
-                            </form>   
+                             <div  class="social-links">
+                                <a href="https://www.facebook.com/UniaoLage?mibextid=7cd5pb"><i class="bx bxl-facebook"></i></a>
+                                <a href="https://api.whatsapp.com/send?phone=244948888293"><i class="bx bxl-whatsapp"></i></a>
+                                <a href="https://instagram.com/_igreja_evangelica_do_lubango?igshid=MzMyNGUyNmU2YQ=="><i class="bx bxl-instagram"></i></a>
+                                <a href="https://youtube.com/@igrejaevangelicadolubango1944?si=Vi7nACJG4H7Gz0rb"><i class="bx bxl-youtube"></i></a>
+                        
+                                </div>   
                         </div>
                     </div>
                </div>
@@ -31,7 +29,7 @@
                     <div id="useful-links" class="collapse d-lg-block footer-iel mb-70" data-bs-parent="#footer-links">
                         <div class="single-footer-widget footer-iel mb-70">
                             <h5 class="widget-title">Links</h5>
-                            
+                             <div class="divider_footer"></div>
                             <div class="d-flex flex-column gap-2">
                                 <a class="text-white" href="{% url 'webiel:mocidade' %}">
                                     <i class="bx bxs-group" aria-hidden="true"></i> Mocidade
@@ -63,6 +61,7 @@
                         <div id="social-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
                             <div  class="single-footer-widget nav flex-column mb-2 mb-lg-0">
                                 <h5  class="widget-title">Últimas Notícias</h5>
+                                 <div class="divider_footer"></div>
                                 {% for noticias_recente in noticias_recentes|slice:":3" %}
                                     <div class="single-latest-news">
                                         <a style="color:white" href="{% url 'webiel:noticia-view' noticias_recente.slug %}">{{ noticias_recente.title }}</a>
@@ -77,33 +76,98 @@
                <div class="col-12 col-sm-6 col-lg-3 text-white pt-lg-0">
                 <div class="single-footer-widget footer-iel mb-70">
                     <h5  class="widget-title">Contacte-nos</h5>
-                    <div class="contact-information-f mb-4">
+                     <div class="divider_footer"></div>
+                    <div class="contact-information-f">
                         <p style="color:white"><i style="color: #fff" class="bx bxs-map mb-3" aria-hidden="true"></i> Huila, Lubango, Lage</p>
                         <a style="color:white" href="callto:001-1234-88888"><i style="color: #fff" class="bx bx-mobile-alt" aria-hidden="true"></i> + (244) 939 207 821</a>
-                        <a style="color:white" href="mailto:info.deercreative@gmail.com"><i style="color: #fff" class="bx bxs-envelope" aria-hidden="true"></i> apoio@igrejaevangelicadolubango.org</a>
+                        <a style="color:white" href="mailto:info.deercreative@gmail.com"><i style="color: #fff" class="bx bxs-envelope" aria-hidden="true"></i> secretaria@igrejaevangelicadolubango.org</a>
                         <p style="color:white" ><i style="color: #fff" class="bx bxs-time-five" aria-hidden="true"></i>Seg - Sext: 08:00 - 15:30</p>
                     </div>
-                    <div  class="social-links">
-                        <a href="https://www.facebook.com/UniaoLage?mibextid=7cd5pb"><i class="bx bxl-facebook"></i></a>
-                        <a href="https://api.whatsapp.com/send?phone=244948888293"><i class="bx bxl-whatsapp"></i></a>
-                        <a href="https://instagram.com/_igreja_evangelica_do_lubango?igshid=MzMyNGUyNmU2YQ=="><i class="bx bxl-instagram"></i></a>
-                        <a href="https://youtube.com/@igrejaevangelicadolubango1944?si=Vi7nACJG4H7Gz0rb"><i class="bx bxl-youtube"></i></a>
-                  
-                   </div>
+                   
                 </div>
                </div>
           </div>
      </div>
-     
-     <div class="footer-bottom">
-        <div class="container">
-          <p class="mb-0 text-light" style="font-weight: 500; font-size:15px;"> Copyright &copy;
-               <script>document.write(new Date().getFullYear());</script> |
-               Todos os Direitos Reservados | Powered 
-               by <a class="opacity-70" id="afonso" style="color:rgb(185, 71, 71); font-family: "Barlow", sans-serif !important; " href="#" target="_blank"> <i class='bx bxs-heart'></i> Afonso Miqueias</a>
-          </p>
-        </div>
+
+        <!-- Separador -->
+     <div class="container">
+         <div class="footer-divider"></div>
      </div>
+     
+
+      <div class="col-lg-12 col-md-6 col-12 text-white newsletter-box">
+       <div class="container">
+    
+            <p class="newsletter-text">
+                Receba novidades e insights exclusivos
+            </p>
+
+            <form action="" class="needs-validation newsletter-form" method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="newsletter-input">
+
+                    <input 
+                        type="email" 
+                        id="subscr-email" 
+                        name="email" 
+                        class="form-control" 
+                        placeholder="Digite o seu email"
+                        required
+                    >
+
+
+                    <button type="submit" name="enviar">
+                        Subscrever
+                    </button>
+
+                </div>
+
+                <div class="invalid-tooltip">
+                    Por favor insira o seu endereço de Email.
+                </div>
+
+            </form>
+       </div>
+           
+
+       </div>
+    
+                             
+       <!-- Separador -->
+     <div class="container">
+         <div class="footer-divider"></div>
+     </div>
+     
+  <div class="footer-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- Direitos Reservados -->
+            <div class="col-md-6">
+                <p class="mb-0 text-light footer-copy">
+                    &copy;
+                    <script>
+                        document.write(new Date().getFullYear());
+                    </script>
+                    IEL. Todos os Direitos Reservados.
+                </p>
+            </div>
+
+
+            <!-- Powered By -->
+            <div class="col-md-6">
+                <p class="powered-by">
+                     Powered by 
+                    <a class="opacity-70" id="afonso" href="#" target="_blank">
+                        <i class='bx bxs-heart'></i> Afonso Miqueias
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </footer>
 

@@ -194,7 +194,7 @@
                 if (file) {
                     // Validar tipo e tamanho
                     const validTypes = ['image/jpeg', 'image/png'];
-                    const maxSize = 5 * 1024 * 1024; // 5MB
+                    const maxSize = 7 * 1024 * 1024; // 5MB
                     if (!validTypes.includes(file.type)) {
                         showToast('errorToast', 'Por favor, selecione uma imagem válida (JPG ou PNG).');
                         imageInput.classList.add('is-invalid');

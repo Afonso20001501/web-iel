@@ -99,7 +99,7 @@
                             <tr id="publicacao-{{ publicacao.slug }}" data-slug="{{ publicacao.slug }}">
                                 <td>{{ publicacao.title }}</td>
                                 <td>{{ publicacao.category.categoria|default:"Sem categoria" }}</td>
-                                <td>{{ publicacao.created_at|date:"d/m/Y H:i"|default:"Sem data" }}</td>
+                                <td>{{ publicacao.creted_at|date:"d/m/Y H:i"|default:"Sem data" }}</td>
                                 <td>
                                     <span class="badge {{ publicacao.is_published|yesno:'bg-success,bg-warning' }}">
                                         {{ publicacao.is_published|yesno:'Publicado,Oculta' }}

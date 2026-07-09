@@ -34,7 +34,6 @@ import decimal
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from django.core.validators import FileExtensionValidator
-
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
@@ -1488,13 +1487,16 @@ class NubentesListView(LoginRequiredMixin, ListView):
         queryset = super().get_queryset()
         ano = self.request.GET.get('ano')
         nome = self.request.GET.get('nome')
+
         if ano:
             queryset = queryset.filter(data_casam__year=ano)
+
         if nome:
             queryset = queryset.filter(
-                models.Q(nome_noivo__icontains=nome) | 
-                models.Q(nome_noiva__icontains=nome)
+                Q(nome_noivo__icontains=nome) | 
+                Q(nome_noiva__icontains=nome)
             )
+
         return queryset.order_by('data_casam')
 
     def get_context_data(self, **kwargs):
@@ -1770,6 +1772,7 @@ class BancoDeAlimentacaoListView(LoginRequiredMixin, ListView):
         logger.debug(f"Doações recentes (15 dias): {context['recent_donations_count']}")
         context['today'] = today.date()
         return context
+
 logger = logging.getLogger(__name__)
 class DownloadBancoDeAlimentacaoView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):

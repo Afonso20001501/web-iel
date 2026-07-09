@@ -1,78 +1,94 @@
 {% load static %}
 
-<Section class="about" id="about">
+<section class="about" id="about">
 
-     <div class="container">
-            
-             <div data-aos="fade-up" class="col-ms-12 text-center mt-6 my-5">
-                 <h1  class="text-dark pt-4 text-uppercase ">Igreja Evangélica do Lubango</h1>
-                 <div class="border-top border-primary w-25 mx-auto my-4"></div>
-                 <p class="about_text" data-aos="fade-up"  class="lead" style="font-weight: 400;
-                    font-family: "Barlow", sans-serif !important;"> Estamos localizados no Lubango, e no mundo inteiro pela <br/> Igreja Online. 
-                 Não importa onde você estiver, se junte a nós.</p>
-             </div>
-             
-             <div class="container">
-                  <div  class="row align-items-center justify-content-center">
-                    <div class="col-lg-5 info-box">
-                      <div class="row">
-                      <div data-aos="fade-up-right" class="col-12 info-box contact-information mb-2" id="info-box">
-                        <img src=" {% static "webiel/img/3.jpeg" %} " alt="">
-                        <div>
-                          <h5>Sobre Nós</h5>
-                          <div class="border-top border-primary w-10 mx-auto my-2"></div>
-                          <p style="font-weight: 400;
-                          font-family: "Barlow", sans-serif !important;">Conheça melhor a <strong>Igreja Evangélica do Lubango</strong>, nossa História, 
-                            Visão, Valores, e todas as Informações Relevantes.</p>
-                        </div>
-                      </div>
-                      <div data-aos="fade-up-right" class="col-12 info-box contact-information mb-2" id="info-box">
-                        <img src=" {% static "webiel/img/p.jpg" %} " alt="">
-                        <div>
-                          <h5>Cultos On-line</h5>
-                          <div class="border-top border-primary w-10 mx-auto my-2"></div>
-                          <p style="font-weight: 400;
-                              font-family: "Barlow", sans-serif !important;">A companhe os nossos <strong>cultos em directo</strong>, e 
-                            fortaleça a sua fé em Cristo Jesus! Deus abençoe, e que sejas edificado..</p>
-                        </div>
-                      </div>
-                      <div data-aos="fade-up-right" class="col-12 info-box contact-information mb-4" id="info-box">
-                        <img src=" {% static "webiel/img/noti.jpg" %} " alt="">
-                        <div>
-                          <h5>Notícias</h5>
-                          <div class="border-top border-primary w-10 mx-auto my-2"></div>
-                          <p style="font-weight: 400;
-                            font-family: "Barlow", sans-serif !important;">Esteja por dentro de todas <strong>actividades</strong> actividades que a igreja 
-                            tem realizado ao longo desse período, e sê também um participante.</p>
-                        </div>
-                      </div>
+    <div class="container">
+
+        <!-- INTRO -->
+        <div data-aos="fade-up" class="text-center mt-5 mb-4">
+            <h1 class="about_text_intro  pt-4 text-uppercase">
+                 <span>Igreja Evangélica do Lubango</span>
+            </h1>
+
+            <div class="divider"></div>
+
+            <p class="about_text lead" data-aos="fade-up">
+                Estamos localizados no Lubango, e no mundo inteiro pela Igreja Online.  </br>
+                Não importa onde estiveres, junta-te a nós.
+            </p>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="row align-items-center justify-content-center">
+
+            <!-- INFO BOXES -->
+            <div class="col-lg-5">
+
+                <div class="info-box contact-information mb-3" data-aos="fade-up-right">
+                    <img src="{% static 'webiel/img/3.jpeg' %}" alt="">
+                    <div>
+                        <h5>Sobre Nós</h5>
+                        <div class="border-top border-primary w-25 my-2"></div>
+                        <p>
+                            Conheça a Igreja Evangélica do Lubango, nossa história, visão e valores.
+                        </p>
                     </div>
-                  </div>
+                </div>
 
-                  <div  class="col-lg-5 col-md-6 m-auto">
-                     <div class="iel">
-                       <div class="img-wrapper">
-                        <img data-aos="fade-up-left"  src="{% static 'webiel/img/4.jpg' %}" alt="" class="img-fluid img-thumbnail w-60">
+                <div class="info-box contact-information mb-3" data-aos="fade-up-right">
+                    <img src="{% static 'webiel/img/p.jpg' %}" alt="">
+                    <div>
+                        <h5>Cultos Online</h5>
+                        <div class="border-top border-primary w-25 my-2"></div>
+                        <p>
+                            Acompanhe os nossos cultos em directo e fortaleça a sua fé.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-box contact-information mb-3" data-aos="fade-up-right">
+                    <img src="{% static 'webiel/img/noti.jpg' %}" alt="">
+                    <div>
+                        <h5>Programas</h5>
+                        <div class="border-top border-primary w-25 my-2"></div>
+                        <p>
+                            Fique por dentro de todas as actividades da igreja.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- IMAGE CARD -->
+            <div class="col-lg-5 col-md-6 m-auto">
+
+                <div class="iel" data-aos="fade-up-left">
+
+                    <div class="img-wrapper">
+                        <img src="{% static 'webiel/img/4.jpg' %}" class="img-fluid img-thumbnail" alt="">
+
                         <div class="overlay"></div>
-                        <div class="social-links">
-                          <a href="https://www.facebook.com/UniaoLage?mibextid=7cd5pb"><i class="bx bxl-facebook"></i></a>
-                          <a href="https://api.whatsapp.com/send?phone=244948888293"><i class="bx bxl-whatsapp"></i></a>
-                          <a href="https://instagram.com/_igreja_evangelica_do_lubango?igshid=MzMyNGUyNmU2YQ=="><i class="bx bxl-instagram"></i></a>
-                          <a href="https://youtube.com/@igrejaevangelicadolubango1944?si=Vi7nACJG4H7Gz0rb"><i class="bx bxl-youtube"></i></a>
-                        </div>
-                       </div>
-                      <div data-aos="fade-up-left" class="content contact-information">
-                        <h5 style="font-weight: 400;
-                          font-family: "Barlow", sans-serif !important;">Igreja Evangélica do Lubango</h5>
-                        <p style="font-style:italic;">Fundada em "19 de Maio de 1944"</p>
-                      </div>
-                     </div>
-                  </div>
 
-              
-             </div>
-     </div>
-</Section>
+                        <div class="social-links">
+                            <a href="#"><i class="bx bxl-facebook"></i></a>
+                            <a href="#"><i class="bx bxl-whatsapp"></i></a>
+                            <a href="#"><i class="bx bxl-instagram"></i></a>
+                            <a href="#"><i class="bx bxl-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="content mt-3">
+                        <h5>Igreja Evangélica do Lubango</h5>
+                        <p class="fst-italic">Fundada em 19 de Maio de 1944</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
 
 <script>
   AOS.init();

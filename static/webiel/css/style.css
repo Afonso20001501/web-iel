@@ -77,6 +77,13 @@ section {
      vertical-align: middle;
 }
 
+
+.navbar .nav-link {
+    color: #fff !important;
+    font-weight: 500;
+}
+
+
 @media (max-width: 858px) {
      .envolpe-email {
          display: none;
@@ -101,7 +108,6 @@ section {
 .social-links a {
      width: 34px;
      height: 34px;
-     background-color: rgba(255, 255, 255, 0.3);
      display: inline-flex;
      color: #ffff;
      align-items: center;
@@ -274,7 +280,7 @@ a.btn.btn-brand {
 .owl-next{
      position: absolute;
      top: 50%;
-     width: 60px !important;
+     width: 20px !important;
      height: 60px !important;
      display: grid;
      place-items: center;

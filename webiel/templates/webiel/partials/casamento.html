@@ -1,23 +1,42 @@
 {% load static %}
 
 <section id="milestone" class="bg-cover">
-     <div class="container">
-          <div data-aos="fade-up" class="col-ms-12 text-center mt-6 my-5">
-               <h1 class="text-white pt-4 text-uppercase">Casamentos</h1>
-               <div class="border-top border-primary w-25 mx-auto my-4"></div>
-               <p class="about_text text-white" data-aos="fade-up"  class="lead" style="font-weight: 400;
-               font-family: "Barlow", sans-serif !important;">O casamento é uma aliança sagrada entre um homem <br/> e uma mulher perante Deus.
-                    Pretende realizar o seu casamento?
-                    <br/>Inscreve-te até ao final do mês de Abril de 2026.</p>
-               <a href="" class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#casaModal1_casa">Agendar</a>
-           </div>
-     </div>
+
+    <div class="container">
+
+        <div class="milestone-content text-center" data-aos="fade-up">
+
+            <h1 class="milestone-title text-uppercase">
+              <span>Casamentos</span>
+            </h1>
+
+            <div class="divider"></div>
+
+            <p class="milestone-text">
+                O casamento é uma aliança sagrada entre um homem e uma mulher perante Deus.
+                <br>
+                Pretende realizar o seu casamento?
+                <br>
+                Inscreva-se até ao final de Abril de 2026.
+            </p>
+
+            <a href="#"
+               class="btn btn-brand btn-lg milestone-btn"
+               data-bs-toggle="modal"
+               data-bs-target="#casaModal1_casa">
+                Agendar
+            </a>
+
+        </div>
+
+    </div>
+
 </section>
 
  <!-- Modal - 1 - Slider -->
  <div class="modal fade mb-0 bg-modal" id="casaModal1_casa" tabindex="-1" aria-labelledby="casaModal1_casaLabel" aria-hidden="true">
      <div class="modal-dialog modal-xl modal-dialog-centered">
-       <div class="modal-content bg-modal">
+       <div class="modal-content " style="background-color: #0192b620;">
          <div class="modal-body p-0">
              <div class="container-fluid mb-0">
                <div class="row">
@@ -26,17 +45,18 @@
                   <div>
                       
                   </div>
-              </div>
+              </div> 
                  <div class="col-lg-8">
                    <form action="" method="post" class="row p-lg-4 gy-2">
                     {% csrf_token %}
                        <div class="col-12 mb-3">
-                           <h2 style="font-family: "Barlow", sans-serif !important;">Casamentos</h2>
+                           <h2 
+                           style="font-family: 'Inter', sans-serif !important; color: #ffffff !important;">Casamentos</h2>
                            <p class="cuidar"> Igreja Evangélica do Lubango!</p>
                        </div>
                        <div class="col-12 mb-3">
-                         <p style="text-align: justify; font-size: small;"><span style="font-weight: 400; font-size:15px;
-                        font-family: "Barlow", sans-serif !important;">
+                         <p style="text-align: justify; font-size: small; color: white !important;"><span style="font-weight: 400; font-size:15px;
+                        font-family: "Inter", sans-serif !important;">
                               O casamento é uma aliança sagrada entre um homem e uma mulher perante Deus. 
                               Pretende realizar o seu casamento até ao dia 31 de Dezembro de 2026?
                          </span></p>
