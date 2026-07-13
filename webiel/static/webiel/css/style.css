@@ -339,11 +339,21 @@ a.btn.btn-brand:hover {
     font-weight: 900;
 }
 
-.section-tag-slide {
+.section3{
+    
     letter-spacing: 2px;
-    font-size: 10px !important;
     text-transform: uppercase;
-    color: #00c2ff !important;
+
+    color: #00c2ff;
+
+    background: rgba(1, 146, 182, 0.12);
+
+    padding: 6px 12px;
+
+    border-radius: 50px;
+
+    font-size: 12px;
+
     margin-bottom: 15px;
 }
 
@@ -681,7 +691,7 @@ a.btn.btn-brand:hover {
     justify-content: space-between;
     gap: 60px;
     flex-wrap: wrap;
-}
+ } 
 
 /* TAG SMALL */
 .section-tag {
@@ -698,6 +708,8 @@ a.btn.btn-brand:hover {
     flex: 1;
     min-width: 300px;
 }
+
+
 
 .live-text h1 {
     font-size: clamp(32px, 4vw, 52px);
@@ -1111,8 +1123,6 @@ a.btn.btn-brand:hover {
 }
 
 
-
-
 /* CARD */
 
 
@@ -1141,8 +1151,6 @@ a.btn.btn-brand:hover {
 }
 
 
-
-
 /* IMAGE */
 
 .post-image{
@@ -1154,7 +1162,6 @@ a.btn.btn-brand:hover {
     overflow:hidden;
 
 }
-
 
 
 .post-image img{
@@ -1170,13 +1177,11 @@ a.btn.btn-brand:hover {
 }
 
 
-
 .post-card:hover img{
 
     transform:scale(1.1);
 
 }
-
 
 
 .image-overlay{
@@ -1194,10 +1199,7 @@ a.btn.btn-brand:hover {
 }
 
 
-
-
 /* TAG */
-
 
 .post-tag{
 
@@ -1230,8 +1232,6 @@ a.btn.btn-brand:hover {
 }
 
 
-
-
 /* BODY */
 
 .post-body{
@@ -1241,13 +1241,11 @@ a.btn.btn-brand:hover {
 }
 
 
-
 .post-body h5{
 
     margin-bottom:12px;
 
 }
-
 
 
 .post-body h5 a{
@@ -1268,8 +1266,6 @@ a.btn.btn-brand:hover {
     color:#26599D;
 
 }
-
-
 
 
 /* META */
@@ -1298,7 +1294,6 @@ a.btn.btn-brand:hover {
 
 
 
-
 .post-body p{
 
     color:#666;
@@ -1306,8 +1301,6 @@ a.btn.btn-brand:hover {
     line-height:1.7;
 
 }
-
-
 
 
 /* BUTTON */
@@ -1331,14 +1324,11 @@ a.btn.btn-brand:hover {
 
 }
 
-
 .read-more:hover{
 
     gap:10px;
 
 }
-
-
 
 /* PAGINATION */
 
@@ -1352,7 +1342,6 @@ a.btn.btn-brand:hover {
     gap:8px;
 
 }
-
 
 .pagination li a{
 
@@ -1379,8 +1368,6 @@ a.btn.btn-brand:hover {
     box-shadow:0 5px 15px rgba(0,0,0,.08);
 
 }
-
-
 
 .pagination li.active a{
 
@@ -1545,7 +1532,6 @@ footer {
     transition:.3s;
 
 }
-
 
 .newsletter-input button:hover{
 
@@ -1781,11 +1767,15 @@ RESPONSIVO
 }
 
 .cuidar {
-    font-family: "Inter", sans-serif;
-     font-weight: 500;
-     font-style: italic !important;
-     font-size: 15px;
-     color: #ffffff !important;
+    display: inline-block; 
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #00c2ff;
+    background: rgba(1, 146, 182, 0.12);
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    margin-bottom: 15px;
     
 }
 
@@ -1798,64 +1788,529 @@ RESPONSIVO
     font-family: Arial, Helvetica, sans-serif;
 }
   
-/* ABOUT_PAGE */
+/*====================================================
+            HERO - ABOUT PAGE
+====================================================*/
 
-#about_page {
-     background: linear-gradient(rgba(25, 49, 85, 0.9), rgba(25, 49, 85, 0.9)), url(../img/3.jpeg) !important;
-     background-repeat: no-repeat !important;
-     background-size: cover !important;
+#about_page{
+
+    min-height:430px;
+
+    display:flex;
+
+    align-items:center;
+
+    position:relative;
+
+    background:
+    linear-gradient(
+        90deg,
+        rgba(25, 49, 85, 0.8),
+        rgba(25, 49, 85, 0.9)
+    ),
+    url("../img/3.jpeg");
+
+    background-position:center;
+
+    background-size:cover;
+
+    background-repeat:no-repeat;
+
+    background-attachment: fixed;
+
+    padding: 100px 0;
+
+} 
+
+.about-title{
+
+    font-family:"Barlow",sans-serif;
+
+    color:#fff;
+
+    font-size:44px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
 }
 
-.nav-tabs li> a{
-     text-decoration: none !important;
-     font-size: 14px !important;
-     color: #000 !important;
-     font-weight: 600;
+.about-divider{
+
+    width:130px;
+
+    height:4px;
+
+    margin:20px auto;
+
+    border-radius:50px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #26599D,
+        #00c2ff
+    );
+
 }
 
-.nav-tabs {
-     box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.08);
+
+.about-navigation{
+    position: relative;
+    z-index: 10;
+    isolation: isolate;
+
+    margin-top: -35px;
+    margin-bottom: 50px;
 }
 
-.nav-tabs li> a:hover{
-     color: #26599D !important;
+.about-navigation .container{
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 15px;
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.10);
+
+    position: relative;
 }
 
-.navbar .navbar-nav .nav-link:hover{
-     color: #26599D;
+/* Remove estilos globais */
+
+.about-navigation ul{
+    margin:0;
+    padding:0;
+    list-style:none;
 }
 
-.social-links-his a {
-     width: 30px;
-     height: 30px;
-     background-color: #26599D;
-     display: inline-flex;
-     color: #ffff;
-     align-items: center;
-     justify-content: center;
-     font-size: 16px;
-     border-radius: 100%;
-     text-decoration: none;
+
+/*==========================================================
+                    BOTÃO MOBILE
+==========================================================*/
+
+.about-toggler{
+
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:14px 20px;
+
+    border:none;
+    outline:none;
+
+    cursor:pointer;
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #26599D,
+            #00c2ff
+        );
+
+    border-radius:14px;
+
+    font-family:"Barlow",sans-serif;
+    font-size:16px;
+    font-weight:700;
+
+    transition:.35s ease;
+
+    box-shadow:
+        0 10px 25px rgba(38,89,157,.25);
 }
 
-.social-links-his a:hover {
-     background-color: #ffffff;
-     color: #26599D;
+.about-toggler:hover{
+    transform:translateY(-2px);
 }
 
-.post-title-his {
-     margin-bottom: 25px !important;
+.about-toggler i{
+    font-size:24px;
 }
 
-.popular-tags li> a{
-     font-style: italic !important;
-     font-size: 15px !important;
-     font-family: Arial, Helvetica, sans-serif;
-     padding-right: 5px;
+
+.about-tabs{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
 }
 
-ol{
-     list-style-type: none !important;
+.about-tabs li{
+    flex:0 0 auto;
+}
+
+.about-tabs li a{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:45px;
+
+    padding:12px 22px;
+
+    text-decoration:none;
+
+    font-family:"Barlow",sans-serif;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#193155;
+
+    background:#ffffff;
+
+    border-radius:50px;
+
+    border:1px solid rgba(38,89,157,.12);
+
+    transition:all .35s ease;
+}
+
+/* Hover */
+
+.about-tabs li a:hover{
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #26599D,
+            #00c2ff
+        );
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 12px 25px rgba(38,89,157,.25);
+}
+
+/* Página activa */
+
+.about-tabs li a.active{
+
+    color:#ffffff;
+
+    border-color:transparent;
+
+    background:
+        linear-gradient(
+            135deg,
+            #26599D,
+            #00c2ff
+        );
+
+    box-shadow:
+        0 10px 25px rgba(38,89,157,.30);
+}
+
+#aboutMenu{
+    transition:.35s ease;
+}
+
+
+.about-title{
+
+    font-family:"Barlow",sans-serif;
+
+    font-size:42px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    color:#ffffff;
+}
+
+.about-divider{
+
+    width:120px;
+
+    height:3px;
+
+    margin:20px auto;
+
+    border-radius:50px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #26599D,
+            #00c2ff
+        );
+}
+
+
+.post-title-his{
+
+    font-family:"Barlow",sans-serif;
+
+    font-size:38px;
+
+    font-weight:800;
+
+    color:#193155;
+
+    margin-bottom:25px;
+}
+
+.single-post-details-area p{
+
+    color:#555;
+
+    font-size:16px;
+
+    line-height:1.9;
+
+    text-align:justify;
+
+    margin-bottom:18px;
+}
+
+
+
+.popular-tags{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin:0;
+
+    padding:0;
+}
+
+.popular-tags li{
+    list-style:none;
+}
+
+.popular-tags li a{
+
+    display:inline-block;
+
+    padding:7px 14px;
+
+    text-decoration:none;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#26599D;
+
+    background:#eef6ff;
+
+    border-radius:30px;
+
+    transition:.30s;
+}
+
+.popular-tags li a:hover{
+
+    background:#26599D;
+
+    color:#ffffff;
+}
+
+
+/*==========================================================
+                    REDES SOCIAIS
+==========================================================*/
+
+.social-links-his{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.social-links-his a{
+
+    width:45px;
+
+    height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-decoration:none;
+
+    font-size:18px;
+
+    color:#ffffff;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #26599D,
+            #00c2ff
+        );
+
+    transition:.35s ease;
+}
+
+.social-links-his a:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 15px 30px rgba(38,89,157,.35);
+}
+
+
+@media (max-width: 991px){
+
+    .social-links-his{
+        display: none !important;
+    }
+
+}
+
+
+/*==========================================================
+                    TABLET E MOBILE
+==========================================================*/
+
+@media (max-width:991px){
+
+    .about-navigation{
+
+        margin-top:-20px;
+
+        margin-bottom:35px;
+    }
+
+    .about-navigation .container{
+
+        padding:12px;
+
+        border-radius:18px;
+    }
+
+    .about-toggler{
+        display:flex;
+    }
+
+    #aboutMenu{
+        margin-top:15px;
+    }
+
+    .about-tabs{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+        gap:8px;
+    }
+
+    .about-tabs li{
+        width:100%;
+    }
+
+    .about-tabs li a{
+
+        width:100%;
+
+        justify-content:flex-start;
+
+        padding:14px 18px;
+
+        border-radius:14px;
+
+        font-size:14px;
+    }
+
+    .post-title-his{
+        font-size:30px;
+    }
+
+    .social-links-his{
+        margin-top:20px;
+    }
+
+}
+
+
+/*==========================================================
+                DESKTOP
+==========================================================*/
+
+@media (min-width:992px){
+
+    .about-toggler{
+        display:none;
+    }
+
+}
+
+
+/*==========================================================
+                TELEMÓVEIS PEQUENOS
+==========================================================*/
+
+@media (max-width:480px){
+
+    .about-navigation{
+
+        margin-top:-15px;
+    }
+
+    .about-toggler{
+
+        padding:12px;
+
+        font-size:14px;
+    }
+
+    .about-tabs li a{
+
+        font-size:13px;
+
+        padding:12px 15px;
+    }
+
+}
+
+
+/*==========================================================
+                MODAIS BOOTSTRAP
+==========================================================*/
+
+.modal{
+    z-index:1055 !important;
+}
+
+.modal-backdrop{
+    z-index:1050 !important;
 }
 
 /* CONTATO */

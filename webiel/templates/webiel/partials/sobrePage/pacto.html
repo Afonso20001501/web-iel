@@ -5,7 +5,7 @@
           <div class="col-ms-12 text-center mt-6 my-5">
                <h1 data-aos="fade-up" class="text-white pt-4" style="
                         font-family: "Barlow", sans-serif !important;">SOBRE NÓS/</h1>
-               <div class="border-top border-primary w-25 mx-auto my-4"></div>
+                  <div class="divider"></div>
                <p class="about_text text-white" data-aos="fade-up"  class="lead" style="font-weight: 400; font-size:12pt;
                         font-family: "Barlow", sans-serif !important;">Estamos localizados no Lubango, e no mundo inteiro <br/>
                pela Igreja Online. Não importa onde você estiver, se junte a nós.  Esta Igreja é  <br/>
@@ -15,34 +15,68 @@
 </section>
 
 
-<nav data-aos="zoom-in-up" class="navbar navbar-expand-lg bg-body-tertiary">
-     <div class="container-fluid">
-       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-       </button>
-       <div class="collapse navbar-collapse justify-content-center align-items-center" id="navbarTogglerDemo03">
-          <ul class="nav nav-tabs mb-2 mb-lg-0" id="nav-tabs">
-               <li class="nav-item">
-                 <a class="nav-link" href=" {% url "webiel:sobre_historial" %} ">Historial</a>
-               </li>
-               <li class="nav-item">
-                 <a class="nav-link" href=" {% url "webiel:sobre_missao" %} ">Missão, Visão e Valores</a>
-               </li>
-               <li class="nav-item">
-                 <a class="nav-link" href="{% url "webiel:sobre_estatuto" %}">Estatuto</a>
-               </li>
-               <li class="nav-item">
-                 <a class="nav-link" href="{% url "webiel:sobre_pacto" %}">Nosso Pacto</a>
-               </li>
-               <li class="nav-item">
-                 <a class="nav-link" href="{% url "webiel:sobre_fe" %}">Declaração de Fé</a>
-               </li>
-               <li class="nav-item">
-                <a class="nav-link" href="{% url "webiel:sobre_pratica" %}">Declaração Prática</a>
-               </li>
-          </ul>
-       </div>
-     </div>
+<nav class="about-navigation" data-aos="zoom-in-up">
+
+    <div class="container">
+
+        <button class="about-toggler d-lg-none"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#aboutMenu"
+                aria-expanded="false">
+
+            <i class='bx bx-menu'></i>
+
+            <span>Menu Sobre Nós</span>
+
+        </button>
+
+        <div class="collapse d-lg-block" id="aboutMenu">
+
+            <ul class="about-tabs">
+
+                <li>
+                    <a href="{% url 'webiel:sobre_historial' %}">
+                        Historial
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'webiel:sobre_missao' %}">
+                        Missão, Visão e Valores
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'webiel:sobre_estatuto' %}">
+                        Estatuto
+                    </a>
+                </li>
+   
+                <li>
+                    <a href="{% url 'webiel:sobre_pacto' %}">
+                        Nosso Pacto
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'webiel:sobre_fe' %}">
+                        Declaração de Fé
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'webiel:sobre_pratica' %}">
+                        Declaração Prática
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
 </nav>
 
 <section>
@@ -54,10 +88,22 @@
                               <h2 data-aos="zoom-in" class="post-title-his">Nosso Pacto</h2>
                               <div class="post-tags-share d-flex justify-content-between align-items-center">
                                     <!-- Tags -->
-                            <ol data-aos="zoom-in" class="popular-tags d-flex flex-wrap mb-5">
-                              <li><a href="#">Igreja Evangelica do Lubango,</a></li>
-                              <li><a href="">Fundada em "19 de Maio de 1944"!</a></li>
-                            </ol>
+                            <div>
+                                        <p class="" style="  letter-spacing: 2px;
+                                                            text-transform: uppercase;
+
+                                                            color: #00c2ff;
+
+                                                            background: rgba(1, 146, 182, 0.12);
+
+                                                            padding: 6px 12px;
+
+                                                            border-radius: 50px;
+
+                                                            font-size: 12px;
+
+                                                            margin-bottom: 15px;">Fundada em "19 de Maio de 1944</p>
+                                   </div>
                           <!-- Share -->
                           <div data-aos="zoom-in" class="social-links-his mb-0">
                               <a href="https://www.facebook.com/UniaoLage?mibextid=7cd5pb"  target="_blank" rel="noopener noreferrer"><i class="bx bxl-facebook"></i></a>
