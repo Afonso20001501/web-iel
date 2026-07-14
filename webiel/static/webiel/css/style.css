@@ -1104,7 +1104,6 @@ button.btn.btn-brand1:hover {
 }
 
 
-
 /* DIVIDER */
 
 .divider {
@@ -1383,7 +1382,6 @@ button.btn.btn-brand1:hover {
 
 }
 
-
 /* IMAGE */
 
 .post-image {
@@ -1520,8 +1518,6 @@ button.btn.btn-brand1:hover {
     color: #26599D;
 
 }
-
-
 
 .post-body p {
 
@@ -1764,6 +1760,19 @@ footer {
 
 }
 
+.contact-information-f {
+    margin-top: 30px;
+}
+
+.contact-information-f a,
+.contact-information-f p {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    line-height: 1.7;
+}
+
 .footer-bottom {
     padding: 20px 0;
 }
@@ -1854,19 +1863,198 @@ NEWS
 CONTACTO
 ======================*/
 
-.contact-information-f a,
-.contact-information-f p {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 18px;
-    line-height: 1.7;
+#contato{
+
+    padding:80px 0;
+
+    background:#f7f9fc;
+
 }
 
-.contact-information-f a:hover i {
-    transform: translateY(-4px);
+
+/* Cards */
+
+.contact-card,
+.contat-content-form{
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    padding:35px;
+
+    box-shadow:0 15px 45px rgba(0,0,0,.08);
+
+    height:100%;
+
 }
 
+
+/* Títulos */
+
+.contact-card h5,
+.section-heading h3{
+
+    font-family:"Barlow",sans-serif;
+
+    font-weight:700;
+
+    background-color:linear-gradient(135deg,#26599D,#00c2ff);
+
+}
+
+
+/* Bloco */
+
+.contact-item{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+    margin-bottom:28px;
+
+}
+
+
+/* Ícone */
+
+.contact-icon{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#26599D,#00c2ff);
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:22px;
+
+    flex-shrink:0;
+
+}
+
+
+/* Texto */
+
+.contact-text h6{
+
+    margin-bottom:6px;
+
+    font-weight:700;
+
+    color:#193155;
+
+}
+
+.contact-text p{
+
+    margin:0;
+
+    color:#666;
+
+    line-height:1.7;
+
+}
+
+
+/* Inputs */
+
+.form-control{
+
+    height:55px;
+
+    border-radius:12px;
+
+    border:1px solid #dfe6ef;
+
+    box-shadow:none;
+
+}
+
+.form-control:focus{
+
+    border-color:#00c2ff;
+
+    box-shadow:0 0 0 .15rem rgba(0,194,255,.15);
+
+}
+
+textarea.form-control{
+
+    min-height:180px;
+
+    resize:none;
+
+}
+
+
+/* Botão */
+
+.btn-contact{
+
+    padding:14px 35px;
+
+    border:none;
+
+    border-radius:50px;
+
+    color:#fff;
+
+    font-weight:700;
+
+    background:linear-gradient(135deg,#26599D,#00c2ff);
+
+    transition:.35s;
+
+}
+
+.btn-contact:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 35px rgba(38,89,157,.25);
+
+}
+
+
+/* Mapa */
+
+.map-area iframe{
+
+    width:100%;
+
+    height:500px;
+
+    border:none;
+
+    border-radius:18px;
+
+}
+
+
+/* Responsivo */
+
+@media(max-width:991px){
+
+.contact-card{
+
+    margin-bottom:30px;
+
+}
+
+}
 /*=====================
 SOCIAL
 ======================*/
@@ -2300,7 +2488,6 @@ RESPONSIVO
 }
 
 
-
 .popular-tags {
 
     display: flex;
@@ -2592,7 +2779,11 @@ RESPONSIVO
     background: linear-gradient(rgba(25, 49, 85, 0.9), rgba(25, 49, 85, 0.9)), url(../img/slider/slider_1.jpg) !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
+    background-attachment:  fixed !important;
+    background-position: center;
+    padding: 100px 0;
 }
+
 
 /* GALERIA */
 .gallery-item {
@@ -2905,9 +3096,6 @@ RESPONSIVO
     transform: scale(1.05);
 }
 
-
-
-
 /*--------------------------------------------------------------
   # Scroll Top Button
   --------------------------------------------------------------*/
@@ -3148,10 +3336,6 @@ RESPONSIVO
 
 }
 
-
-
-
-
 /*====================================
         CARD PRINCIPAL
 ====================================*/
@@ -3177,7 +3361,6 @@ RESPONSIVO
         0 15px 40px rgba(0, 0, 0, .08);
 
 }
-
 
 
 .news-image {
@@ -3209,9 +3392,6 @@ RESPONSIVO
 }
 
 
-
-
-
 /*====================================
         CORPO
 ====================================*/
@@ -3222,7 +3402,6 @@ RESPONSIVO
     padding: 20px;
 
 }
-
 
 
 .news-title {
@@ -3240,7 +3419,6 @@ RESPONSIVO
 }
 
 
-
 .news-meta {
 
     display: flex;
@@ -3256,7 +3434,6 @@ RESPONSIVO
     font-size: 14px;
 
 }
-
 
 
 .news-meta span {
@@ -3303,7 +3480,6 @@ RESPONSIVO
     margin-bottom: 25px;
 
 }
-
 
 
 /*====================================
@@ -3378,9 +3554,6 @@ RESPONSIVO
 }
 
 
-
-
-
 /*====================================
         TEXTO
 ====================================*/
@@ -3399,7 +3572,6 @@ RESPONSIVO
     text-align: justify;
 
 }
-
 
 
 /*====================================
@@ -3421,7 +3593,6 @@ RESPONSIVO
         0 15px 40px rgba(0, 0, 0, .08);
 
 }
-
 
 
 .news-sidebar h3 {
@@ -3511,9 +3682,6 @@ RESPONSIVO
     color: #8ba2bd;
 
 }
-
-
-
 
 
 /*====================================
