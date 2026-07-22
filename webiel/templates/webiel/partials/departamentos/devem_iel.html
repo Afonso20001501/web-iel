@@ -1,198 +1,904 @@
 {% load static %}
 
-<section id="mocidade" class="about_page bg-cover">
-     <div class="container">
-          <div class="col-ms-12 text-center mt-6 my-5">
-               <h1 data-aos="fade-up" class="text-white pt-4">DEP - EVANGÉLISMO MISSÕES E DISCIPULADO /</h1>
-               <div class="border-top border-primary w-25 mx-auto my-4"></div>
-               <p class="about_text text-white" data-aos="fade-up"  class="lead" style="font-weight: 400; font-size:12pt;
-               font-family: "Barlow", sans-serif !important;">Entende-se por ministério de Evangelismo, Missões e Discipulado 
-               dentro da estrutura do ministério local, com o fim de promover,<br/> organizar e realizar trabalhos de evangelização e 
-               discipulado cumprindo a grande comissão de Jesus em <strong>Mateus 28:19-20.</strong></p>
-          </div>
-     </div>
+<!-- =========================================================
+     HERO — EVANGELISMO, MISSÕES E DISCIPULADO
+========================================================= -->
+
+<section id="devem-hero" class="devem-hero">
+
+```
+<div class="devem-hero-overlay"></div>
+
+<div class="container position-relative">
+
+    <div class="row justify-content-center">
+
+        <div class="col-12 col-lg-9 text-center">
+
+            <span
+                class="mocidade-eyebrow"
+                data-aos="fade-down"
+            >
+                Evangelismo • Missões • Discipulado
+            </span>
+
+            <h1
+                class="mocidade-hero-title"
+                data-aos="fade-up"
+            >
+                Levando o Evangelho,
+                <span>Formando Discípulos</span>
+            </h1>
+
+            <div
+                class="mocidade-divider mx-auto"
+                data-aos="fade-up"
+            ></div>
+
+            <p
+                class="mocidade-hero-description"
+                data-aos="fade-up"
+                data-aos-delay="100"
+            >
+                O Departamento de Evangelismo, Missões e Discipulado
+                da Igreja Evangélica do Lubango tem como missão promover,
+                organizar e realizar trabalhos de evangelização,
+                missões e discipulado.
+            </p>
+
+            <p
+                class="devem-description"
+                data-aos="fade-up"
+                data-aos-delay="200"
+            >
+                Cumprimos a Grande Comissão de Jesus Cristo,
+                anunciando o Evangelho, alcançando vidas e formando
+                discípulos comprometidos com a Palavra de Deus.
+            </p>
+
+            <div
+                class="mocidade-hero-buttons"
+                data-aos="fade-up"
+                data-aos-delay="300"
+            >
+
+                <a href="#agenda" class="mocidade-btn mocidade-btn-primary">
+                            <i class="bx bx-calendar-event"></i>
+                            Ver Agenda
+                        </a>
+
+                <a href="#contactos-mocidade" class="mocidade-btn mocidade-btn-outline">
+                            <i class="bx bx-message-rounded-dots"></i>
+                            Contactar
+                        </a>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
 </section>
 
+<!-- =========================================================
+     AGENDA
+========================================================= -->
 
-<section id="preg bg-light">
-     <div class="container-fluid mt-4">
-      <div class="row g-4 mb-3">
-         <div class="col-ms-12 text-center">
-              <h1 data-aos="fade-up" class="text-dark pt-4">Agenda</h1>
-              <div class="border-top border-primary w-25 mx-auto my-4"></div>
-              <p class="about_text" data-aos="fade-up"  class="lead" style="font-weight: 400; font-size:12pt;
-              font-family: "Barlow", sans-serif !important;">Esteja actualizado, conheça a nossa agenda, e participe das nossas actividades.</p>
-        </div> 
-      </div>
-         
-      <div class="container mt-5 mb-3">
+<section
+    id="agenda-devem"
+    class="devem-agenda devem-section"
+>
 
-        <div class="row justify-content-between mt-5">
-             <div class="col-12 col-lg-8">
-                 <div class="row">
-                     {% for atividade_devem in atividade_devems|slice:":4" %}
-                     <div data-aos="flip-left" class="col-md-6 event-card">
-                         <div class="card shadow-sm">
-                             <div class="card-header">
-                                 {{ atividade_devem.atividade }}
-                             </div>
-                             <div class="card-body">
-                                 <p><strong>Data:</strong>  {{ atividade_devem.dataAtividade }} </p>
-                                 <p><strong>Horário:</strong> {{ atividade_devem.horario }}</p>
-                                 <p><strong>Local:</strong> {{ atividade_devem.local }} </p>
-                                 <p style="font-family: Arial, sans-serif; line-height: 1.6; white-space: pre-line;">{{ atividade_devem.descrica|safe }}!</p>
-                                 <div class="post-meta mb-3">
-                                     <a class="text-muted">Presidente <i class="bx bxs-user" aria-hidden="true"></i>
-                                         {{  atividade_devem.presidente }} 
-                                     </a>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                     {% empty %}
-                         <div class="center m-y">
-                            <h2> Actividades não agendadas </h2>
-                         </div>
-                    {% endfor %}
-                 </div>
-         
-                 <h3 data-aos="flip-down" class="mt-2 mb-2">Eventos Recorrentes</h3>
-         
-                 <div class="row mb-3">
-                     <div data-aos="flip-up" class="col-md-6 event-card">
-                         <div class="card shadow-sm">
-                             <div class="card-header">
-                                 Discipulado
-                             </div>
-                             <div class="card-body">
-                                 <p><strong>Quando:</strong> Todas os Sabado</p>
-                                 <p><strong>Horário:</strong> 14h - 16h</p>
-                                 <p><strong>Horário:</strong> 8h - 10h | Aulas de GBC</p>
-                                 <p><strong>Local:</strong>Colégio Evangélico</p>
-                                 <p>Aulas de GBC, GBA, SOA & catecismo!</p>
-                                 <div class="post-meta mb-3">
-                                    <a class="text-muted">Presidente <i class="bx bxs-user" aria-hidden="true"></i>
-                                      Victor Pole
-                                    </a>
-                                </div>
-                             </div>
-                         </div>
-                     </div>
-         
-                     <div data-aos="flip-up" class="col-md-6 event-card">
-                         <div class="card shadow-sm">
-                             <div class="card-header">
-                                 Encontro de Oração
-                             </div>
-                             <div class="card-body">
-                                 <p><strong>Quando:</strong> Todas as Sextas-Feiras</p>
-                                 <p><strong>Horário:</strong> 18h - 20h </p>
-                                 <p>Encontro de oração e Intercessão.</p>
-                                 <div class="post-meta mb-3">
-                                    <a class="text-muted">Presidente <i class="bx bxs-user" aria-hidden="true"></i>
-                                      Victor Pole
-                                    </a>
-                                </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+```
+<div class="container">
 
-             <div class="col-12 col-sm-9 col-md-6 col-lg-4">
-                <div data-aos="zoom-out-up" class="post-sidebar-area">
-                    <div class="single-widget-area contact-information">
-                        <!-- Title -->
-                        <div data-aos="zoom-out-up" class="widget-title mb-3">
-                            <h6 data-aos="zoom-out-up" style="font-size:25px;">Notícias Recentes</h6>
+    <!-- CABEÇALHO -->
+
+    <div
+        class="devem-section-heading text-center"
+        data-aos="fade-up"
+    >
+
+        <span class="devem-section-eyebrow">
+            Participe connosco
+        </span>
+
+        <h2 class="devem-section-title">
+            Agenda do Departamento
+        </h2>
+
+        <div class="mocidade-heading-line mx-auto"></div>
+
+        <p class="devem-section-description">
+            Esteja actualizado sobre as nossas actividades,
+            encontros e eventos. Participe connosco na missão
+            de anunciar o Evangelho e formar discípulos.
+        </p>
+
+    </div>
+
+
+    <!-- CONTEÚDO -->
+
+    <div class="row g-5 mt-4">
+
+
+        <!-- =====================================================
+             AGENDA PRINCIPAL
+        ====================================================== -->
+
+        <div class="col-12 col-lg-8">
+
+            <div
+                class="devem-agenda-header"
+                data-aos="fade-up"
+            >
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        Próximas actividades
+                    </span>
+
+                    <h3>
+                        Não perca os nossos encontros
+                    </h3>
+
+                </div>
+
+                 <div class="mocidade-header-icon">
+                        <i class="bx bx-calendar-event"></i>
+                    </div>
+
+            </div>
+
+
+            <!-- ACTIVIDADES DINÂMICAS -->
+
+            <div class="row g-4">
+
+                {% for atividade_devem in atividade_devems|slice:":4" %}
+
+                <div
+                    class="col-12 col-md-6"
+                    data-aos="fade-up"
+                >
+
+                    <article class="mocidade-event-card">
+
+                        <div class="mocidade-event-top">
+
+                            <span class="devem-event-category">
+                                Actividade
+                            </span>
+
+                            <i class="bx bx-calendar-event"></i>
+
                         </div>
+
+
+                        <div class="mocidade-event-body">
+
+                            <h4>
+                                {{ atividade_devem.atividade }}
+                            </h4>
+
+
+                            <div class="mocidade-event-info">
+
+
+                                <!-- DATA -->
+
+                                <div class="mocidade-info-item">
+
+                                    <i class="bx bx-calendar"></i>
+
+                                    <div>
+
+                                        <small>
+                                            Data
+                                        </small>
+
+                                        <strong>
+                                            {{ atividade_devem.dataAtividade }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- HORÁRIO -->
+
+                                <div class="mocidade-info-item">
+
+                                    <i class="bx bx-time-five"></i>
+
+                                    <div>
+
+                                        <small>
+                                            Horário
+                                        </small>
+
+                                        <strong>
+                                            {{ atividade_devem.horario }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- LOCAL -->
+
+                                <div class="mocidade-info-item">
+
+                                    <i class="bx bx-map"></i>
+
+                                    <div>
+
+                                        <small>
+                                            Local
+                                        </small>
+
+                                        <strong>
+                                            {{ atividade_devem.local }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- DESCRIÇÃO -->
+
+                            {% if atividade_devem.descrica %}
+
+                            <p class="devem-event-description">
+                                {{ atividade_devem.descrica|safe }}
+                            </p>
+
+                            {% endif %}
+
+
+                            <!-- PRESIDENTE -->
+
+                            <div class="mocidade-event-footer">
+
+                                <span>
+
+                                    <i class="bx bxs-user"></i>
+
+                                    {{ atividade_devem.presidente }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                {% empty %}
+
+
+                <div class="col-12">
+
+                    <div class="mocidade-empty">
+
+                        <i class="bx bx-calendar-x"></i>
+
+                        <h4>
+                            Actividades não agendadas
+                        </h4>
+
+                        <p>
+                            De momento não existem actividades
+                            programadas para apresentar.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- =================================================
+                 EVENTOS RECORRENTES
+            ================================================== -->
+
+            <div class="mocidade-recurring">
+
+
+                <div
+                    class="dmocidade-content-header"
+                    data-aos="fade-up"
+                >
+
+                    <span class="devem-section-eyebrow">
+                        Todas as semanas
+                    </span>
+
+                    <h3>
+                        Encontros Recorrentes
+                    </h3>
+
+                </div>
+
+              
+                <div class="row g-4">
+
+
+                    <!-- DISCIPULADO -->
+
+                    <div
+                        class="col-12 col-md-6"
+                        data-aos="fade-up"
+                    >
+
+                        <article class="mocidade-recurring-card">
+
+                            <div class="mocidade-recurring-icon">
+
+                                <i class="bx bx-group"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <h4>
+                                    Discipulado
+                                </h4>
+
+                                <p>
+                                    Momentos de ensino, formação e
+                                    crescimento espiritual através
+                                    do estudo da Palavra de Deus.
+                                </p>
+
+
+                                <ul>
+
+                                    <li>
+                                        <i class="bx bx-calendar"></i>
+                                        Todos os sábados
+                                    </li>
+
+                                    <li>
+                                        <i class="bx bx-time"></i>
+                                        14h00 – 16h00
+                                    </li>
+
+                                    <li>
+                                        <i class="bx bx-book"></i>
+                                        Aulas de GBC: 08h00 – 10h00
+                                    </li>
+
+                                    <li>
+                                        <i class="bx bx-map"></i>
+                                        Colégio Evangélico
+                                    </li>
+
+                                </ul>
+
+
+                                <span class="mocidade-leader">
+
+                                    <i class="bx bxs-user"></i>
+
+                                    Victor Pole
+
+                                </span>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+
+                    <!-- ORAÇÃO -->
+
+                    <div
+                        class="col-12 col-md-6"
+                        data-aos="fade-up"
+                    >
+
+                        <article class="devem-recurring-card">
+
+                            <div class="mocidade-recurring-icon">
+
+                                <i class="bx bx-heart"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <h4>
+                                    Encontro de Oração
+                                </h4>
+
+                                <p>
+                                    Um momento especial de oração,
+                                    intercessão e comunhão na presença
+                                    de Deus.
+                                </p>
+
+
+                                <ul>
+
+                                    <li>
+                                        <i class="bx bx-calendar"></i>
+                                        Todas as sextas-feiras
+                                    </li>
+
+                                    <li>
+                                        <i class="bx bx-time"></i>
+                                        18h00 – 20h00
+                                    </li>
+
+                                    <li>
+                                        <i class="bx bx-map"></i>
+                                        Local a definir
+                                    </li>
+
+                                </ul>
+
+
+                                <span class="devem-event-leader">
+
+                                    <i class="bx bxs-user"></i>
+
+                                    Victor Pole
+
+                                </span>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
+
+        <div class="col-12 col-lg-4">
+
+            <aside class="mocidade-sidebar">
+
+
+                <!-- NOTÍCIAS -->
+
+                <div
+                    class="mocidade-sidebar-card"
+                    data-aos="fade-up"
+                >
+
+                    <div class="mocidade-sidebar-title">
+
+                        <div>
+
+                            <span>
+                                Actualizações
+                            </span>
+
+                            <h3>
+                                Notícias Recentes
+                            </h3>
+
+                        </div>
+
+                        <i class="bx bx-news"></i>
+
+                    </div>
+
+
+                    <div class="devem-news-list">
 
                         {% for noticias_recente in noticias_recentes|slice:":4" %}
-                         <div data-aos="zoom-out-up" class="single-latest-post mb-4">
-                           <div class="container">
-                               <div class="row">
-                                   <div class="col-3">
-                                       <img class="card-img-top" src="{{ noticias_recente.cover.url }}" alt="Imagem"> 
-                                   </div>
-                                   <div class="col-9">
-                                       <a href="{% url 'webiel:noticia-view' noticias_recente.slug %}" class="post-title">
-                                           <h6>{{ noticias_recente.title }}</h6>
-                                       </a>
-                                       <p class="post-date text-muted" style="color:#8ba2bd !important; font-style:italic !important;"> <i style="color:#8ba2bd; font-style:italic;" class="bx bxs-calendar" aria-hidden="true"></i> {{ noticias_recente.dataEvento }} de <script>document.write(new Date().getFullYear());</script></p>
-                                   </div>
-                               </div>
-                           </div>
-                         </div>
+
+                        <article class="devem-news-item">
+
+                            <a
+                                href="{% url 'webiel:noticia-view' noticias_recente.slug %}"
+                                class="devem-news-image"
+                            >
+
+                                <img
+                                    src="{{ noticias_recente.cover.url }}"
+                                    alt="{{ noticias_recente.title }}"
+                                    loading="lazy"
+                                >
+
+                            </a>
+
+
+                            <div class="devem-news-content">
+
+                                <a
+                                    href="{% url 'webiel:noticia-view' noticias_recente.slug %}"
+                                >
+
+                                    <h4>
+                                        {{ noticias_recente.title }}
+                                    </h4>
+
+                                </a>
+
+
+                                <span>
+
+                                    <i class="bx bxs-calendar"></i>
+
+                                    {{ noticias_recente.dataEvento }}
+
+                                </span>
+
+                            </div>
+
+                        </article>
+
+
+                        {% empty %}
+
+
+                        <div class="devem-empty-news">
+
+                            <i class="bx bx-news"></i>
+
+                            <p>
+                                Nenhuma notícia disponível.
+                            </p>
+
+                        </div>
+
+
                         {% endfor %}
-                        
+
                     </div>
+
                 </div>
-                 <div data-aos="zoom-out-up" class="contact-info mt-5">
-                     <h5>Contactos</h5>
-                     <p ><strong> Presidente:</strong> <i style="color: #26599D" class='bx bxs-user'></i>victor Jaime Pole</p>
-                     <p ><a style="text-decoration: none; color: black;" href="http://"><i style="color: #26599D" class='bx bxs-envelope'></i> devem-iel@igreja.com</a></p>
-                     <p ><a style="text-decoration: none; color: black;" href="https://api.whatsapp.com/send?phone=244948888293"><i style="color: #26599D"  class='bx bxl-whatsapp'></i> + (244) 926 279 725</a></p>
-                 </div>
-             </div>
+
+
+                <!-- =================================================
+                     CONTACTOS
+                ================================================== -->
+
+                <div
+                    id="contactos-mocidade"
+                    class="mocidade-contact-card"
+                    data-aos="fade-up"
+                >
+
+                    <div class="mocidade-contact-icon">
+
+                        <i class="bx bx-message-rounded-dots"></i>
+
+                    </div>
+
+
+                    <span>
+                        Fale connosco
+                    </span>
+
+
+                    <h3>
+                        Contactos
+                    </h3>
+
+
+                    <div class="mocidade-contact-line"></div>
+
+
+                    <!-- PRESIDENTE -->
+
+                    <div class="mocidade-contact-item">
+
+                        <i class="bx bxs-user"></i>
+
+                        <div>
+
+                            <small>
+                                Presidente
+                            </small>
+
+                            <strong>
+                                Victor Jaime Pole
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="mocidade-contact-item">
+
+                        <i class="bx bxs-envelope"></i>
+
+                        <div>
+
+                            <small>
+                                Email
+                            </small>
+
+                            <a href="mailto:devem-iel@igreja.com">
+                                devem-iel@igreja.com
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- WHATSAPP -->
+
+                    <div class="mocidade-contact-item">
+
+                        <i class="bx bxl-whatsapp"></i>
+
+                        <div>
+
+                            <small>
+                                WhatsApp
+                            </small>
+
+                            <a
+                                href="https://api.whatsapp.com/send?phone=244926279725"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                +244 926 279 725
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
         </div>
 
-      </div>
-         
-  </div>
+    </div>
+
+</div>
+```
+
 </section>
 
- <section id="portfolio" class="portfolio section mb-3">
-        <div class="container">
-            <div class="row g-4 mb-3">
-                <div class="col-md-12 text-center">
-                    <h1 data-aos="fade-up" class="text-dark pt-4">Galeria de {{ department.name }}</h1>
-                    <div class="border-top border-primary w-25 mx-auto my-4"></div>
-                    <p class="about_text" data-aos="fade-up" class="lead" style="font-weight: 400; font-size:12pt; font-family: 'Barlow', sans-serif !important;">
-                        Acompanhe um pouco do muito que tem acontecido no Departamento de {{ department.name }}.
-                    </p>
+<!-- =========================================================
+     GALERIA
+========================================================= -->
+
+<section
+    id="portfolio-devem"
+    class="devem-gallery devem-section"
+>
+
+```
+<div class="container">
+
+
+    <!-- CABEÇALHO -->
+
+    <div
+        class="mocidade-section-heading text-center"
+        data-aos="fade-up"
+    >
+
+        <span class="devem-section-eyebrow">
+            Momentos que ficam
+        </span>
+
+        <h2 class="devem-section-title">
+            Galeria de {{ department.name }}
+        </h2>
+
+         <div class="mocidade-heading-line"></div>
+
+        <p class="devem-section-description">
+            Acompanhe um pouco do trabalho realizado pelo
+            Departamento de Evangelismo, Missões e Discipulado
+            da Igreja Evangélica do Lubango.
+        </p>
+
+    </div>
+
+
+    <!-- FOTOS -->
+
+    <div class="row g-4 mt-4">
+
+        {% for photo in photos %}
+
+        <div
+            class="col-12 col-md-6 col-lg-4"
+            data-aos="fade-up"
+        >
+
+            <article class="devem-gallery-card">
+
+
+                <div class="devem-gallery-image">
+
+                    <img
+                        src="{{ photo.image.url }}"
+                        alt="Foto de {{ department.name }}"
+                        loading="lazy"
+                    >
+
+
+                    <div class="devem-gallery-overlay">
+
+                        <a
+                            href="{{ photo.image.url }}"
+                            title="Foto de {{ department.name }}"
+                            data-gallery="devem-gallery"
+                            class="glightbox"
+                        >
+
+                            <i class="bx bx-zoom-in"></i>
+
+                        </a>
+
+                    </div>
+
                 </div>
-            </div>
 
-            <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-                <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-                    {% for photo in photos %}
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                        <div class="portfolio-content h-100">
-                            <img src="{{ photo.image.url }}" class="img-fluid" alt="Foto de {{ department.name }}">
-                            <div class="portfolio-info">
-                                <p>{{ department.name }}</p>
-                                {% if photo.description %}
-                                <p>{{ photo.description }}</p>
-                                {% endif %}
-                                <a href="{{ photo.image.url }}" title="Foto de {{ department.name }}" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bx bx-zoom-in"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="col-12 text-center">
-                        <p>Nenhuma foto encontrada para este departamento.</p>
-                    </div>
-                    {% endfor %}
-                </div><!-- Fim do Contêiner de Portfólio -->
 
-                <!-- Paginação -->
-                <nav aria-label="Navegação de página" class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        {% if page_obj.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior">Anterior</a>
-                        </li>
-                        {% endif %}
-                        <li class="page-item disabled">
-                            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-                        </li>
-                        {% if page_obj.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Próxima página">Próxima</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
+                <div class="devem-gallery-content">
+
+                    <h4>
+                        {{ department.name }}
+                    </h4>
+
+
+                    {% if photo.description %}
+
+                    <p>
+                        {{ photo.description }}
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </article>
+
         </div>
-    </section>
+
+
+        {% empty %}
+
+
+        <div class="col-12">
+
+            <div class="devem-empty-state">
+
+                <i class="bx bx-images"></i>
+
+                <h4>
+                    Nenhuma fotografia encontrada
+                </h4>
+
+                <p>
+                    Ainda não existem fotografias disponíveis
+                    para este departamento.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- PAGINAÇÃO -->
+
+    {% if page_obj.paginator.num_pages > 1 %}
+
+    <nav
+        class="devem-pagination mt-5"
+        aria-label="Navegação da galeria"
+    >
+
+        <ul class="pagination justify-content-center">
+
+
+            {% if page_obj.has_previous %}
+
+            <li class="page-item">
+
+                <a
+                    class="page-link"
+                    href="?page={{ page_obj.previous_page_number }}"
+                    aria-label="Página anterior"
+                >
+
+                    <i class="bx bx-chevron-left"></i>
+
+                    Anterior
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+
+            <li class="page-item active">
+
+                <span class="page-link">
+
+                    {{ page_obj.number }}
+
+                    <span class="devem-pagination-separator">
+                        /
+                    </span>
+
+                    {{ page_obj.paginator.num_pages }}
+
+                </span>
+
+            </li>
+
+
+            {% if page_obj.has_next %}
+
+            <li class="page-item">
+
+                <a
+                    class="page-link"
+                    href="?page={{ page_obj.next_page_number }}"
+                    aria-label="Próxima página"
+                >
+
+                    Próxima 
+
+                    <i class="bx bx-chevron-right"></i>
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+    {% endif %}
+
+</div>
+```
+
+</section>
