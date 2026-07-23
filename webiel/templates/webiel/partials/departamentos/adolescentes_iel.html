@@ -778,49 +778,35 @@
 ========================================================= -->
 
 <section
-    id="portfolio-adolescentes"
-    class="department-gallery section-padding"
+    id="portfolio"
+    class="mocidade-gallery"
 >
 
     <div class="container">
 
 
-        <!-- =====================================================
-             CABEÇALHO DA GALERIA
-        ====================================================== -->
-
-        <div 
-            class="section-heading text-center"
+        <div
+            class="mocidade-section-heading text-center"
             data-aos="fade-up"
         >
 
-            <span class="section-eyebrow">
+            <span class="mocidade-section-label">
                 Momentos que ficam
             </span>
 
-
-            <h2 style="text-transform: uppercase;" class="section-title">
-                Galeria de {{ department.name }}
+            <h2>
+                Galeria da {{ department.name }}
             </h2>
 
+            <div class="mocidade-heading-line"></div>
 
-            <div class="divider mx-auto"></div>
-
-
-            <p class="section-description">
-
+            <p>
                 Acompanhe um pouco do muito que tem acontecido
-                no Departamento dos Adolescentes da Igreja
-                Evangélica do Lubango.
-
+                no Departamento de {{ department.name }}.
             </p>
 
         </div>
 
-
-        <!-- =====================================================
-             GALERIA DE FOTOS
-        ====================================================== -->
 
         <div class="row g-4 mt-4">
 
@@ -831,29 +817,23 @@
                 data-aos="fade-up"
             >
 
-                <article class="gallery-card">
+                <article class="mocidade-gallery-card">
 
-
-                    <!-- IMAGEM -->
-
-                    <div class="gallery-image">
+                    <div class="mocidade-gallery-image">
 
                         <img
                             src="{{ photo.image.url }}"
-                            alt="Foto do Departamento dos Adolescentes"
+                            alt="Foto de {{ department.name }}"
                             loading="lazy"
                         >
 
-
-                        <!-- OVERLAY -->
-
-                        <div class="gallery-overlay">
+                        <div class="mocidade-gallery-overlay">
 
                             <a
                                 href="{{ photo.image.url }}"
-                                title="Foto do Departamento dos Adolescentes"
-                                data-gallery="portfolio-gallery"
-                                class="glightbox gallery-zoom"
+                                class="glightbox"
+                                data-gallery="mocidade-gallery"
+                                title="{{ department.name }}"
                             >
 
                                 <i class="bx bx-zoom-in"></i>
@@ -865,44 +845,37 @@
                     </div>
 
 
-                    <!-- INFORMAÇÕES -->
+                    {% if photo.description %}
 
-                    <div class="gallery-content">
+                    <div class="mocidade-gallery-content">
 
-                        <h4>
+                        <h3>
                             {{ department.name }}
-                        </h4>
-
-
-                        {% if photo.description %}
+                        </h3>
 
                         <p>
                             {{ photo.description }}
                         </p>
 
-                        {% endif %}
-
                     </div>
+
+                    {% endif %}
 
                 </article>
 
             </div>
 
-
             {% empty %}
-
-
-            <!-- SEM FOTOS -->
 
             <div class="col-12">
 
-                <div class="empty-state">
+                <div class="mocidade-empty">
 
                     <i class="bx bx-images"></i>
 
-                    <h4>
+                    <h3>
                         Nenhuma fotografia encontrada
-                    </h4>
+                    </h3>
 
                     <p>
                         Ainda não existem fotografias disponíveis
@@ -913,34 +886,28 @@
 
             </div>
 
-
             {% endfor %}
 
         </div>
 
 
-        <!-- =====================================================
-             PAGINAÇÃO
-        ====================================================== -->
+        <!-- PAGINAÇÃO -->
 
         {% if page_obj.paginator.num_pages > 1 %}
 
         <nav
-            class="department-pagination mt-5"
+            class="mocidade-pagination"
             aria-label="Navegação da galeria"
         >
 
-            <ul class="pagination justify-content-center">
-
+            <ul>
 
                 {% if page_obj.has_previous %}
 
-                <li class="page-item">
+                <li>
 
                     <a
-                        class="page-link"
                         href="?page={{ page_obj.previous_page_number }}"
-                        aria-label="Página anterior"
                     >
 
                         <i class="bx bx-chevron-left"></i>
@@ -954,15 +921,15 @@
                 {% endif %}
 
 
-                <li class="page-item active">
+                <li class="active">
 
-                    <span class="page-link">
+                    <span>
 
                         {{ page_obj.number }}
 
-                        <span class="pagination-separator">
-                            /
-                        </span>
+                        <small>
+                            de
+                        </small>
 
                         {{ page_obj.paginator.num_pages }}
 
@@ -973,12 +940,10 @@
 
                 {% if page_obj.has_next %}
 
-                <li class="page-item">
+                <li>
 
                     <a
-                        class="page-link"
                         href="?page={{ page_obj.next_page_number }}"
-                        aria-label="Próxima página"
                     >
 
                         Próxima
